@@ -1,0 +1,111 @@
+% =====================================================================
+%  Trabajo Terminal 2027-A098
+%  "Desarrollo de un sistema de comunicación asistida basado en señales
+%   electroencefalográficas mediante modelos de aprendizaje profundo"
+%  ESCOM - IPN
+% =====================================================================
+\documentclass[12pt]{report}
+
+% ---------------------------------------------------------------------
+% Idioma
+% ---------------------------------------------------------------------
+\usepackage[spanish,es-tabla]{babel}
+\spanishdecimal{.}
+
+% ---------------------------------------------------------------------
+% Tamaño de hoja: Carta (formato oficial IPN/ESCOM), márgenes 2.5 cm
+% ---------------------------------------------------------------------
+\usepackage[letterpaper,left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+
+% ---------------------------------------------------------------------
+% Interlineado 1.5
+% ---------------------------------------------------------------------
+\usepackage{setspace}
+\onehalfspacing
+
+% ---------------------------------------------------------------------
+% Codificación / fuentes -- tipografía tipo Times (como el ejemplo)
+% ---------------------------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{mathptmx}
+
+% ---------------------------------------------------------------------
+% Color institucional IPN (guinda)
+% ---------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{guinda}{RGB}{122,20,42}
+
+% ---------------------------------------------------------------------
+% Imágenes, tablas, hipervínculos
+% ---------------------------------------------------------------------
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage[hidelinks]{hyperref}
+\usepackage{csquotes}
+
+% ---------------------------------------------------------------------
+% Formato de encabezados: "N. Título" (con punto, sin la palabra
+% "Capítulo"), como en el documento de ejemplo
+% ---------------------------------------------------------------------
+\usepackage{titlesec}
+\titleformat{\chapter}[hang]{\bfseries\Large}{\thechapter.}{0.5em}{}
+\titleformat{\section}{\bfseries\large}{\thesection.}{0.5em}{}
+\titleformat{\subsection}{\bfseries\normalsize}{\thesubsection.}{0.5em}{}
+\titleformat{\subsubsection}{\bfseries\normalsize}{\thesubsubsection.}{0.5em}{}
+
+% ---------------------------------------------------------------------
+% Índice: capítulos y secciones en MAYÚSCULAS y negritas; subsecciones
+% y subsubsecciones en cursiva, como en el documento de ejemplo. Los
+% capítulos/secciones se escriben en minúsculas en el cuerpo del texto
+% y se les da un título corto en mayúsculas para el índice mediante el
+% argumento opcional de \chapter[...]{...} y \section[...]{...}.
+% ---------------------------------------------------------------------
+\usepackage{tocloft}
+\renewcommand{\cftchapfont}{\bfseries}
+\renewcommand{\cftchappagefont}{\bfseries}
+\renewcommand{\cftchapaftersnum}{.}
+\renewcommand{\cftsecfont}{\bfseries}
+\renewcommand{\cftsecaftersnum}{.}
+\renewcommand{\cftsubsecfont}{\itshape}
+\renewcommand{\cftsubsecaftersnum}{.}
+\renewcommand{\cftsubsubsecfont}{\itshape}
+\renewcommand{\cftsubsubsecaftersnum}{.}
+\addto\captionsspanish{\renewcommand{\contentsname}{Índice}}
+
+% ---------------------------------------------------------------------
+% Referencias bibliográficas - estilo IEEE numerado ([1], [2], ...)
+% ---------------------------------------------------------------------
+\usepackage[backend=biber,style=ieee,sorting=none]{biblatex}
+\addbibresource{referencias.bib}
+
+% =====================================================================
+% Documento
+% =====================================================================
+\begin{document}
+
+% ---------- Preámbulo ----------
+\pagenumbering{roman}
+\input{preambulo/portada}
+%input{preambulo/agradecimientos}
+\input{preambulo/resumen}
+\tableofcontents
+\listoffigures
+\listoftables
+\clearpage
+\pagenumbering{arabic}
+
+% ---------- Capítulos ----------
+\input{capitulos/01-introduccion}
+\input{capitulos/02-marco-referencial}
+\input{capitulos/03-propuesta}
+\input{capitulos/04-seleccion-modelos}
+\input{capitulos/05-alcance-sistema}
+\input{capitulos/06-estudio-factibilidad}
+
+% ---------- Referencias ----------
+\clearpage
+\printbibliography[title={Referencias}]
+
+\end{document}

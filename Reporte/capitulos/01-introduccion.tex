@@ -1,0 +1,109 @@
+% =====================================================================
+%  Capítulo 1. Introducción
+% =====================================================================
+\chapter[INTRODUCCIÓN]{Introducción}
+En las últimas décadas, las Interfaces Cerebro Computadora (BCI, por sus siglas en inglés) se
+han convertido en una de las áreas de investigación más relevantes dentro de la biónica y la
+inteligencia artificial orientada al área de la salud, al permitir entablar comunicación directa
+entre la actividad cerebral de un individuo y un dispositivo externo sin depender de ninguna
+señal o movimiento muscular. Como se menciona en el trabajo de Felton et al. \cite{felton2007},
+las BCI traducen señales cerebrales registradas en acciones en tiempo real, lo cual abre la
+posibilidad de restaurar funciones comunicativas o motoras en personas con discapacidad severa.
+
+Dentro de los paradigmas más estudiados en BCI basadas en electroencefalografía (EEG) se
+encuentra el uso de los Potenciales Relacionados con Eventos (ERP), específicamente la
+componente P300, cuya detección mediante la iluminación intermitente de filas y columnas de
+una matriz de caracteres dio origen al llamado P300 Speller \cite{farwell1988}. A partir de este
+paradigma se han desarrollado sistemas de comunicación asistida tanto en el ámbito nacional
+como internacional, alcanzando en algunos casos porcentajes de acierto de hasta 95\% en
+evaluaciones intrasujeto y tasas sostenidas superiores a 17 caracteres por minuto cuando se
+emplean señales invasivas de electrocorticografía (ECoG). Sin embargo, de estos antecedentes se
+identifican dos limitaciones persistentes en los sistemas P300 basados en EEG: la necesidad de
+múltiples canales para mantener niveles altos de precisión, y la dependencia de múltiples
+repeticiones de estímulos para asegurar la detección confiable del componente P300, lo que
+reduce la velocidad de comunicación y aumenta la carga cognitiva del usuario.
+
+Bajo este contexto, el presente Trabajo Terminal se orienta al desarrollo de un sistema de
+comunicación asistida basado en el paradigma P300 Speller utilizando EEG, integrando modelos
+de aprendizaje profundo para la detección automática del componente P300 e incorporando
+estrategias para reducir el número de canales y el número de repeticiones requeridas por
+selección de carácter, con el objetivo de incrementar la velocidad de comunicación sin
+comprometer la precisión del sistema.
+
+\section[OBJETIVOS]{Objetivos}
+
+\subsection{Objetivo general}
+
+Desarrollar un sistema de comunicación asistida implementado en Python que permita a las
+personas con problemas motrices severos comunicarse por medio de señales
+electroencefalográficas usando el paradigma P300 Speller, a través de una interfaz gráfica
+basada en una matriz de selección visual de caracteres mediante la iluminación intermitente de
+filas y columnas, clasificando las componentes P300 de las señales cerebrales utilizando un
+modelo de aprendizaje profundo desarrollado en Python.
+
+\subsection{Objetivos específicos}
+
+\begin{enumerate}
+    \item Analizar y recolectar bases de datos públicas de señales electroencefalográficas
+    sobre el paradigma P300 Speller, con el fin de identificar las características más
+    importantes para el desempeño del modelo.
+    \item Revisar el estado del arte para seleccionar y analizar los modelos de aprendizaje
+    profundo más adecuados para la detección de la componente P300 en señales cerebrales.
+    \item Diseñar e implementar un modelo de aprendizaje profundo para la clasificación de la
+    componente P300 en señales EEG.
+    \item Evaluar el desempeño del modelo mediante métricas de clasificación buscando minimizar
+    los canales o ciclos necesarios para la detección de la componente P300.
+    \item Diseñar e implementar el sistema de comunicación asistida, integrando el modelo de
+    detección de P300 con una interfaz que permita la construcción de palabras por parte del
+    usuario.
+    \item Integrar un módulo de predicción de palabras o autocompletado, orientado a reducir el
+    número de selecciones necesarias para la construcción de mensajes.
+    \item Evaluar el funcionamiento del sistema mediante pruebas que permitan analizar su
+    desempeño en la selección de caracteres y construcción de palabras.
+\end{enumerate}
+
+\section[JUSTIFICACIÓN]{Justificación}
+
+El análisis de señales EEG en paradigmas basados en la componente P300 ha sido ampliamente
+utilizado en el desarrollo de interfaces cerebro-computadora, particularmente en sistemas de
+selección de caracteres mediante el paradigma P300 Speller. Estos sistemas permiten la
+comunicación mediante la detección de respuestas cerebrales asociadas a estímulos visuales, lo
+que representa una alternativa para las personas con compromisos motores severos que tengan
+problemas de comunicación.
+
+De acuerdo con el trabajo de Feigin et al. \cite{feigin2020}, los desórdenes neurológicos son la
+principal causa de discapacidad a nivel mundial, y es posible que la magnitud de estas aumente
+debido al crecimiento y envejecimiento de la población; en enfermedades como la esclerosis
+lateral amiotrófica (ELA) la comunicación puede verse gravemente limitada, lo que impacta
+directamente en la calidad de vida del paciente.
+
+Dentro de este contexto, el paradigma P300 Speller puede resultar útil para permitir la
+comunicación a las personas con problemas motrices severos, mejorando así su calidad de vida.
+Sin embargo, la mayoría de los estudios se enfocan en maximizar la precisión de clasificación
+mediante entornos controlados difíciles de llevar a la práctica, de modo que este trabajo
+interviene en la integración estructural del sistema, priorizando no solo el desempeño del
+modelo, sino también su incorporación en un sistema funcional que le permita a los usuarios
+objetivo la construcción efectiva de mensajes.
+
+La reducción del número de canales o ensayos, así como la incorporación de estrategias que
+faciliten la selección de caracteres, puede contribuir al desarrollo de sistemas BCI más
+accesibles, portables y de implementación simplificada, ampliando su viabilidad en distintos
+contextos tecnológicos y acercando su uso a escenarios reales de asistencia comunicativa. De
+esta manera, el proyecto no se centra solamente en la optimización bajo escenarios aislados,
+sino que propone un sistema orientado a la aplicación práctica.
+
+En cuanto a la aportación del trabajo, su valor radica en la integración de un modelo de
+aprendizaje profundo para la detección de la componente P300 con un modelo de predicción de
+caracteres, combinación que permite no solo identificar la selección de caracteres mediante las
+señales obtenidas por electroencefalografía, sino también optimizar el proceso de construcción
+de mensajes mediante la asistencia de este otro módulo.
+
+Por lo tanto, la complejidad del trabajo implica el procesamiento y análisis de señales EEG, la
+implementación y entrenamiento de modelos de aprendizaje profundo, la integración de estos
+modelos en una aplicación y la evaluación de los resultados, lo cual requiere la aplicación
+avanzada de conocimientos en procesamiento de señales, aprendizaje profundo y desarrollo de
+sistemas, competencias propias del área de ingeniería en inteligencia artificial. Finalmente, el
+proyecto resulta viable en términos de tiempo y recursos, ya que los modelos de aprendizaje
+profundo pueden entrenarse utilizando bases de datos públicas de paradigmas P300, evitando la
+necesidad de adquisición propia de las mismas y reduciendo costos asociados a hardware
+especializado con 64 canales de detección de señales EEG.
