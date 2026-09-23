@@ -1,0 +1,143 @@
+% ---------------------------------------------------------------------
+% 2.10 Redes convolucionales y recurrentes para la detección de la P300
+% ---------------------------------------------------------------------
+\section[REDES CONVOLUCIONALES Y RECURRENTES PARA LA DETECCIÓN DE LA P300]{Redes convolucionales
+y recurrentes para la detección de la P300}
+\label{sec:cnn}
+
+\subsection{Redes neuronales convolucionales}
+
+Las redes neuronales convolucionales (CNN) están diseñadas para trabajar con datos estructurados
+en forma de cuadrícula que presentan fuertes dependencias locales, como las imágenes o las series
+de tiempo, y su nombre se debe a que emplean la operación de convolución en lugar de la
+multiplicación de matrices general en al menos una de sus capas \cite{goodfellow2016}. En una capa
+convolucional, un filtro o \textit{kernel} de pesos aprendibles se desplaza sobre la entrada y en
+cada posición calcula la suma ponderada de los valores que cubre, de forma análoga a la
+Ecuación~\eqref{eq:convolucion}; el resultado se denomina mapa de características y, dado que el
+mismo filtro se aplica en todas las posiciones, el número de parámetros es mucho menor que en una
+capa totalmente conectada \cite{aggarwal2018}. El desplazamiento del filtro se controla con el
+paso o \textit{stride}, el relleno con ceros en los bordes o \textit{padding} permite conservar la
+longitud de la salida, y las capas de agrupamiento o \textit{pooling} reducen la resolución de los
+mapas conservando el valor máximo o promedio de cada región \cite{goodfellow2016}. Para una entrada
+de longitud $L$, un filtro de tamaño $K$, un relleno $P$ y un paso $S$, la longitud de la salida es
+\begin{equation}
+L_{\text{sal}} = \left\lfloor \frac{L + 2P - K}{S} \right\rfloor + 1.
+\label{eq:salida-conv}
+\end{equation}
+
+En el caso del EEG, cada época puede verse como una matriz de $C$ canales por $T$ muestras, lo que
+permite separar el procesamiento en dos dimensiones con significado fisiológico distinto: las
+convoluciones temporales, con filtros de tamaño $1\times K$, aprenden patrones en el tiempo
+equivalentes a filtros de frecuencia, mientras que las convoluciones espaciales, con filtros de
+tamaño $C\times1$, aprenden combinaciones ponderadas de los electrodos equivalentes a un filtrado
+espacial. Cecotti y Gräser aplicaron esta separación en la primera CNN diseñada específicamente para
+detectar la P300, en la que una primera capa espacial es seguida de una capa temporal, alcanzando
+en la base de datos de la competencia BCI III una exactitud de alrededor del 95\% con 15 repeticiones
+\cite{cecotti2011}; esta misma arquitectura fue implementada en el trabajo preliminar.
+
+\subsection{Convoluciones separables en profundidad}
+
+Una convolución separable en profundidad descompone la convolución estándar en dos pasos: primero
+una convolución \textit{depthwise}, que aplica un filtro independiente a cada canal de entrada, y
+después una convolución \textit{pointwise} de tamaño $1\times1$, que combina los canales
+resultantes \cite{chollet2017}. Si una convolución estándar con $C_{\text{in}}$ canales de entrada,
+$C_{\text{out}}$ de salida y filtros de tamaño $K$ requiere $K\cdot C_{\text{in}}\cdot
+C_{\text{out}}$ pesos, la versión separable requiere solamente $K\cdot C_{\text{in}} +
+C_{\text{in}}\cdot C_{\text{out}}$, lo que reduce drásticamente el número de parámetros
+\cite{chollet2017}. Esta idea es la base de dos de las arquitecturas más compactas para EEG,
+EEGNet \cite{lawhern2018} y SepConv1D \cite{alvarado2021}, que resultan especialmente convenientes
+cuando se dispone de pocos datos o cuando el modelo debe ejecutarse en dispositivos con recursos
+limitados.
+
+\subsection{EEGNet}
+
+EEGNet es una red convolucional compacta propuesta por Lawhern et al. para clasificar señales de
+EEG en distintos paradigmas de BCI, entre ellos la P300, con un número muy reducido de parámetros
+\cite{lawhern2018}. Como se muestra en la Figura~\ref{fig:eegnet}, su primer bloque aplica una
+convolución temporal que funciona como un banco de filtros de frecuencia, seguida de una
+convolución \textit{depthwise} espacial que aprende, para cada filtro temporal, una combinación
+específica de los electrodos, de forma análoga a un filtrado espacial; el segundo bloque aplica
+una convolución separable que resume cada mapa de características en el tiempo y combina los
+mapas entre sí, y la clasificación se realiza con una capa densa con activación softmax
+\cite{lawhern2018}. En el trabajo preliminar esta arquitectura se implementó con ocho filtros
+temporales de tamaño $1\times16$ sobre épocas de 64 canales por 78 muestras.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  capa/.style={draw, rounded corners=2pt, align=center, minimum height=1.35cm, text width=2.0cm, font=\scriptsize},
+  flecha/.style={-{Stealth[length=1.8mm]}, thick}, node distance=0.28cm]
+  \node[capa, fill=gray!8] (in) {Entrada\\$C\times T$\\(64 $\times$ 78)};
+  \node[capa, fill=blue!8, right=of in] (c1) {Conv. temporal\\$F_1$ filtros $1\times K$\\+ BatchNorm};
+  \node[capa, fill=blue!8, right=of c1] (dw) {Conv. \textit{depthwise}\\espacial $C\times1$\\BN + ELU\\Pool + Dropout};
+  \node[capa, fill=red!8, right=of dw] (sep) {Conv. separable\\$F_2$ filtros\\BN + ELU\\Pool + Dropout};
+  \node[capa, fill=gray!8, right=of sep, text width=1.6cm] (out) {Densa\\+ softmax\\P300 / no P300};
+  \foreach \a/\b in {in/c1, c1/dw, dw/sep, sep/out} \draw[flecha] (\a) -- (\b);
+  \draw[decorate, decoration={brace, amplitude=5pt, mirror}] ([yshift=-3pt]c1.south west) -- node[below=6pt, font=\scriptsize] {Bloque 1: filtrado temporal y espacial} ([yshift=-3pt]dw.south east);
+  \draw[decorate, decoration={brace, amplitude=5pt, mirror}] ([yshift=-3pt]sep.south west) -- node[below=6pt, font=\scriptsize] {Bloque 2} ([yshift=-3pt]sep.south east);
+\end{tikzpicture}
+\caption{Arquitectura general de EEGNet. Elaboración propia con base en \cite{lawhern2018}.}
+\label{fig:eegnet}
+\end{figure}
+
+\subsection{Arquitecturas convolucionales para la detección de la P300}
+
+A partir del trabajo de Cecotti y Gräser se han propuesto numerosas arquitecturas convolucionales
+para detectar la P300. Alvarado-González et al. compararon doce de ellas en cuatro bases de datos
+distintas, bajo los esquemas intrasujeto y entre sujetos, y encontraron que las diferencias de AUC
+entre arquitecturas eran pequeñas, al grado de que SepConv1D, con una sola capa convolucional
+separable de cuatro filtros seguida de una neurona sigmoide, obtuvo un desempeño comparable al de
+redes con muchos más parámetros \cite{alvarado2021}. La Tabla~\ref{tab:arquitecturas} resume las
+arquitecturas evaluadas y los valores de AUC reportados; Contreras utilizó precisamente SepConv1D
+en su sistema con cuatro canales \cite{contreras2021}.
+
+\begin{table}[htbp]
+\centering
+\caption{Arquitecturas convolucionales para la detección de la P300 y AUC promedio reportada en
+\cite{alvarado2021}}
+\label{tab:arquitecturas}
+\small
+\begin{tabularx}{\textwidth}{L{2.8cm}YL{1.3cm}L{1.3cm}}
+\toprule
+\textbf{Arquitectura} & \textbf{Descripción} & \textbf{AUC intra} & \textbf{AUC inter} \\
+\midrule
+CNN-1 \cite{cecotti2011} & 4 capas: convolución espacial (10 filtros) y temporal con tangente hiperbólica escalada; salida sigmoide. & 0.82 & 0.78 \\
+CNN-3 \cite{cecotti2011} & Variante de CNN-1 con un solo filtro espacial. & 0.78 & 0.73 \\
+UCNN-1 / UCNN-3 \cite{alvarado2021} & Variantes de CNN-1 y CNN-3 con salida softmax. & 0.84 / 0.83 & 0.78 / 0.76 \\
+CNN-R \cite{manor2015} & Dos bloques convolución--\textit{max pooling}, una convolución, dos capas densas y softmax. & 0.83 & 0.79 \\
+DeepConvNet \cite{schirrmeister2017} & Cuatro bloques convolucionales seguidos de softmax. & 0.84 & 0.79 \\
+ShallowConvNet \cite{schirrmeister2017} & Versión poco profunda de DeepConvNet. & 0.82 & 0.79 \\
+BN3 \cite{liu2018} & Seis capas que combinan normalización por lotes y \textit{dropout}. & 0.83 & 0.78 \\
+EEGNet \cite{lawhern2018} & Red compacta con convoluciones \textit{depthwise} y separables. & 0.84 & 0.80 \\
+OCLNN \cite{shan2018} & Una sola capa convolucional 1D con ReLU seguida de softmax. & 0.83 & 0.79 \\
+FCNN \cite{alvarado2021} & Red totalmente conectada usada como referencia. & 0.83 & 0.75 \\
+SepConv1D \cite{alvarado2021} & Una capa convolucional 1D separable (4 filtros) y una neurona sigmoide. & 0.84 & 0.78 \\
+\bottomrule
+\end{tabularx}
+\par\smallskip{\footnotesize Elaboración propia con información de \cite{alvarado2021,contreras2021}.}
+\end{table}
+
+\subsection{Redes neuronales recurrentes}
+
+A diferencia de las redes convolucionales, las redes neuronales recurrentes (RNN) procesan una
+secuencia elemento por elemento y mantienen un estado oculto que resume la información de los
+pasos anteriores, lo que las hace adecuadas para modelar series de tiempo \cite{goodfellow2016}.
+Su principal limitación es el desvanecimiento del gradiente, que les impide aprender dependencias
+de largo plazo; para resolverlo, Hochreiter y Schmidhuber propusieron las redes de memoria de
+corto y largo plazo (LSTM), que incorporan una celda de memoria y tres compuertas, de entrada, de
+olvido y de salida, que regulan qué información se agrega, se descarta o se entrega en cada paso
+\cite{hochreiter1997}. En el contexto de la P300 se han utilizado principalmente en arquitecturas
+híbridas, en las que una CNN extrae características de cada época y una capa recurrente modela su
+evolución temporal, enfoque que también fue explorado en el trabajo preliminar.
+
+\subsection{Autocodificadores y redes de creencia profunda}
+
+Antes de la adopción generalizada de las redes convolucionales, en las tareas de ERP se exploraron
+también arquitecturas basadas en aprendizaje no supervisado de representaciones. Vařeka y Mautner
+encontraron que los autocodificadores apilados (SAE) superaban a un perceptrón multicapa en la
+detección de la P300, con una precisión de 73.6\% \cite{vareka2017}, mientras que Kulasingham et
+al. compararon redes de creencia profunda (DBN) con SAE y obtuvieron una ligera ventaja para las
+primeras, con precisiones de 86.9\% y 86.01\%, respectivamente \cite{kulasingham2016}. Kundu y Ari,
+por su parte, propusieron una arquitectura profunda para la detección de la P300 en aplicaciones de
+BCI en la que destacan que la extracción de características es el paso más importante para lograr
+una clasificación eficiente \cite{kundu2020}.

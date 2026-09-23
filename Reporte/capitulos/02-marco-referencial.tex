@@ -1,125 +1,32 @@
 % =====================================================================
 %  Capítulo 2. Marco Referencial
+%  Cada sección está en su propio archivo dentro de capitulos/marco/
+%  para facilitar la edición.
+%  Las figuras .pdf se generan con scripts/figuras_marco.py
 % =====================================================================
 \chapter[MARCO REFERENCIAL]{Marco Referencial}
 
 En el presente capítulo se abordan los fundamentos teóricos que sustentan el desarrollo del
-sistema de comunicación asistida propuesto, partiendo de los conceptos generales asociados a las
-interfaces cerebro-computadora, para posteriormente abordar el procesamiento de señales
-biomédicas y, finalmente, presentar el estado del arte de los sistemas de comunicación basados
-en el paradigma P300 Speller.
+sistema de comunicación asistida propuesto. El recorrido parte del contexto de las personas con
+compromisos motores severos y de las bases neurofisiológicas de la actividad eléctrica cerebral,
+continúa con la electroencefalografía, los potenciales relacionados con eventos y las interfaces
+cerebro-computadora basadas en el paradigma P300 Speller, y posteriormente aborda el
+procesamiento digital de las señales, los modelos de aprendizaje automático y profundo empleados
+para su clasificación, las métricas de evaluación y los modelos de lenguaje orientados a la
+predicción de palabras, para finalmente presentar el estado del arte de los sistemas de
+comunicación basados en este paradigma.
 
-\section[INTELIGENCIA ARTIFICIAL]{Inteligencia Artificial}
-
-%% TODO: (opcional) ampliar con una definición general de inteligencia
-%% artificial aplicada al procesamiento de señales biomédicas, antes de
-%% entrar a las subsecciones siguientes.
-
-\subsection{Interfaces Cerebro-Computadora (BCI)}
-
-Las Interfaces Cerebro Computadora permiten entablar comunicación directa entre la actividad
-cerebral de un individuo y un dispositivo externo, sin depender de ninguna otra señal o
-movimiento muscular. Como se menciona en el trabajo de Felton et al. \cite{felton2007}, las BCI
-traducen señales cerebrales registradas en acciones en tiempo real, lo cual abre la posibilidad
-de restaurar funciones comunicativas o motoras en personas con discapacidad severa; no obstante,
-en ese mismo trabajo se discute que, dentro de los distintos enfoques en señales neuronales, el
-uso de electroencefalografía (EEG) presenta limitaciones relacionadas con una baja resolución de
-la señal, alto ruido y baja relación señal-ruido en comparación con técnicas invasivas como la
-electrocorticografía (ECoG).
-
-\subsection{Señales electroencefalográficas (EEG)}
-
-A pesar de dichas limitaciones, la electroencefalografía ha sido ampliamente utilizada por su
-característica de no ser invasiva y por su viabilidad clínica, de manera que, por su
-practicidad, continúa siendo la alternativa más accesible para aplicaciones a gran escala y
-experimentales en entornos académicos \cite{felton2007}.
-
-\subsection{Paradigma P300}
-
-Dentro de los paradigmas más estudiados en BCI basadas en EEG se encuentra el uso de los
-Potenciales Relacionados con Eventos (ERP), específicamente la componente P300. El trabajo
-clásico de Farwell y Donchin introdujo el llamado P300 Speller, que consiste en la iluminación
-intermitente de filas y columnas de una matriz para la detección de la componente P300 que se
-produce después de iluminarse el carácter objetivo al que el usuario está prestando atención,
-demostrando que es posible identificar ciertos estímulos mediante la detección de una deflexión
-positiva de la señal alrededor de 300 ms posteriores al estímulo \cite{farwell1988}.
-
-\subsection{Aprendizaje profundo y arquitecturas neuronales}
-
-%% TODO: redactar los fundamentos de aprendizaje profundo y arquitecturas
-%% neuronales (p. ej. redes convolucionales, redes recurrentes, EEGNet)
-%% aplicables a la clasificación de señales EEG. El protocolo no
-%% desarrolla este marco teórico general, por lo que se requieren
-%% fuentes bibliográficas adicionales a las ya incluidas en
-%% referencias.bib antes de redactar esta subsección.
-
-\section[PROCESAMIENTO DIGITAL DE SEÑALES BIOMÉDICAS]{Procesamiento Digital de Señales
-Biomédicas}
-
-El preprocesamiento de las señales EEG constituye una etapa determinante para el desempeño de
-los modelos de clasificación, dado que estas señales presentan una relación señal-ruido baja y
-son susceptibles a artefactos de origen fisiológico y ambiental. Para atender esta problemática
-se emplean técnicas de filtrado pasa banda, orientadas a delimitar el rango de frecuencias
-asociado a la componente P300, así como la segmentación de la señal continua en ventanas
-temporales alrededor de cada estímulo y la normalización de las mismas, procedimientos que en
-conjunto permiten generar un conjunto de datos adecuado para el entrenamiento y la validación
-del modelo de detección de la componente P300.
-
-\section[ESTADO DEL ARTE]{Estado del arte}
-
-En el ámbito nacional, la tesis de maestría titulada ``Sistema clasificador de señales EEG para
-el control de una neuroprótesis por medio de un dispositivo móvil'' \cite{contreras2021},
-desarrollada en la Escuela Superior de Cómputo del Instituto Politécnico Nacional, implementó un
-sistema basado en aprendizaje profundo para la detección del componente P300, reportando
-valores promedio de AUC cercanos a 0.81 en evaluaciones intrasujeto y 0.69 en escenarios
-intersujeto sin calibración individual. Este trabajo demostró la viabilidad técnica de integrar
-procesamiento EEG, extracción automática de características y modelos de aprendizaje profundo en
-un sistema funcional; sin embargo, su aplicación estuvo orientada al control de una
-neuroprótesis y no específicamente a la implementación de un sistema de comunicación mediante
-deletreo.
-
-En el ámbito internacional, el estudio ``Interfaz cerebro-computador basada en P300 para la
-comunicación alternativa'' \cite{garciacossio2011} implementó un sistema funcional de deletreo
-utilizando una matriz de estimulación visual, reportando porcentajes de acierto de hasta 95\% en
-evaluaciones intrasujeto. Por su parte, el trabajo de Brunner et al. \cite{brunner2011} demostró
-la operación de un sistema P300 Speller utilizando señales de electrocorticografía, alcanzando
-tasas sostenidas superiores a 17 caracteres por minuto; no obstante, el uso de técnicas invasivas
-limita su aplicación en contextos clínicos generales, donde el EEG continúa siendo la
-alternativa más accesible. Más recientemente, la investigación ``ChatBCI'' \cite{hong2026}
-incorporó modelos de lenguaje de gran escala para mejorar las selecciones dentro de un sistema
-P300 Speller, logrando una reducción del tiempo promedio de escritura de 62.14\%.
-
-La Tabla \ref{tab:estado-arte} resume los enfoques descritos, contrastando el número de canales
-empleados y el desempeño reportado por cada trabajo frente a la propuesta del presente Trabajo
-Terminal.
-
-\begin{table}[htbp]
-\centering
-\caption{Resumen comparativo del estado del arte}
-\label{tab:estado-arte}
-\small
-\begin{tabular}{p{2.9cm}p{4.3cm}p{1.6cm}p{3.1cm}}
-\toprule
-\textbf{Trabajo} & \textbf{Enfoque} & \textbf{Canales} & \textbf{Desempeño} \\
-\midrule
-Deletreador P300 clásico \cite{farwell1988} &
-Primer sistema P300 Speller basado en EEG. &
-6--16 & Precisión = 78\% \\
-Sistema clasificador EEG para neuroprótesis (IPN, 2021) \cite{contreras2021} &
-Sistema móvil con Deep Learning para detección de P300 (EEG). &
-4 & AUC = 0.81 (intrasujeto), AUC = 0.69 (intersujeto sin calibración) \\
-Interfaz P300 para comunicación alternativa (U. de Antioquia, 2011) \cite{garciacossio2011} &
-Sistema funcional de libre deletreo con paradigma oddball (EEG). &
-6 & Precisión = 85\% \\
-P300 Speller con ECoG (Brunner et al., 2011) \cite{brunner2011} &
-Sistema online de comunicación con matriz P300 (ECoG). &
-96 subdurales & 17 caracteres/min \\
-ChatBCI con LLM (Hong et al., 2026) \cite{hong2026} &
-P300 Speller con predicción contextual basada en LLM (EEG). &
-32 & Reducción de tiempo promedio = 62.14\% \\
-Propuesta TT &
-Sistema de comunicación asistida P300 con Deep Learning y optimización espacial-temporal (EEG). &
-4 & -- \\
-\bottomrule
-\end{tabular}
-\end{table}
+\input{capitulos/marco/2-01-contexto}
+\input{capitulos/marco/2-02-neurofisiologia}
+\input{capitulos/marco/2-03-eeg}
+\input{capitulos/marco/2-04-erp-p300}
+\input{capitulos/marco/2-05-bci}
+\input{capitulos/marco/2-06-p300-speller}
+\input{capitulos/marco/2-07-pds}
+\input{capitulos/marco/2-08-ia-ml}
+\input{capitulos/marco/2-09-redes-neuronales}
+\input{capitulos/marco/2-10-cnn-p300}
+\input{capitulos/marco/2-11-metricas}
+\input{capitulos/marco/2-12-reduccion}
+\input{capitulos/marco/2-13-lenguaje}
+\input{capitulos/marco/2-14-estado-arte}

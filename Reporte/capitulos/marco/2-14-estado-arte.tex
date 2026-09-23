@@ -1,0 +1,105 @@
+% ---------------------------------------------------------------------
+% 2.14 Estado del arte
+% ---------------------------------------------------------------------
+\section[ESTADO DEL ARTE]{Estado del arte}
+
+\subsection{Sistemas P300 Speller y competencias BCI}
+
+A partir del deletreador de Farwell y Donchin \cite{farwell1988}, la investigación sobre el P300
+Speller se centró durante varios años en mejorar la clasificación de las épocas con métodos
+lineales. Las competencias internacionales de BCI jugaron un papel central en este proceso, pues
+pusieron a disposición de la comunidad bases de datos comunes; en la tercera de ellas, el conjunto
+de SVM lineales propuesto por Rakotomamonjy y Guigue obtuvo el primer lugar al identificar
+correctamente el 96.5\% de los caracteres de prueba con 15 repeticiones \cite{rakotomamonjy2008}.
+En paralelo, Krusienski et al. mostraron que el SWLDA y el discriminante de Fisher eran los
+clasificadores más robustos entre los evaluados \cite{krusienski2006}, y posteriormente que una
+adecuada selección de ocho electrodos permitía mejorar el desempeño respecto al uso exclusivo de la
+línea media \cite{krusienski2008}.
+
+\subsection{Sistemas de comunicación con usuarios con discapacidad}
+
+La validación con usuarios reales ha sido otra línea importante de investigación. Sellers y
+Donchin realizaron las primeras pruebas de un P300 Speller con pacientes con ELA
+\cite{sellers2006}, y Hoffmann et al. propusieron un sistema de seis opciones evaluado con personas
+con distintas discapacidades motoras, cuyos registros constituyen hoy una de las bases de datos
+públicas más utilizadas \cite{hoffmann2008}. En el ámbito latinoamericano, el estudio ``Interfaz
+cerebro-computador basada en P300 para la comunicación alternativa'' \cite{garciacossio2011}
+implementó un sistema funcional de deletreo utilizando una matriz de estimulación visual con dos
+adolescentes en situación de discapacidad motora, reportando porcentajes de acierto promedio de 95\%
+y 85\% para cada usuario en la prueba de libre deletreo. Por su parte, el trabajo de Brunner et
+al. \cite{brunner2011} demostró la operación de un sistema P300 Speller utilizando señales de
+electrocorticografía, alcanzando tasas sostenidas superiores a 17 caracteres por minuto; no
+obstante, el uso de técnicas invasivas limita su aplicación en contextos clínicos generales, donde
+el EEG continúa siendo la alternativa más accesible.
+
+\subsection{Aprendizaje profundo para la detección de la P300}
+
+Con la introducción de las redes convolucionales, Cecotti y Gräser mostraron que era posible
+aprender directamente los filtros espaciales y temporales a partir de la señal, obteniendo en la
+competencia BCI III resultados comparables a los del ganador \cite{cecotti2011}. A partir de
+entonces se propusieron arquitecturas como BN3 \cite{liu2018}, OCLNN \cite{shan2018} y EEGNet
+\cite{lawhern2018}, y la comparación de Alvarado-González et al. mostró que redes muy compactas
+como SepConv1D, con apenas cuatro filtros en su única capa convolucional, pueden alcanzar un AUC
+similar a la de redes mucho más grandes \cite{alvarado2021}.
+
+En el ámbito nacional, la tesis de maestría titulada ``Sistema clasificador de señales EEG para
+el control de una neuroprótesis por medio de un dispositivo móvil'' \cite{contreras2021},
+desarrollada en la Escuela Superior de Cómputo del Instituto Politécnico Nacional, implementó un
+sistema basado en la arquitectura SepConv1D para la detección del componente P300 con solo cuatro
+electrodos secos, reportando valores promedio de AUC cercanos a 0.82 en evaluaciones intrasujeto y
+de 0.70 en escenarios intersujeto sin calibración individual al considerar filas y columnas. Este
+trabajo demostró la viabilidad técnica de integrar procesamiento EEG, extracción automática de
+características y modelos de aprendizaje profundo en un sistema funcional; sin embargo, su
+aplicación estuvo orientada al control de una neuroprótesis y no específicamente a la
+implementación de un sistema de comunicación mediante deletreo. En la misma escuela, Santos,
+Romero y Fernández desarrollaron una aplicación para manipular un brazo robótico virtual mediante
+potenciales P300 con matrices de $5\times5$ de iconos y de letras, clasificadas con el
+discriminante lineal de Fisher \cite{santos2017}, y Anguiano y Ramírez utilizaron señales de EEG
+y redes neuronales artificiales para detectar estrés en estudiantes \cite{anguiano2019}.
+
+\subsection{Modelos de lenguaje en el P300 Speller}
+
+La incorporación de información lingüística es la línea más reciente para acelerar la escritura.
+Ryan et al. \cite{ryan2011} y Speier et al. \cite{speier2012} mostraron que la predicción de
+palabras y los modelos de lenguaje reducen el tiempo de escritura o mejoran la tasa de
+transferencia, y más recientemente la investigación ``ChatBCI'' \cite{hong2026} incorporó modelos
+de lenguaje de gran escala para mejorar las selecciones dentro de un sistema P300 Speller, logrando
+una reducción del tiempo promedio de escritura de 62.14\%.
+
+\subsection{Resumen comparativo}
+
+De los trabajos revisados se identifican dos limitaciones persistentes en los sistemas P300
+basados en EEG: la necesidad de múltiples canales para mantener niveles altos de precisión y la
+dependencia de múltiples repeticiones de estímulos para asegurar una detección confiable. La
+Tabla~\ref{tab:estado-arte} resume los enfoques descritos, contrastando el número de canales
+empleados, el clasificador, el uso de un modelo de lenguaje y el desempeño reportado por cada
+trabajo frente a la propuesta del presente Trabajo Terminal.
+
+\begin{table}[htbp]
+\centering
+\caption{Resumen comparativo del estado del arte}
+\label{tab:estado-arte}
+\footnotesize
+\begin{tabularx}{\textwidth}{L{3.1cm}L{1.8cm}L{2.4cm}L{2.1cm}Y}
+\toprule
+\textbf{Trabajo} & \textbf{Señal / canales} & \textbf{Clasificador} & \textbf{Modelo de lenguaje} & \textbf{Desempeño} \\
+\midrule
+Farwell y Donchin, 1988 \cite{farwell1988} & EEG / 1 (Pz) & SWDA, pico, área y covarianza & No & Exactitud $\approx$ 95\%; 2.3 caracteres/min \\
+Sellers y Donchin, 2006 \cite{sellers2006} & EEG & -- & No & Primeras pruebas con pacientes con ELA \\
+Rakotomamonjy y Guigue, 2008 \cite{rakotomamonjy2008} & EEG / 64 & Conjunto de SVM & No & 96.5\% de caracteres con 15 repeticiones \\
+Krusienski et al., 2008 \cite{krusienski2008} & EEG / 8 & SWLDA & No & Conjunto de 8 canales superior a la línea media \\
+Cecotti y Gräser, 2011 \cite{cecotti2011} & EEG / 64 & CNN & No & $\approx$ 95\% de caracteres con 15 repeticiones \\
+García Cossio et al., 2011 \cite{garciacossio2011} & EEG / 6 & -- & No & Acierto de 95\% y 85\% en libre deletreo \\
+Brunner et al., 2011 \cite{brunner2011} & ECoG / 96 subdurales & SWLDA & No & 17 caracteres/min \\
+Ryan et al., 2011 \cite{ryan2011} & EEG & -- & Diccionario & Menor tiempo por frase \\
+Speier et al., 2012 \cite{speier2012} & EEG & Clasificación dinámica & Probabilístico & Mayor exactitud y tasa de transferencia \\
+Santos et al., 2017 (ESCOM) \cite{santos2017} & EEG & LDA de Fisher & No & Precisión de 90.01\% (20 sujetos) \\
+Alvarado-González et al., 2021 \cite{alvarado2021} & EEG / varios & SepConv1D y otras 11 redes & No & AUC intra $\approx$ 0.84; inter $\approx$ 0.78 \\
+Contreras, 2021 (IPN) \cite{contreras2021} & EEG / 4 & SepConv1D & No & AUC $\approx$ 0.82 (intrasujeto), $\approx$ 0.70 (intersujeto) \\
+ChatBCI, Hong et al., 2026 \cite{hong2026} & EEG / 32 & -- & LLM & Reducción de tiempo promedio de 62.14\% \\
+\midrule
+\textbf{Propuesta TT} & EEG / 4 & Aprendizaje profundo (CNN) & Predicción de palabras & -- \\
+\bottomrule
+\end{tabularx}
+\par\smallskip{\footnotesize Elaboración propia.}
+\end{table}

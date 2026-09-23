@@ -1,0 +1,156 @@
+% ---------------------------------------------------------------------
+% 2.5 Interfaces cerebro-computadora
+% ---------------------------------------------------------------------
+\section[INTERFACES CEREBRO-COMPUTADORA]{Interfaces cerebro-computadora}
+\label{sec:bci}
+
+\subsection{Definición y componentes}
+
+Las interfaces cerebro-computadora (BCI) permiten entablar comunicación directa entre la
+actividad cerebral de un individuo y un dispositivo externo, sin depender de ninguna otra señal o
+movimiento muscular. De acuerdo con Wolpaw et al., una BCI es un sistema de comunicación en el que
+los mensajes o comandos que el usuario envía al mundo exterior no pasan por las vías de salida
+normales del cerebro, es decir, por los nervios periféricos y los músculos \cite{wolpaw2002}, y
+como se menciona en el trabajo de Felton et al., estos sistemas traducen las señales cerebrales
+registradas en acciones en tiempo real, lo cual abre la posibilidad de restaurar funciones
+comunicativas o motoras en personas con discapacidad severa \cite{felton2007}.
+
+Independientemente de la señal que utilice, una BCI se compone de una serie de etapas que se
+ejecutan de forma cíclica, como se ilustra en la Figura~\ref{fig:bci}. Primero se adquiere la señal
+cerebral y se digitaliza; después se preprocesa para atenuar el ruido y los artefactos; a
+continuación se extraen las características que mejor representan la intención del usuario y un
+algoritmo de clasificación las traduce en un comando para el dispositivo, cuyo resultado se
+presenta al usuario como retroalimentación para que pueda ajustar su estrategia
+\cite{wolpaw2012,nicolasalonso2012}.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  node distance=0.38cm,
+  etapa/.style={draw, rounded corners=2pt, fill=gray!8, align=center, minimum height=1.1cm, text width=2.15cm, font=\footnotesize},
+  flecha/.style={-{Stealth[length=2mm]}, thick}]
+  \node[etapa, fill=red!8] (usr) {Usuario\\(actividad cerebral)};
+  \node[etapa, right=of usr] (adq) {Adquisición\\(EEG)};
+  \node[etapa, right=of adq] (pre) {Preprocesa-\\miento};
+  \node[etapa, right=of pre] (car) {Extracción de\\características};
+  \node[etapa, right=of car] (cla) {Clasificación};
+  \node[etapa, below=1.1cm of cla, fill=blue!6] (app) {Aplicación\\(deletreador)};
+  \draw[flecha] (usr) -- (adq);
+  \draw[flecha] (adq) -- (pre);
+  \draw[flecha] (pre) -- (car);
+  \draw[flecha] (car) -- (cla);
+  \draw[flecha] (cla) -- node[right, font=\footnotesize] {comando} (app);
+  \draw[flecha, dashed] (app.west) -| node[pos=0.25, below, font=\footnotesize] {retroalimentación visual} (usr.south);
+  \begin{scope}[on background layer]
+    \node[draw=gray, dashed, rounded corners, fit=(pre)(car)(cla), inner sep=6pt,
+          label={[font=\footnotesize]above:Procesamiento de la señal}] {};
+  \end{scope}
+\end{tikzpicture}
+\caption{Diagrama general de una interfaz cerebro-computadora. Elaboración propia con base en
+\cite{wolpaw2002,wolpaw2012}.}
+\label{fig:bci}
+\end{figure}
+
+\subsection{Antecedentes históricos}
+
+El término interfaz cerebro-computadora fue introducido por Jacques Vidal en 1973, quien planteó
+por primera vez la posibilidad de utilizar las señales del EEG como un canal de comunicación con
+una computadora \cite{vidal1973}. Quince años después, Farwell y Donchin presentaron el primer
+deletreador basado en la componente P300 \cite{farwell1988}, y en 1999 Birbaumer et al.
+demostraron que pacientes con ELA podían escribir mensajes controlando potenciales corticales
+lentos \cite{birbaumer1999}. A partir de la primera reunión internacional sobre BCI, celebrada en
+1999 \cite{wolpaw2000}, se organizaron las competencias internacionales de BCI, cuyas bases de
+datos públicas permitieron comparar algoritmos bajo las mismas condiciones y siguen siendo una
+referencia obligada para la detección de la P300 \cite{blankertz2004,blankertz2006}. Durante la
+última década, el uso de redes neuronales profundas ha desplazado a los métodos basados en
+características diseñadas manualmente \cite{craik2019,roy2019}, y recientemente se han incorporado
+modelos de lenguaje de gran escala para acelerar la escritura \cite{hong2026}. La
+Figura~\ref{fig:historia} resume estos hitos.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  hito/.style={align=center, font=\footnotesize, text width=2.2cm},
+  punto/.style={circle, fill=red!60!black, inner sep=2pt}]
+  \draw[thick, -{Stealth[length=2mm]}] (0,0) -- (15.2,0);
+  \foreach \x/\anio/\texto/\pos in {
+      0.4/1929/{Berger: primer EEG en humanos \cite{berger1929}}/above,
+      2.1/1965/{Sutton et al.: descubrimiento de la P300 \cite{sutton1965}}/below,
+      3.8/1973/{Vidal: concepto de BCI \cite{vidal1973}}/above,
+      5.5/1988/{Farwell y Donchin: P300 Speller \cite{farwell1988}}/below,
+      7.2/1999/{Birbaumer et al.: deletreo con ELA \cite{birbaumer1999}}/above,
+      8.9/2004--06/{Competencias BCI II y III \cite{blankertz2004,blankertz2006}}/below,
+      10.6/2011/{CNN para detección de P300 \cite{cecotti2011}}/above,
+      12.3/2018/{EEGNet \cite{lawhern2018}}/below,
+      14.0/2026/{P300 Speller con LLM \cite{hong2026}}/above}{
+    \node[punto] at (\x,0) {};
+    \node[font=\footnotesize\bfseries, \pos=2pt] at (\x,0) {\anio};
+    \ifthenelse{\equal{\pos}{above}}
+      {\node[hito, above=0.45cm] at (\x,0) {\texto};}
+      {\node[hito, below=0.45cm] at (\x,0) {\texto};}
+  }
+\end{tikzpicture}
+\caption{Línea de tiempo de algunos hitos en el desarrollo de las BCI basadas en EEG. Elaboración
+propia.}
+\label{fig:historia}
+\end{figure}
+
+\subsection{Clasificación de las BCI}
+
+Las BCI pueden clasificarse bajo distintos criterios. Según la forma en que se registra la señal,
+se dividen en invasivas, que requieren colocar electrodos dentro o sobre el cerebro, y no
+invasivas, que registran la actividad desde el exterior \cite{nicolasalonso2012}. Según el origen
+de la actividad que aprovechan, se distinguen las exógenas, que dependen de una estimulación
+externa como la iluminación de una matriz de caracteres, y las endógenas, en las que el usuario
+modula voluntariamente su actividad cerebral sin estímulo alguno, por ejemplo al imaginar el
+movimiento de una mano \cite{nicolasalonso2012}. Así mismo, una BCI es síncrona cuando el sistema
+determina los intervalos en los que el usuario puede emitir un comando, y asíncrona cuando el
+usuario puede hacerlo en cualquier momento, lo que exige detectar también los periodos en los que
+no desea comunicarse \cite{wolpaw2012}. Bajo estos criterios, el P300 Speller es una BCI no
+invasiva, exógena y síncrona.
+
+\subsection{Paradigmas de control}
+
+Las BCI basadas en EEG utilizan principalmente cuatro tipos de señales, cuyas características se
+comparan en la Tabla~\ref{tab:paradigmas}. Las basadas en ritmos sensoriomotores aprovechan la
+atenuación de los ritmos mu y beta durante la imaginación motora; las de potenciales evocados
+visuales de estado estable (SSVEP) utilizan la respuesta de la corteza visual a estímulos que
+parpadean a una frecuencia fija; las de potenciales corticales lentos requieren que el usuario
+aprenda a desplazar voluntariamente la línea base de su EEG; y las basadas en la P300 aprovechan
+la respuesta del paradigma del evento raro descrita en la sección anterior
+\cite{nicolasalonso2012,wolpaw2002}. Una de las principales ventajas de este último enfoque es que
+la P300 es una respuesta natural ante los estímulos relevantes, por lo que prácticamente no
+requiere entrenamiento previo del usuario \cite{farwell1988,contreras2021}.
+
+\begin{table}[htbp]
+\centering
+\caption{Comparación de los principales paradigmas de control de BCI basadas en EEG}
+\label{tab:paradigmas}
+\small
+\begin{tabularx}{\textwidth}{L{2.2cm}L{2.6cm}L{2.5cm}YY}
+\toprule
+\textbf{Paradigma} & \textbf{Señal} & \textbf{Entrenamiento del usuario} & \textbf{Ventajas} & \textbf{Desventajas} \\
+\midrule
+Imaginación motora (SMR) & Ritmos mu y beta sobre corteza motora & Semanas & Endógena; no requiere estímulos externos. & Pocas clases; alta variabilidad entre usuarios. \\
+SSVEP & Respuesta a estímulos que parpadean a frecuencia fija & Mínimo & Alta tasa de transferencia; señal robusta. & Fatiga visual; requiere control de la mirada. \\
+Potenciales corticales lentos (SCP) & Desplazamientos lentos de la línea base & Semanas a meses & Funcionó con pacientes con ELA \cite{birbaumer1999}. & Muy lenta; entrenamiento prolongado. \\
+P300 & Componente P300 del paradigma \textit{oddball} & Mínimo & Muchas opciones (p.\,ej. 36 caracteres); respuesta natural. & Requiere repeticiones; sensible a la fatiga. \\
+\bottomrule
+\end{tabularx}
+\par\smallskip{\footnotesize Elaboración propia con información de \cite{nicolasalonso2012,wolpaw2002,lotte2018}.}
+\end{table}
+
+\subsection{Calibración y variabilidad entre sujetos}
+
+La forma de onda de la P300 varía considerablemente de una persona a otra e incluso entre sesiones
+de una misma persona, por lo que la mayoría de los sistemas requiere una etapa de calibración en la
+que el usuario deletrea un texto conocido para entrenar un clasificador específico para él
+\cite{wolpaw2012}. Esta dependencia ha motivado el estudio de esquemas de clasificación entre
+sujetos, en los que el modelo se entrena con datos de otras personas; en este escenario,
+Alvarado-González et al. reportaron que el desempeño de las redes convolucionales disminuye
+respecto al entrenamiento intrasujeto, aunque la diferencia no es particularmente grande
+\cite{alvarado2021}. Por otra parte, no todas las personas logran controlar una BCI con la misma
+facilidad: en un estudio con 100 participantes, Guger et al. encontraron que el 72.8\% de los 81
+sujetos que utilizaron el paradigma de filas y columnas deletreó con una exactitud del 100\%
+empleando apenas alrededor de cinco minutos de datos de calibración, mientras que con el
+paradigma de carácter único esta proporción bajó a 55.3\% \cite{guger2009}.

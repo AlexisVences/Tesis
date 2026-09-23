@@ -1,0 +1,178 @@
+% ---------------------------------------------------------------------
+% 2.9 Redes neuronales artificiales y aprendizaje profundo
+% ---------------------------------------------------------------------
+\section[REDES NEURONALES ARTIFICIALES Y APRENDIZAJE PROFUNDO]{Redes neuronales artificiales y
+aprendizaje profundo}
+
+\subsection{La neurona artificial}
+
+Las redes neuronales artificiales son modelos inspirados en el sistema nervioso, en los que las
+unidades de cómputo, llamadas neuronas, se conectan entre sí mediante pesos que cumplen un papel
+análogo al de la fuerza de las conexiones sinápticas en los organismos biológicos
+\cite{aggarwal2018}. Cada neurona recibe un vector de entradas $\mathbf{x} = (x_1, \dots, x_n)$,
+las multiplica por sus pesos $w_i$, suma el resultado junto con un sesgo $b$ y aplica una función
+de activación $\varphi$ no lineal \cite{delbrio2002}:
+\begin{equation}
+y = \varphi\!\left(\sum_{i=1}^{n} w_i x_i + b\right) = \varphi\!\left(\mathbf{w}^{\top}\mathbf{x} + b\right).
+\label{eq:neurona}
+\end{equation}
+La Figura~\ref{fig:neurona} muestra la correspondencia entre este modelo y la neurona biológica
+descrita en la Sección~\ref{sec:neuro}: las entradas desempeñan el papel de las dendritas, la suma ponderada
+el del soma y la salida el del axón. Al organizar muchas de estas unidades en capas, de manera que
+la salida de una capa sea la entrada de la siguiente, se obtiene el perceptrón multicapa, en el que
+las capas intermedias se denominan ocultas; al número de capas se le conoce como profundidad de la
+red, y de ahí proviene el término aprendizaje profundo \cite{goodfellow2016}.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  ent/.style={circle, draw, minimum size=0.75cm, font=\small},
+  flecha/.style={-{Stealth[length=2mm]}, thick}]
+  \node[ent] (x1) at (0,1.6) {$x_1$};
+  \node[ent] (x2) at (0,0.5) {$x_2$};
+  \node at (0,-0.35) {$\vdots$};
+  \node[ent] (xn) at (0,-1.2) {$x_n$};
+  \node[ent] (b) at (1.9,2.1) {$1$};
+  \node[circle, draw, thick, minimum size=1.2cm, fill=gray!10] (sum) at (3.6,0.3) {$\Sigma$};
+  \node[rectangle, draw, thick, minimum size=1.0cm, fill=red!8] (act) at (5.6,0.3) {$\varphi(\cdot)$};
+  \node (y) at (7.4,0.3) {$y$};
+  \draw[flecha] (x1) -- node[above, font=\footnotesize, sloped] {$w_1$} (sum);
+  \draw[flecha] (x2) -- node[above, font=\footnotesize, sloped] {$w_2$} (sum);
+  \draw[flecha] (xn) -- node[below, font=\footnotesize, sloped] {$w_n$} (sum);
+  \draw[flecha] (b) -- node[above right, font=\footnotesize] {$b$} (sum);
+  \draw[flecha] (sum) -- node[above, font=\footnotesize] {$z$} (act);
+  \draw[flecha] (act) -- (y);
+  \node[font=\footnotesize, align=center, text=gray] at (0,-2.2) {Entradas\\(dendritas)};
+  \node[font=\footnotesize, align=center, text=gray] at (3.6,-1.25) {Suma ponderada\\(soma)};
+  \node[font=\footnotesize, align=center, text=gray] at (5.6,-1.25) {Activación};
+  \node[font=\footnotesize, align=center, text=gray] at (7.4,-0.5) {Salida\\(axón)};
+\end{tikzpicture}
+\caption{Modelo de la neurona artificial y su analogía con la neurona biológica. Elaboración
+propia con base en \cite{aggarwal2018}.}
+\label{fig:neurona}
+\end{figure}
+
+\subsection{Funciones de activación}
+
+Sin la función de activación, una red de cualquier profundidad sería equivalente a una sola
+transformación lineal, por lo que esta es la que permite a la red representar relaciones no
+lineales \cite{goodfellow2016}. Las funciones sigmoide y tangente hiperbólica fueron las más
+utilizadas en las primeras redes, y siguen empleándose en la capa de salida de los clasificadores
+binarios y en arquitecturas para P300 como la de Cecotti y Gräser o SepConv1D
+\cite{cecotti2011,alvarado2021}; sin embargo, ambas se saturan para valores grandes de su
+entrada, lo que hace que sus gradientes tiendan a cero y dificulta el entrenamiento de redes
+profundas. La función ReLU resolvió en gran medida este problema y hoy es la opción por defecto en
+las capas ocultas \cite{goodfellow2016}, mientras que la ELU, utilizada en EEGNet, permite valores
+negativos suaves que acercan la media de las activaciones a cero \cite{lawhern2018}. La
+Tabla~\ref{tab:activaciones} presenta su definición y la Figura~\ref{fig:activaciones} su forma.
+
+\begin{table}[htbp]
+\centering
+\caption{Funciones de activación más utilizadas}
+\label{tab:activaciones}
+\small
+\begin{tabularx}{\textwidth}{L{2.6cm}L{4.3cm}L{1.6cm}Y}
+\toprule
+\textbf{Función} & \textbf{Definición} & \textbf{Rango} & \textbf{Uso típico} \\
+\midrule
+Sigmoide & $\sigma(z) = \dfrac{1}{1+e^{-z}}$ & $(0,1)$ & Salida de clasificación binaria (probabilidad de P300). \\[8pt]
+Tangente hiperbólica & $\tanh(z) = \dfrac{e^{z}-e^{-z}}{e^{z}+e^{-z}}$ & $(-1,1)$ & Capas ocultas en \cite{cecotti2011,alvarado2021}; redes recurrentes. \\[8pt]
+ReLU & $\max(0,z)$ & $[0,\infty)$ & Capas ocultas de redes profundas. \\[4pt]
+ELU & $z$ si $z>0$; $\alpha(e^{z}-1)$ si $z\le0$ & $(-\alpha,\infty)$ & Capas ocultas de EEGNet \cite{lawhern2018}. \\[4pt]
+Softmax & $\dfrac{e^{z_k}}{\sum_{j} e^{z_j}}$ & $(0,1)$, suma 1 & Salida de clasificación multiclase. \\
+\bottomrule
+\end{tabularx}
+\par\smallskip{\footnotesize Elaboración propia con información de \cite{goodfellow2016,aggarwal2018}.}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{02-marco-referencial/funciones_activacion.pdf}
+\caption{Gráfica de las funciones de activación sigmoide, tangente hiperbólica, ReLU y ELU.
+Elaboración propia.}
+\label{fig:activaciones}
+\end{figure}
+
+\subsection{Función de pérdida}
+
+El entrenamiento de una red consiste en ajustar sus pesos para minimizar una función de pérdida
+que mide la diferencia entre la salida de la red y la etiqueta esperada. Para la clasificación
+binaria, con etiquetas $y_i\in\{0,1\}$ y salidas $\hat{y}_i\in(0,1)$, se utiliza la entropía
+cruzada binaria \cite{goodfellow2016}:
+\begin{equation}
+\mathcal{L}_{\text{BCE}} = -\frac{1}{M}\sum_{i=1}^{M}\Big[\,y_i\log\hat{y}_i + (1-y_i)\log(1-\hat{y}_i)\Big].
+\label{eq:bce}
+\end{equation}
+Debido al desbalance de las épocas del P300 Speller, en el que por cada época positiva hay cinco
+negativas, es común ponderar el primer término con un factor $\alpha>1$ para que los errores sobre
+la clase minoritaria tengan mayor peso, o bien emplear la pérdida focal, que multiplica cada
+término por $(1-p_t)^{\gamma}$, donde $p_t$ es la probabilidad asignada a la clase correcta, para
+reducir la contribución de los ejemplos que el modelo ya clasifica con facilidad \cite{lin2017}.
+
+\subsection{Descenso de gradiente y retropropagación}
+
+Para minimizar la pérdida se utiliza el método de descenso de gradiente, que actualiza los pesos
+en la dirección opuesta al gradiente de la función de pérdida,
+\begin{equation}
+\mathbf{w}^{(t+1)} = \mathbf{w}^{(t)} - \eta\, \nabla_{\mathbf{w}}\mathcal{L}\big(\mathbf{w}^{(t)}\big),
+\label{eq:gradiente}
+\end{equation}
+donde $\eta$ es la tasa de aprendizaje; si es muy pequeña el entrenamiento resulta lento, y si es
+muy grande los pesos oscilan alrededor del mínimo sin alcanzarlo \cite{goodfellow2016}. El cálculo
+eficiente de este gradiente en redes de varias capas se realiza mediante el algoritmo de
+retropropagación, popularizado por Rumelhart, Hinton y Williams, que propaga el error desde la capa
+de salida hacia las capas anteriores aplicando la regla de la cadena \cite{rumelhart1986}. En la
+práctica el gradiente se estima sobre pequeños subconjuntos de datos llamados lotes, y en lugar de
+una tasa fija se usan optimizadores adaptativos como Adam, que ajusta la tasa de aprendizaje de
+cada parámetro a partir de estimaciones del primer y segundo momento de sus gradientes
+\cite{kingma2015}, y que fue el utilizado en la comparación de arquitecturas para P300 de
+Alvarado-González et al. \cite{alvarado2021}.
+
+\subsection{Regularización}
+
+Dado que las redes profundas tienen una gran cantidad de parámetros y los conjuntos de datos de EEG
+son relativamente pequeños, es indispensable emplear técnicas de regularización para evitar el
+sobreajuste. Entre las más utilizadas se encuentran el \textit{dropout}, que desactiva
+aleatoriamente una fracción de las neuronas en cada iteración de entrenamiento
+\cite{srivastava2014}, la normalización por lotes, que normaliza las activaciones de cada capa y
+estabiliza el entrenamiento \cite{ioffe2015}, y la parada temprana, que detiene el entrenamiento
+cuando la pérdida de validación deja de mejorar \cite{goodfellow2016}. A estas se suma la elección
+de una inicialización adecuada de los pesos, como la propuesta por Glorot y Bengio, que mantiene la
+varianza de las activaciones similar entre capas \cite{glorot2010}. La Tabla~\ref{tab:regularizacion}
+resume estas técnicas junto con su uso en arquitecturas para la detección de la P300.
+
+\begin{table}[htbp]
+\centering
+\caption{Técnicas de regularización y estabilización del entrenamiento}
+\label{tab:regularizacion}
+\small
+\begin{tabularx}{\textwidth}{L{3.2cm}YY}
+\toprule
+\textbf{Técnica} & \textbf{Funcionamiento} & \textbf{Uso en P300} \\
+\midrule
+\textit{Dropout} \cite{srivastava2014} & Anula aleatoriamente una fracción $p$ de las activaciones durante el entrenamiento. & EEGNet y BN3 \cite{lawhern2018,liu2018}. \\
+Normalización por lotes \cite{ioffe2015} & Normaliza la media y varianza de las activaciones de cada lote y las reescala con parámetros aprendidos. & BN3, EEGNet \cite{liu2018,lawhern2018}. \\
+Regularización $L_2$ & Agrega a la pérdida un término proporcional a $\lVert\mathbf{w}\rVert^2$. & Modelos lineales y redes pequeñas. \\
+Parada temprana & Detiene el entrenamiento cuando la pérdida de validación deja de mejorar durante cierto número de épocas. & 50 épocas de paciencia en \cite{alvarado2021}. \\
+Inicialización de Glorot \cite{glorot2010} & Inicializa los pesos con una varianza dependiente del número de entradas y salidas de la capa. & Mayoría de las arquitecturas evaluadas en \cite{alvarado2021}. \\
+\bottomrule
+\end{tabularx}
+\par\smallskip{\footnotesize Elaboración propia.}
+\end{table}
+
+\subsection{Aprendizaje profundo aplicado al EEG}
+
+El aprendizaje profundo permite que los modelos aprendan representaciones de los datos con
+múltiples niveles de abstracción directamente a partir de la señal, sin depender de
+características diseñadas a mano \cite{lecun2015}. De acuerdo con Craik et al., un conjunto de
+datos de EEG consiste, en su nivel más básico, en una matriz de dos dimensiones, canales por tiempo,
+cuya estructura lo hace adecuado para este tipo de técnicas; en su revisión de 90 estudios
+encontraron que las redes convolucionales, las recurrentes y las redes de creencia profunda
+superaban en precisión a los autocodificadores apilados y a los perceptrones multicapa, y que para
+las tareas de ERP se habían utilizado principalmente redes convolucionales, redes de creencia
+profunda y autocodificadores \cite{craik2019}. Por su parte, la revisión sistemática de Roy et al.
+señala que alrededor del 40\% de los estudios de aprendizaje profundo en EEG emplean redes
+convolucionales \cite{roy2019}, mientras que Lotte et al. advierten que, en el momento de su revisión, las redes
+profundas aún no mostraban una mejora contundente sobre los mejores métodos clásicos de BCI, en
+buena medida por la poca cantidad de datos de entrenamiento con que suele contarse
+\cite{lotte2018}.

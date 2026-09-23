@@ -1,0 +1,166 @@
+% ---------------------------------------------------------------------
+% 2.3 Electroencefalografía
+% ---------------------------------------------------------------------
+\section[ELECTROENCEFALOGRAFÍA]{Electroencefalografía}
+\label{sec:eeg}
+
+El electroencefalograma (EEG) se define como el registro de la actividad eléctrica del cerebro
+tomado por medio de electrodos colocados en la superficie de la cabeza, mientras que la
+electroencefalografía corresponde a la disciplina que se encarga de registrar e interpretar dichos
+registros \cite{kane2017}. El primer registro de este tipo en humanos fue reportado en 1929 por el
+psiquiatra alemán Hans Berger, quien además acuñó el término electroencefalograma y describió el
+ritmo que hoy se conoce como alfa \cite{berger1929}.
+
+\subsection{Modalidades de registro de la actividad cerebral}
+
+La electroencefalografía no es la única forma de registrar la actividad del cerebro. Las técnicas
+disponibles se diferencian principalmente por su grado de invasividad y por su resolución
+temporal y espacial: en un extremo se encuentran los registros intracorticales, que requieren
+implantar microelectrodos dentro del tejido cerebral, y la electrocorticografía (ECoG), que coloca
+los electrodos sobre la superficie de la corteza mediante cirugía; en el otro, técnicas no
+invasivas como el EEG, la magnetoencefalografía (MEG), la resonancia magnética funcional (fMRI) o la
+espectroscopía funcional de infrarrojo cercano (fNIRS) \cite{nicolasalonso2012}. Como se discute
+en el trabajo de Felton et al. \cite{felton2007}, el EEG presenta una menor resolución espacial y
+una relación señal-ruido más baja que la ECoG, pero su carácter no invasivo, su bajo costo y su
+portabilidad lo convierten en la alternativa más viable para aplicaciones fuera del quirófano. La
+Tabla~\ref{tab:modalidades} resume estas diferencias.
+
+\begin{table}[htbp]
+\centering
+\caption{Comparación de modalidades de registro de la actividad cerebral}
+\label{tab:modalidades}
+\small
+\begin{tabularx}{\textwidth}{L{2.2cm}L{1.9cm}L{2.1cm}L{2.1cm}Y}
+\toprule
+\textbf{Modalidad} & \textbf{Tipo} & \textbf{Res. temporal} & \textbf{Res. espacial} & \textbf{Observaciones} \\
+\midrule
+EEG & No invasiva & Milisegundos & Centímetros & Bajo costo y portátil; señal atenuada por cráneo y cuero cabelludo. \\
+ECoG & Invasiva & Milisegundos & Milímetros & Mejor relación señal-ruido; requiere cirugía \cite{brunner2011}. \\
+Intracortical & Invasiva & Sub-milisegundo & Micrómetros & Registra neuronas individuales; riesgo quirúrgico y degradación del implante. \\
+MEG & No invasiva & Milisegundos & Milímetros & Requiere sala blindada y equipo de alto costo. \\
+fMRI & No invasiva & Segundos & Milímetros & Mide la respuesta hemodinámica; no es portátil. \\
+fNIRS & No invasiva & Segundos & Centímetros & Portátil, pero con respuesta hemodinámica lenta. \\
+\bottomrule
+\end{tabularx}
+\par\smallskip{\footnotesize Elaboración propia con información de \cite{nicolasalonso2012,wolpaw2012}.}
+\end{table}
+
+\subsection{Adquisición de la señal}
+
+Los potenciales registrados en el cuero cabelludo tienen amplitudes que van de unos cuantos
+microvolts hasta alrededor de 100~$\mu$V, por lo que deben amplificarse considerablemente antes
+de digitalizarse \cite{sanei2007}. Los electrodos más utilizados son discos de plata recubiertos de
+cloruro de plata (Ag/AgCl) que se colocan con un gel conductor para reducir la impedancia de
+contacto, que idealmente debe mantenerse por debajo de 5~k$\Omega$; como alternativa existen los
+electrodos secos, que no requieren gel y reducen el tiempo de preparación, aunque a costa de una
+impedancia mayor y de una señal más susceptible a artefactos de movimiento
+\cite{niedermeyer2005}. En este sentido, el trabajo de Contreras \cite{contreras2021} utilizó
+electrodos secos de un sistema de bajo costo con cuatro canales, mientras que las bases de datos
+públicas del paradigma P300, como la empleada en este trabajo, fueron adquiridas con equipos de
+grado de investigación de 64 canales \cite{blankertz2006}.
+
+Cada canal de EEG mide en realidad una diferencia de potencial, por lo que es necesario definir
+contra qué punto se mide. En los montajes unipolares o referenciales cada electrodo activo se
+compara contra un electrodo de referencia común, colocado idealmente en un sitio con poca
+actividad cerebral, como el lóbulo de la oreja o las mastoides; en los montajes bipolares, en
+cambio, se registra la diferencia entre pares de electrodos vecinos \cite{ganong2010}. Una tercera
+alternativa, muy utilizada en el procesamiento digital, es la referencia promedio común (CAR), en
+la que a cada canal se le resta el promedio de todos los canales en cada instante de tiempo
+\cite{luck2014}.
+
+\subsection{Sistema internacional 10-20}
+
+Para que los registros sean comparables entre sujetos y laboratorios, la posición de los
+electrodos se estandariza mediante el sistema internacional 10-20, propuesto originalmente por
+Jasper \cite{jasper1958} y actualizado por la Federación Internacional de Neurofisiología Clínica
+(IFCN) \cite{seeck2017}. Su nombre se debe a que las posiciones se obtienen dividiendo las
+distancias entre cuatro puntos de referencia anatómicos (el nasión, el inión y los dos puntos
+preauriculares) en segmentos del 10\% y del 20\% de su longitud total. Cada electrodo se nombra con
+una o dos letras que indican la región que cubre, F para frontal, C para central, P para
+parietal, O para occipital, T para temporal y Fp para frontopolar, seguidas de un número impar si
+se encuentra en el hemisferio izquierdo, par si se encuentra en el derecho, o de la letra
+\textit{z} si se ubica sobre la línea media \cite{seeck2017}. La Figura~\ref{fig:1020} muestra la
+distribución de los 21 electrodos del sistema, resaltando los de la línea media (Fz, Cz, Pz y Oz),
+que fueron los utilizados en el trabajo de Contreras \cite{contreras2021}. Las bases de datos del
+paradigma P300 suelen utilizar la extensión 10-10, que agrega posiciones intermedias hasta
+completar 64 o más canales \cite{blankertz2006}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.52\textwidth]{02-marco-referencial/sistema_10_20.pdf}
+\caption{Posiciones de los electrodos del sistema internacional 10-20 (vista superior). Se
+resaltan los electrodos de la línea media Fz, Cz, Pz y Oz. Elaboración propia con base en
+\cite{seeck2017}.}
+\label{fig:1020}
+\end{figure}
+
+\subsection{Ritmos cerebrales}
+
+Un ritmo cerebral se define como la actividad del EEG formada por ondas de un periodo
+aproximadamente constante \cite{kane2017}, y de acuerdo con su frecuencia se clasifica en las
+bandas delta, theta, alfa, beta y gamma. Cada banda se asocia con estados de actividad distintos:
+el ritmo alfa, por ejemplo, predomina en la región occipital cuando la persona está despierta, en
+reposo y con los ojos cerrados, y se sustituye por actividad beta de menor amplitud cuando la
+atención se dirige a una tarea, fenómeno conocido como bloqueo alfa \cite{guyton2016,ganong2010}.
+A estas bandas se suma el ritmo mu, de frecuencia semejante a la de alfa pero localizado sobre la
+corteza sensoriomotora, que se atenúa con el movimiento o con la sola imaginación de este y que es
+la base de las BCI de imaginación motora \cite{kane2017}. La Tabla~\ref{tab:ritmos} resume sus
+características y la Figura~\ref{fig:ritmos} ilustra su forma de onda.
+
+\begin{table}[htbp]
+\centering
+\caption{Bandas de frecuencia del EEG}
+\label{tab:ritmos}
+\small
+\begin{tabularx}{\textwidth}{L{1.7cm}L{1.85cm}L{1.9cm}L{2.55cm}Y}
+\toprule
+\textbf{Ritmo} & \textbf{Frecuencia} & \textbf{Amplitud} & \textbf{Región} & \textbf{Estado asociado} \\
+\midrule
+Delta ($\delta$) & 0.5--4 Hz & 20--200 $\mu$V & Variable & Sueño profundo, lactancia; en vigilia puede indicar patología. \\
+Theta ($\theta$) & 4--8 Hz & 10--50 $\mu$V & Parietal, temporal & Somnolencia, niñez, algunos estados de estrés emocional. \\
+Alfa ($\alpha$) & 8--13 Hz & 50--100 $\mu$V & Occipital & Vigilia relajada con ojos cerrados; se bloquea al atender. \\
+Mu ($\mu$) & 7--12 Hz & 20--60 $\mu$V & Sensoriomotora & Reposo motor; se atenúa con el movimiento o su imaginación. \\
+Beta ($\beta$) & 13--30 Hz & $<$30 $\mu$V & Frontal, central & Alerta, concentración y actividad mental. \\
+Gamma ($\gamma$) & $>$30 Hz & $<$10 $\mu$V & Difusa & Procesamiento sensorial y atención focalizada. \\
+\bottomrule
+\end{tabularx}
+\par\smallskip{\footnotesize Elaboración propia con información de \cite{guyton2016,ganong2010,kane2017}.}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\textwidth]{02-marco-referencial/ritmos_eeg.pdf}
+\caption{Forma de onda ilustrativa de los principales ritmos del EEG. Elaboración propia.}
+\label{fig:ritmos}
+\end{figure}
+
+\subsection{Artefactos en la señal de EEG}
+
+Debido a su baja amplitud, el EEG es muy susceptible a señales que no provienen de la actividad
+cerebral, conocidas como artefactos. Los más frecuentes son de origen fisiológico, como los
+parpadeos y movimientos oculares, cuya amplitud puede ser varias veces mayor que la del propio
+EEG, la actividad eléctrica de los músculos de la cara y el cuello o la actividad cardiaca; otros
+son de origen técnico, como la interferencia de la red eléctrica, que en México se presenta a
+60~Hz, o los cambios de impedancia de los electrodos \cite{sanei2007,niedermeyer2005}. La
+Tabla~\ref{tab:artefactos} presenta los principales artefactos junto con las técnicas más comunes
+para mitigarlos, algunas de las cuales se retoman en la Sección~\ref{sec:pds}.
+
+\begin{table}[htbp]
+\centering
+\caption{Artefactos comunes en el registro de EEG}
+\label{tab:artefactos}
+\small
+\begin{tabularx}{\textwidth}{L{2.8cm}L{2.3cm}L{2.4cm}Y}
+\toprule
+\textbf{Artefacto} & \textbf{Origen} & \textbf{Banda afectada} & \textbf{Mitigación} \\
+\midrule
+Parpadeo y movimiento ocular (EOG) & Fisiológico & $<$4 Hz & Filtrado pasa altas, regresión con canales EOG, ICA. \\
+Actividad muscular (EMG) & Fisiológico & $>$20 Hz & Filtrado pasa bajas, instrucciones al sujeto, ICA. \\
+Actividad cardiaca (ECG) & Fisiológico & 1--2 Hz y armónicos & Referencia adecuada, ICA. \\
+Sudoración y deriva de línea base & Fisiológico / electrodo & $<$0.5 Hz & Filtrado pasa altas, corrección de línea base. \\
+Interferencia de la red eléctrica & Técnico & 60 Hz (México) & Filtro notch, blindaje, buena impedancia. \\
+Movimiento o mal contacto del electrodo & Técnico & Banda ancha & Rechazo de épocas por umbral de amplitud. \\
+\bottomrule
+\end{tabularx}
+\par\smallskip{\footnotesize Elaboración propia con información de \cite{sanei2007,niedermeyer2005,jung2000}.}
+\end{table}

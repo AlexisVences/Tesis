@@ -1,0 +1,64 @@
+% ---------------------------------------------------------------------
+% 2.2 Fundamentos neurofisiológicos
+% ---------------------------------------------------------------------
+\section[FUNDAMENTOS NEUROFISIOLÓGICOS]{Fundamentos neurofisiológicos}
+\label{sec:neuro}
+
+Para entender de dónde proviene la señal que se busca clasificar es necesario revisar algunos
+conceptos de la fisiología del sistema nervioso, en particular la forma en que las neuronas generan
+y transmiten actividad eléctrica y la organización de la corteza cerebral, que es la región desde
+la cual se origina la mayor parte de la actividad registrada en la superficie de la cabeza.
+
+\subsection{La neurona y el impulso nervioso}
+
+La neurona es la unidad funcional del sistema nervioso y se compone de un cuerpo celular o soma,
+de un conjunto de prolongaciones cortas llamadas dendritas, que reciben las señales de otras
+células, y de una prolongación larga llamada axón, que conduce la señal hacia las neuronas
+siguientes. La membrana neuronal mantiene en reposo una diferencia de potencial entre el interior y
+el exterior de la célula, cercana a $-70$~mV, gracias a la distribución desigual de iones de sodio y
+potasio; cuando un estímulo despolariza la membrana por encima de un umbral, se abren canales
+iónicos dependientes de voltaje y se genera un potencial de acción que se propaga a lo largo del
+axón \cite{guyton2016}. Al llegar a la terminal axónica, la señal se transmite a la neurona
+siguiente mediante la sinapsis química, en la que la liberación de neurotransmisores produce en la
+célula receptora potenciales postsinápticos excitadores o inhibidores, cuya duración, de decenas
+de milisegundos, es considerablemente mayor que la de un potencial de acción, que dura
+aproximadamente un milisegundo \cite{ganong2010}.
+
+\subsection{La corteza cerebral y sus lóbulos}
+
+El cerebro es la porción más voluminosa del encéfalo y su capa más externa, la corteza cerebral, es
+la responsable de funciones como la percepción, el lenguaje, la memoria y el control voluntario del
+movimiento. Cada hemisferio se divide en cuatro lóbulos principales, cuyo nombre corresponde al
+hueso del cráneo que los cubre: el lóbulo frontal, relacionado con la planeación, la toma de
+decisiones y el control motor; el lóbulo parietal, que integra la información somatosensorial y
+participa en los procesos de atención espacial; el lóbulo temporal, asociado a la audición y a la
+memoria; y el lóbulo occipital, que contiene la corteza visual primaria \cite{snell2014}. Esta
+división resulta relevante para el presente trabajo porque la nomenclatura de los electrodos del
+sistema internacional 10-20, descrita más adelante, toma precisamente la inicial de cada lóbulo, y
+porque la componente P300 se registra con mayor amplitud sobre las regiones centro-parietales de la
+línea media \cite{polich2007}.
+
+\subsection{Origen de la actividad eléctrica medible}
+
+La descarga de una sola neurona no puede detectarse desde la superficie de la cabeza, pues para
+que un sensor colocado sobre el cuero cabelludo registre actividad es necesario que miles o incluso
+millones de neuronas se activen de forma sincrónica \cite{guyton2016}. La mayor parte de esta
+señal proviene de la suma de los potenciales postsinápticos de las neuronas piramidales de la
+corteza, que se encuentran alineadas de manera perpendicular a la superficie cortical y cuya
+actividad, al ocurrir en sincronía, genera dipolos de corriente que se suman en lugar de
+cancelarse \cite{niedermeyer2005}. Por esta razón, la intensidad de las ondas registradas depende
+más del número de neuronas que disparan de manera sincronizada que del nivel total de actividad
+eléctrica del encéfalo, y señales potentes pero asincrónicas pueden anularse entre sí debido a su
+polaridad opuesta \cite{guyton2016}.
+
+\subsection{Atención y procesamiento de estímulos visuales}
+
+El paradigma que se utiliza en este trabajo aprovecha la manera en que el cerebro responde a los
+estímulos que resultan relevantes para una tarea. Cuando una persona observa una secuencia de
+estímulos visuales y tiene que identificar uno en particular, la información sensorial pasa por una
+etapa inicial de procesamiento en la corteza visual y posteriormente por un proceso de comparación,
+dirigido por la atención, contra la representación del contexto que se mantiene en la memoria de
+trabajo \cite{polich2007}. Si el estímulo coincide con aquel al que la persona presta atención, se
+produce una actualización de dicha representación que se refleja en el EEG como una deflexión
+positiva alrededor de 300~ms después del estímulo, fenómeno que da origen a la componente P300
+descrita en la Sección~\ref{sec:erp}.

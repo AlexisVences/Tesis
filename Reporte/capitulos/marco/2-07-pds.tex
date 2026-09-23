@@ -1,0 +1,201 @@
+% ---------------------------------------------------------------------
+% 2.7 Procesamiento digital de señales biomédicas
+% ---------------------------------------------------------------------
+\section[PROCESAMIENTO DIGITAL DE SEÑALES BIOMÉDICAS]{Procesamiento Digital de Señales
+Biomédicas}
+\label{sec:pds}
+
+El preprocesamiento de las señales EEG constituye una etapa determinante para el desempeño de
+los modelos de clasificación, dado que estas señales presentan una relación señal-ruido baja y
+son susceptibles a artefactos de origen fisiológico y ambiental. Para atender esta problemática
+se emplean técnicas de filtrado pasa banda, orientadas a delimitar el rango de frecuencias
+asociado a la componente P300, así como la segmentación de la señal continua en ventanas
+temporales alrededor de cada estímulo y la normalización de las mismas, cuyos fundamentos se
+describen a lo largo de esta sección.
+
+\subsection{Muestreo y teorema de Nyquist}
+
+Las señales de origen fisiológico son de naturaleza analógica, es decir, están definidas en todo
+instante de tiempo y su amplitud puede tomar cualquier valor dentro de su rango dinámico; para
+procesarlas en una computadora es necesario muestrearlas a intervalos regulares
+$T_s = 1/f_s$, obteniendo la secuencia discreta $x(n) = x_a(nT_s)$ \cite{proakis2007}. El teorema
+de muestreo establece que una señal cuyo contenido en frecuencia está limitado a $f_{\max}$ puede
+reconstruirse sin pérdida a partir de sus muestras siempre que
+\begin{equation}
+f_s \geq 2 f_{\max},
+\label{eq:nyquist}
+\end{equation}
+y si esta condición no se cumple, las componentes de frecuencia superiores a $f_s/2$, conocida
+como frecuencia de Nyquist, se reflejan sobre las frecuencias bajas en un fenómeno llamado
+\textit{aliasing} \cite{oppenheim2010}. La base de datos utilizada en este trabajo fue muestreada a
+240~Hz, por lo que su frecuencia de Nyquist de 120~Hz está muy por encima de la banda de interés
+de la P300, que se concentra por debajo de 20~Hz.
+
+\subsection{Transformada de Fourier y densidad espectral de potencia}
+
+La transformada discreta de Fourier (DFT) permite representar una secuencia de $N$ muestras como
+una suma de componentes sinusoidales, y se define como
+\begin{equation}
+X(k) = \sum_{n=0}^{N-1} x(n)\, e^{-j 2\pi k n / N}, \qquad k = 0, 1, \dots, N-1,
+\label{eq:dft}
+\end{equation}
+donde cada coeficiente $X(k)$ corresponde a la frecuencia $f_k = k f_s / N$; su cálculo directo
+requiere del orden de $N^2$ operaciones, mientras que el algoritmo de la transformada rápida de
+Fourier (FFT) lo reduce a $N\log_2 N$ \cite{proakis2007}. A partir de ella se estima la densidad
+espectral de potencia (PSD), que describe cómo se distribuye la potencia de la señal en función
+de la frecuencia. En el caso del EEG suele emplearse el método de Welch, que divide la señal en
+segmentos traslapados, calcula el periodograma de cada uno y los promedia, reduciendo así la
+varianza de la estimación a costa de una menor resolución en frecuencia \cite{oppenheim2010}.
+Contreras utilizó este análisis para identificar que la información útil para detectar la P300 en
+sus registros se encontraba entre 1 y 25~Hz \cite{contreras2021}; la Figura~\ref{fig:psd} muestra
+una PSD típica en la que se distinguen el pico del ritmo alfa y la interferencia de la red
+eléctrica.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.8\textwidth]{02-marco-referencial/psd_welch.pdf}
+\caption{Densidad espectral de potencia estimada con el método de Welch para una señal de EEG
+sintética. Elaboración propia.}
+\label{fig:psd}
+\end{figure}
+
+\subsection{Convolución y sistemas lineales}
+
+Un sistema lineal e invariante en el tiempo queda completamente descrito por su respuesta al
+impulso $h(n)$, y su salida ante cualquier entrada $x(n)$ se obtiene mediante la operación de
+convolución \cite{proakis2007}:
+\begin{equation}
+y(n) = (x * h)(n) = \sum_{k=-\infty}^{\infty} x(k)\, h(n-k).
+\label{eq:convolucion}
+\end{equation}
+Esta operación es la base de los filtros digitales que se describen a continuación y, como se
+verá en la Sección~\ref{sec:cnn}, también de las capas de las redes neuronales convolucionales,
+en las que los coeficientes de $h(n)$ ya no se diseñan manualmente sino que se aprenden a partir
+de los datos \cite{goodfellow2016}.
+
+\subsection{Filtros digitales}
+
+Los filtros digitales se clasifican en dos grandes familias según la duración de su respuesta al
+impulso. Los filtros de respuesta finita al impulso (FIR) calculan la salida únicamente a partir de
+las muestras de entrada, son siempre estables y pueden diseñarse con fase lineal, mientras que los
+de respuesta infinita al impulso (IIR) utilizan además salidas anteriores, lo que les permite
+lograr una transición más abrupta con un orden mucho menor, aunque con una respuesta de fase no
+lineal \cite{proakis2007,oppenheim2010}. Entre los filtros IIR, el de Butterworth es uno de los más
+utilizados en EEG porque su respuesta en magnitud es máximamente plana en la banda de paso
+\cite{oppenheim2010}. De acuerdo con la banda que dejan pasar, los filtros pueden ser pasa bajas,
+pasa altas, pasa banda o rechaza banda; un caso particular de estos últimos es el filtro
+\textit{notch}, diseñado para eliminar una sola frecuencia como la de la red eléctrica. La
+Tabla~\ref{tab:filtros} resume sus características y la Figura~\ref{fig:filtros} muestra la
+respuesta en frecuencia de un filtro pasa banda entre 0.1 y 20~Hz, como el aplicado en el trabajo
+preliminar, y de un filtro \textit{notch} en 60~Hz.
+
+\begin{table}[htbp]
+\centering
+\caption{Comparación de filtros digitales FIR e IIR}
+\label{tab:filtros}
+\small
+\begin{tabularx}{\textwidth}{L{3.3cm}YY}
+\toprule
+\textbf{Característica} & \textbf{FIR} & \textbf{IIR (p.\,ej. Butterworth)} \\
+\midrule
+Ecuación en diferencias & $y(n)=\sum_{k=0}^{M} b_k\,x(n-k)$ & $y(n)=\sum_{k=0}^{M} b_k\,x(n-k)-\sum_{k=1}^{N} a_k\,y(n-k)$ \\
+Estabilidad & Siempre estable. & Depende de la ubicación de los polos. \\
+Fase & Puede ser lineal (retardo constante). & No lineal; se compensa con filtrado hacia adelante y hacia atrás. \\
+Orden necesario & Alto para transiciones abruptas. & Bajo para la misma selectividad. \\
+Costo computacional & Mayor. & Menor. \\
+\bottomrule
+\end{tabularx}
+\par\smallskip{\footnotesize Elaboración propia con información de \cite{proakis2007,oppenheim2010}.}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{02-marco-referencial/respuesta_filtros.pdf}
+\caption{Respuesta en magnitud de (a) un filtro pasa banda Butterworth de cuarto orden entre 0.1 y
+20~Hz y (b) un filtro \textit{notch} en 60~Hz, para $f_s = 240$~Hz. Elaboración propia.}
+\label{fig:filtros}
+\end{figure}
+
+\subsection{Filtrado de fase cero y remuestreo}
+
+La fase no lineal de los filtros IIR provoca que distintas frecuencias se retrasen de forma
+diferente, lo que puede desplazar el pico de un ERP y alterar la latencia medida de la P300
+\cite{luck2014}. Cuando el procesamiento se realiza fuera de línea, este efecto se elimina
+aplicando el filtro dos veces, una en sentido directo y otra en sentido inverso, técnica conocida
+como filtrado de fase cero, que duplica la atenuación efectiva del filtro sin introducir retardo
+\cite{oppenheim2010}. Por otra parte, el remuestreo permite reducir la frecuencia de muestreo una
+vez que la señal ya fue filtrada; en la decimación por un factor $M$ se conserva una de cada $M$
+muestras, siempre que antes se haya aplicado un filtro antialiasing que elimine el contenido por
+encima de la nueva frecuencia de Nyquist \cite{proakis2007}. En el trabajo preliminar se redujo la
+frecuencia de 240~Hz a 120~Hz, lo que disminuye a la mitad el tamaño de cada época sin perder
+información en la banda de 0.1 a 20~Hz.
+
+\subsection{Referencia y corrección de línea base}
+
+Además del filtrado en frecuencia, es común modificar la referencia de los canales después del
+registro. La referencia promedio común resta a cada canal $x_{ch}(n)$ el promedio de los $C$
+canales en cada instante,
+\begin{equation}
+x^{\text{CAR}}_{ch}(n) = x_{ch}(n) - \frac{1}{C}\sum_{c=1}^{C} x_{c}(n),
+\label{eq:car}
+\end{equation}
+con lo que se atenúan las componentes comunes a todos los electrodos, como las derivadas de la
+propia referencia \cite{luck2014}. De forma complementaria, la corrección de línea base resta a
+cada época el valor promedio de un intervalo previo al estímulo, típicamente de 100 a 200~ms, para
+que las amplitudes de los componentes del ERP se midan respecto a un nivel común \cite{luck2014}.
+
+\subsection{Segmentación en épocas}
+
+La segmentación consiste en dividir la señal continua en ventanas sincronizadas con cada estímulo,
+que constituyen las muestras de entrada al clasificador. La longitud de la ventana debe ser
+suficiente para contener la P300 completa; Contreras empleó ventanas de 1005~ms a partir del
+estímulo \cite{contreras2021}, mientras que en el trabajo preliminar se utilizaron ventanas de 78
+muestras, equivalentes a unos 650~ms a 120~Hz. Dado que el intervalo entre inicios de estímulos es
+de solo 175~ms, las épocas de intensificaciones consecutivas se traslapan, como se observa en la
+Figura~\ref{fig:epocas}, de modo que una época no objetivo puede contener parte de la P300
+provocada por una intensificación objetivo cercana.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{02-marco-referencial/segmentacion_epocas.pdf}
+\caption{Segmentación de la señal continua en épocas de 0 a 650~ms a partir de cada
+intensificación. Señal sintética, elaboración propia.}
+\label{fig:epocas}
+\end{figure}
+
+\subsection{Normalización}
+
+Las amplitudes del EEG varían entre canales, sesiones y sujetos, por lo que antes de entrenar un
+modelo se acostumbra normalizar los datos. La normalización \textit{z-score} transforma cada canal
+para que tenga media cero y desviación estándar unitaria, mientras que la normalización
+\textit{min-max}, utilizada por Contreras \cite{contreras2021}, escala los valores al intervalo
+$[0,1]$:
+\begin{equation}
+z(n) = \frac{x(n)-\mu}{\sigma}, \qquad
+x'(n) = \frac{x(n)-\min(x)}{\max(x)-\min(x)}.
+\label{eq:normalizacion}
+\end{equation}
+La primera es menos sensible a valores atípicos, lo cual resulta conveniente en presencia de
+artefactos de gran amplitud, y fue la empleada de manera independiente por canal en el trabajo
+preliminar para evitar que los electrodos con mayor amplitud dominen el aprendizaje de la red.
+
+\subsection{Remoción de artefactos}
+
+Cuando los artefactos se traslapan en frecuencia con la señal de interés, como ocurre con los
+parpadeos y la banda de la P300, el filtrado no basta para eliminarlos. La estrategia más simple
+consiste en descartar las épocas cuya amplitud supere un umbral, aunque esto reduce la cantidad de
+datos disponibles; como alternativa, el análisis de componentes independientes (ICA) separa la
+señal multicanal en fuentes estadísticamente independientes, de modo que las asociadas a
+movimientos oculares o musculares pueden identificarse y eliminarse antes de reconstruir el EEG
+\cite{jung2000}. Esta técnica se popularizó gracias a herramientas como EEGLAB, que la integran
+junto con otras rutinas de análisis de ensayos individuales \cite{delorme2004}.
+
+\subsection{Filtrado espacial}
+
+Finalmente, además de filtrar cada canal en el tiempo, es posible combinar los canales mediante un
+filtro espacial que realce la señal de interés. El algoritmo xDAWN, propuesto por Rivet et al.,
+estima los filtros espaciales que maximizan la relación entre la señal evocada y la señal más
+ruido, y ha mostrado mejorar la detección de la P300 aun con un número reducido de canales
+\cite{rivet2009}. Este tipo de filtrado es, en cierto sentido, lo que las capas convolucionales
+espaciales de redes como EEGNet aprenden de manera automática a partir de los datos
+\cite{lawhern2018}.

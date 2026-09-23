@@ -13,9 +13,9 @@
 \spanishdecimal{.}
 
 % ---------------------------------------------------------------------
-% Tamaño de hoja: Carta (formato oficial IPN/ESCOM), márgenes 2.5 cm
+% Tamaño de hoja: A4, márgenes 2.5 cm
 % ---------------------------------------------------------------------
-\usepackage[letterpaper,left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage[a4paper,left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
 
 % ---------------------------------------------------------------------
 % Interlineado 1.5
@@ -45,6 +45,18 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage{csquotes}
 
+% Matemáticas, tablas y diagramas (usados en el Capítulo 2)
+\usepackage{amsmath,amssymb}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{ifthen}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,shapes.geometric,fit,calc,backgrounds,decorations.pathreplacing,babel}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\graphicspath{{imagenes/}}
+
 % ---------------------------------------------------------------------
 % Formato de encabezados: "N. Título" (con punto, sin la palabra
 % "Capítulo"), como en el documento de ejemplo
@@ -54,6 +66,14 @@
 \titleformat{\section}{\bfseries\large}{\thesection.}{0.5em}{}
 \titleformat{\subsection}{\bfseries\normalsize}{\thesubsection.}{0.5em}{}
 \titleformat{\subsubsection}{\bfseries\normalsize}{\thesubsubsection.}{0.5em}{}
+
+% Espaciado de títulos: {sangría}{espacio antes}{espacio después}.
+% Por defecto titlesec deja 40pt tras \chapter (y \onehalfspacing lo
+% agranda aún más), lo que producía un hueco en blanco bajo cada título.
+\titlespacing*{\chapter}{0pt}{0pt}{12pt}
+\titlespacing*{\section}{0pt}{12pt}{6pt}
+\titlespacing*{\subsection}{0pt}{10pt}{4pt}
+\titlespacing*{\subsubsection}{0pt}{8pt}{4pt}
 
 % ---------------------------------------------------------------------
 % Índice: capítulos y secciones en MAYÚSCULAS y negritas; subsecciones
@@ -79,6 +99,10 @@
 % ---------------------------------------------------------------------
 \usepackage[backend=biber,style=ieee,sorting=none]{biblatex}
 \addbibresource{referencias.bib}
+\setcounter{biburllcpenalty}{7000}
+\setcounter{biburlucpenalty}{8000}
+\setcounter{biburlnumpenalty}{9000}
+\setlength{\emergencystretch}{1.5em}
 
 % =====================================================================
 % Documento
@@ -89,7 +113,7 @@
 \pagenumbering{roman}
 \input{preambulo/portada}
 %input{preambulo/agradecimientos}
-\input{preambulo/resumen}
+%\input{preambulo/resumen}
 \tableofcontents
 \listoffigures
 \listoftables

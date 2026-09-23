@@ -1,0 +1,146 @@
+% ---------------------------------------------------------------------
+% 2.4 Potenciales relacionados con eventos y componente P300
+% ---------------------------------------------------------------------
+\section[POTENCIALES RELACIONADOS CON EVENTOS Y COMPONENTE P300]{Potenciales relacionados con
+eventos y componente P300}
+\label{sec:erp}
+
+\subsection{Potenciales relacionados con eventos}
+
+A diferencia de los ritmos del EEG, que se presentan de manera espontánea, los potenciales
+relacionados con eventos (ERP, por sus siglas en inglés) son variaciones del voltaje que aparecen
+acopladas en el tiempo a un evento específico, ya sea un estímulo sensorial, una respuesta motora o
+una operación cognitiva como el reconocimiento de un estímulo o la actualización de la memoria de
+trabajo \cite{kropotov2009}. La suma de los potenciales postsinápticos sincronizados con el evento
+se registra en el cuero cabelludo como una serie de deflexiones positivas y negativas, conocidas
+como componentes, que se nombran con la letra P o N según su polaridad y con un número que indica su
+latencia aproximada en milisegundos o su posición ordinal \cite{luck2014}. La
+Tabla~\ref{tab:componentes} describe las componentes que aparecen con mayor frecuencia en
+paradigmas de estimulación visual.
+
+\begin{table}[htbp]
+\centering
+\caption{Principales componentes de los ERP en paradigmas visuales}
+\label{tab:componentes}
+\small
+\begin{tabularx}{\textwidth}{L{2.1cm}L{2.1cm}L{2.0cm}Y}
+\toprule
+\textbf{Componente} & \textbf{Latencia} & \textbf{Polaridad} & \textbf{Proceso asociado} \\
+\midrule
+P100 (P1) & 80--130 ms & Positiva & Procesamiento sensorial temprano en corteza visual extraestriada; se modula con la atención espacial. \\
+N100 (N1) & 100--200 ms & Negativa & Procesamiento sensorial y orientación de la atención hacia el estímulo. \\
+P200 (P2) & 150--250 ms & Positiva & Evaluación de las características físicas del estímulo. \\
+N200 (N2) & 200--350 ms & Negativa & Detección de desajuste entre el estímulo y lo esperado; clasificación del estímulo. \\
+P300 (P3) & 250--500 ms & Positiva & Actualización del contexto en la memoria de trabajo ante estímulos relevantes o poco frecuentes. \\
+N400 & 300--500 ms & Negativa & Procesamiento semántico; incongruencia de significado. \\
+\bottomrule
+\end{tabularx}
+\par\smallskip{\footnotesize Elaboración propia con información de \cite{luck2014,kropotov2009,polich2007}.}
+\end{table}
+
+\subsection{Promediado coherente}
+
+El principal problema para observar un ERP es que su amplitud, de unos cuantos microvolts, es
+considerablemente menor que la de la actividad de fondo del EEG, que para estos fines se comporta
+como ruido. La forma clásica de resolverlo consiste en presentar el mismo estímulo repetidas veces,
+extraer los segmentos de señal sincronizados con cada presentación y promediarlos
+\cite{tong2009}. Si cada ensayo $x_i(n)$ se modela como la suma de una respuesta $s(n)$ que se
+repite de forma idéntica y de un ruido $r_i(n)$ de media cero y varianza $\sigma^2$, independiente
+entre ensayos, el promedio de $N$ ensayos queda como
+\begin{equation}
+\bar{x}(n) = \frac{1}{N}\sum_{i=1}^{N} x_i(n) = s(n) + \frac{1}{N}\sum_{i=1}^{N} r_i(n),
+\label{eq:promediado}
+\end{equation}
+donde la desviación estándar del ruido residual se reduce a $\sigma/\sqrt{N}$, de modo que la
+relación señal-ruido mejora en proporción a la raíz cuadrada del número de ensayos
+\cite{luck2014}. La Figura~\ref{fig:erp} ilustra ambas ideas: del lado izquierdo, la forma de onda
+típica ante un estímulo objetivo y ante uno no objetivo; del lado derecho, cómo la componente P300
+va emergiendo del ruido conforme aumenta el número de ensayos promediados. Esta relación explica
+por qué el P300 Speller necesita repetir varias veces la intensificación de cada fila y columna, y
+por qué reducir dichas repeticiones, objetivo de este trabajo, compromete directamente la
+confiabilidad de la detección.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{02-marco-referencial/erp_componentes_promediado.pdf}
+\caption{(a) Forma de onda ilustrativa de un ERP ante un estímulo objetivo y uno no objetivo.
+(b) Efecto del promediado de $N$ ensayos sobre la visibilidad de la componente P300. Señales
+sintéticas, elaboración propia.}
+\label{fig:erp}
+\end{figure}
+
+\subsection{La componente P300}
+
+La componente P300 fue descrita por primera vez en 1965 por Sutton et al., quienes observaron que
+los estímulos cuya ocurrencia era incierta para el sujeto evocaban una onda positiva de gran
+amplitud alrededor de 300~ms después de su presentación \cite{sutton1965}. Años más tarde, Squires,
+Squires y Hillyard distinguieron dos variantes de esta onda: la P3a, de latencia más temprana y
+distribución frontocentral, provocada por estímulos novedosos que captan la atención de manera
+involuntaria, y la P3b, de distribución parietal, que aparece ante estímulos relevantes para la
+tarea que el sujeto está realizando \cite{squires1975}. Es esta última la que se aprovecha en el
+P300 Speller, pues su aparición depende de que el usuario atienda deliberadamente al carácter que
+desea seleccionar \cite{polich2007}.
+
+La explicación más aceptada sobre el origen de la P300 es la teoría de actualización del contexto,
+propuesta inicialmente por Donchin \cite{donchin1981} y posteriormente integrada por Polich
+\cite{polich2007}. De acuerdo con ella, cada estímulo entrante se compara con la representación
+del contexto que se mantiene en la memoria de trabajo; si no se detecta un cambio, el modelo mental
+se conserva y solo se registran los potenciales sensoriales tempranos, mientras que si el estímulo
+es distinto y el sujeto le asigna recursos de atención, la representación se actualiza y se genera
+la P300, tal como se muestra en la Figura~\ref{fig:contexto}.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  node distance=0.7cm and 1.0cm,
+  caja/.style={draw, rounded corners=2pt, align=center, minimum height=0.9cm, text width=2.6cm, font=\small},
+  decision/.style={draw, diamond, aspect=2.1, align=center, inner sep=1pt, font=\small},
+  flecha/.style={-{Stealth[length=2mm]}, thick}]
+  \node[caja] (est) {Estímulo entrante};
+  \node[caja, right=of est] (sens) {Procesamiento sensorial};
+  \node[decision, right=of sens] (comp) {¿Mismo\\estímulo?};
+  \node[caja, above right=0.3cm and 0.9cm of comp, fill=gray!12] (igual) {Se mantiene el modelo\\ \footnotesize N100, P200, N200};
+  \node[caja, below right=0.3cm and 0.9cm of comp, fill=red!8] (dif) {Actualización del contexto\\ \footnotesize P300};
+  \node[caja, below=0.9cm of sens, text width=3.2cm] (mem) {Memoria de trabajo\\(representación del contexto)};
+  \draw[flecha] (est) -- (sens);
+  \draw[flecha] (sens) -- (comp);
+  \draw[thick] (comp.east) -- ++(0.35,0) coordinate (bif);
+  \draw[flecha] (bif) |- node[pos=0.25, left, font=\footnotesize] {Sí} (igual);
+  \draw[flecha] (bif) |- node[pos=0.25, left, font=\footnotesize] {No} (dif);
+  \draw[flecha, dashed] (mem) -| (comp);
+  \draw[flecha, dashed] (dif.south) |- ++(0,-0.9) -| ([xshift=0.4cm]mem.south);
+\end{tikzpicture}
+\caption{Modelo de actualización del contexto de la componente P300. Elaboración propia con base
+en \cite{polich2007}.}
+\label{fig:contexto}
+\end{figure}
+
+La P300 se caracteriza a partir de su amplitud, definida como la diferencia entre el voltaje de la
+línea base previa al estímulo y el pico positivo de mayor magnitud dentro de una ventana de
+búsqueda, típicamente entre 250 y 500~ms, y de su latencia, que corresponde al tiempo transcurrido
+desde el inicio del estímulo hasta dicho pico \cite{polich2007}. Su distribución topográfica se
+evalúa sobre los electrodos de la línea media, en los que la amplitud aumenta de las regiones
+frontales hacia las parietales, alcanzando su máximo en Pz \cite{picton1992}. Tanto la amplitud
+como la latencia dependen de varios factores: la amplitud es mayor mientras menos probable sea el
+estímulo objetivo y más relevante resulte para la tarea, y disminuye con la fatiga, la habituación
+y los intervalos cortos entre estímulos, mientras que la latencia se asocia con el tiempo que toma
+clasificar el estímulo y tiende a aumentar con la edad \cite{polich2007,picton1992}.
+
+\subsection{Paradigma del evento raro}
+
+El procedimiento experimental más utilizado para provocar la P300 es el paradigma del evento raro,
+conocido en inglés como \textit{oddball}. En él se presenta al sujeto una secuencia de estímulos de
+dos categorías, una de las cuales aparece con mucha menor frecuencia que la otra, y se le pide que
+atienda o cuente únicamente los estímulos de la categoría poco frecuente
+\cite{farwell1988,polich2007}. Los estímulos raros, que en el contexto de una BCI corresponden al
+objetivo elegido por el usuario, producen una P300 cuya amplitud es inversamente proporcional a su
+probabilidad de aparición \cite{farwell1988}; la Figura~\ref{fig:oddball} representa una secuencia
+típica de este paradigma.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{02-marco-referencial/oddball.pdf}
+\caption{Secuencia de estímulos en el paradigma del evento raro (\textit{oddball}). Elaboración
+propia.}
+\label{fig:oddball}
+\end{figure}

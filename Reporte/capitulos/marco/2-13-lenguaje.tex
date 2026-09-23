@@ -1,0 +1,83 @@
+% ---------------------------------------------------------------------
+% 2.13 Modelado del lenguaje y predicción de palabras
+% ---------------------------------------------------------------------
+\section[MODELADO DEL LENGUAJE Y PREDICCIÓN DE PALABRAS]{Modelado del lenguaje y predicción de
+palabras}
+\label{sec:lenguaje}
+
+\subsection{Predicción de palabras en la comunicación asistida}
+
+Aun con una detección perfecta de la P300, escribir carácter por carácter en un P300 Speller es un
+proceso lento, pues cada selección requiere varios segundos. La predicción de palabras, ampliamente
+utilizada en los sistemas de comunicación aumentativa, reduce el número de selecciones necesarias
+al ofrecer al usuario una lista de palabras probables a partir de los caracteres que ya ha escrito,
+de modo que puede completar una palabra con una sola selección adicional. Ryan et al. integraron
+este mecanismo en un P300 Speller agregando a la matriz una región con las palabras sugeridas, y
+encontraron que los participantes completaban las frases en menos tiempo que con el deletreador
+convencional, aunque con una exactitud por selección ligeramente menor \cite{ryan2011}. El
+beneficio de estos sistemas suele medirse mediante el ahorro de selecciones,
+\begin{equation}
+\text{AS} = \frac{S_{\text{sin}} - S_{\text{con}}}{S_{\text{sin}}}\times100\%,
+\label{eq:ahorro}
+\end{equation}
+donde $S_{\text{sin}}$ y $S_{\text{con}}$ son el número de selecciones necesarias para escribir un
+mismo texto sin y con predicción, respectivamente.
+
+\subsection{Modelos de lenguaje probabilísticos}
+
+Un modelo de lenguaje asigna una probabilidad a cada secuencia de palabras $w_1, \dots, w_m$, lo
+que permite estimar cuál es la palabra, o el carácter, más probable dado lo que se ha escrito. Por
+la regla de la cadena, esta probabilidad puede descomponerse como el producto de probabilidades
+condicionales, y los modelos de $n$-gramas la aproximan suponiendo que cada palabra depende
+únicamente de las $n-1$ anteriores, supuesto conocido como de Markov \cite{jurafsky2025}:
+\begin{equation}
+P(w_1,\dots,w_m) = \prod_{i=1}^{m} P(w_i \mid w_1,\dots,w_{i-1}) \approx \prod_{i=1}^{m} P(w_i \mid w_{i-n+1},\dots,w_{i-1}).
+\label{eq:ngramas}
+\end{equation}
+Las probabilidades condicionales se estiman contando las frecuencias de aparición en un corpus de
+texto, y dado que muchas secuencias válidas no aparecen en él, se aplican técnicas de suavizado que
+reservan parte de la probabilidad para eventos no observados \cite{jurafsky2025}. La calidad de un
+modelo de lenguaje se evalúa comúnmente mediante la perplejidad, $PP = P(w_1,\dots,w_m)^{-1/m}$,
+que puede interpretarse como el número promedio de opciones entre las que el modelo duda en cada
+paso, concepto que se relaciona directamente con la noción de entropía de la teoría de la
+información de Shannon \cite{shannon1948,jurafsky2025}.
+
+\subsection{Modelos de lenguaje neuronales}
+
+Los modelos de $n$-gramas están limitados a un contexto corto y fijo, por lo que fueron
+reemplazados progresivamente por modelos neuronales. Las redes recurrentes, y en particular las
+LSTM, permitieron condicionar la predicción en un contexto de longitud variable
+\cite{hochreiter1997,jurafsky2025}, y posteriormente la arquitectura Transformer, basada
+exclusivamente en mecanismos de atención, eliminó la recurrencia y permitió entrenar modelos
+mucho más grandes de forma paralela \cite{vaswani2017}. Sobre esta arquitectura se construyen los
+modelos de lenguaje de gran escala (LLM), entrenados con enormes cantidades de texto, que son
+capaces de realizar tareas nuevas a partir de unas cuantas instrucciones o ejemplos
+\cite{brown2020}.
+
+\subsection{Integración del lenguaje en el P300 Speller}
+
+La información del lenguaje puede incorporarse al P300 Speller de dos maneras: como sugerencias
+explícitas que el usuario selecciona, o como una probabilidad previa que se combina con los
+puntajes del clasificador para decidir el carácter. Speier et al. siguieron la segunda vía,
+integrando un modelo de lenguaje en el proceso de clasificación dinámica, y reportaron mejoras
+tanto en la exactitud como en la tasa de transferencia de información \cite{speier2012}. Más
+recientemente, Hong et al. propusieron ChatBCI, un P300 Speller que utiliza un LLM para predecir
+palabras según el contexto de la frase, logrando una reducción del tiempo promedio de escritura de
+62.14\% \cite{hong2026}. La Tabla~\ref{tab:lenguaje} compara estos enfoques.
+
+\begin{table}[htbp]
+\centering
+\caption{Trabajos que integran modelos de lenguaje en el P300 Speller}
+\label{tab:lenguaje}
+\small
+\begin{tabularx}{\textwidth}{L{3.0cm}L{3.2cm}YY}
+\toprule
+\textbf{Trabajo} & \textbf{Modelo de lenguaje} & \textbf{Forma de integración} & \textbf{Resultado} \\
+\midrule
+Ryan et al., 2011 \cite{ryan2011} & Predicción de palabras por diccionario & Región adicional con palabras sugeridas en la interfaz. & Menor tiempo para completar frases, con exactitud ligeramente menor. \\
+Speier et al., 2012 \cite{speier2012} & Modelo probabilístico de lenguaje natural & Probabilidad previa combinada con la clasificación dinámica. & Mejor exactitud y tasa de transferencia. \\
+Hong et al., 2026 \cite{hong2026} & LLM & Predicción contextual de palabras. & Reducción del tiempo promedio de 62.14\%. \\
+\bottomrule
+\end{tabularx}
+\par\smallskip{\footnotesize Elaboración propia.}
+\end{table}
