@@ -1,5 +1,5 @@
 % ---------------------------------------------------------------------
-% 2.14 Estado del arte
+% 2.13 Estado del arte
 % ---------------------------------------------------------------------
 \section[ESTADO DEL ARTE]{Estado del arte}
 
@@ -8,7 +8,7 @@
 A partir del deletreador de Farwell y Donchin \cite{farwell1988}, la investigación sobre el P300
 Speller se centró durante varios años en mejorar la clasificación de las épocas con métodos
 lineales. Las competencias internacionales de BCI jugaron un papel central en este proceso, pues
-pusieron a disposición de la comunidad bases de datos comunes; en la tercera de ellas, el conjunto
+pusieron a disposición de la comunidad bases de datos comunes. En la tercera de ellas, el conjunto
 de SVM lineales propuesto por Rakotomamonjy y Guigue obtuvo el primer lugar al identificar
 correctamente el 96.5\% de los caracteres de prueba con 15 repeticiones \cite{rakotomamonjy2008}.
 En paralelo, Krusienski et al. mostraron que el SWLDA y el discriminante de Fisher eran los
@@ -20,17 +20,16 @@ línea media \cite{krusienski2008}.
 
 La validación con usuarios reales ha sido otra línea importante de investigación. Sellers y
 Donchin realizaron las primeras pruebas de un P300 Speller con pacientes con ELA
-\cite{sellers2006}, y Hoffmann et al. propusieron un sistema de seis opciones evaluado con personas
-con distintas discapacidades motoras, cuyos registros constituyen hoy una de las bases de datos
-públicas más utilizadas \cite{hoffmann2008}. En el ámbito latinoamericano, el estudio ``Interfaz
-cerebro-computador basada en P300 para la comunicación alternativa'' \cite{garciacossio2011}
-implementó un sistema funcional de deletreo utilizando una matriz de estimulación visual con dos
-adolescentes en situación de discapacidad motora, reportando porcentajes de acierto promedio de 95\%
-y 85\% para cada usuario en la prueba de libre deletreo. Por su parte, el trabajo de Brunner et
+\cite{sellers2006}. Hoffmann et al. propusieron un sistema de seis opciones que evaluaron con
+personas con distintas discapacidades motoras. Sus registros son hoy una de las bases de datos
+públicas más utilizadas \cite{hoffmann2008}. En el ámbito latinoamericano, García Cossio et al.
+desarrollaron un sistema de deletreo con una matriz de estimulación visual \cite{garciacossio2011}.
+Lo probaron con dos adolescentes con discapacidad motora y obtuvieron porcentajes de acierto
+promedio de 95\% y 85\% en la prueba de libre deletreo. Por su parte, el trabajo de Brunner et
 al. \cite{brunner2011} demostró la operación de un sistema P300 Speller utilizando señales de
-electrocorticografía, alcanzando tasas sostenidas superiores a 17 caracteres por minuto; no
-obstante, el uso de técnicas invasivas limita su aplicación en contextos clínicos generales, donde
-el EEG continúa siendo la alternativa más accesible.
+electrocorticografía, alcanzando tasas sostenidas superiores a 17 caracteres por minuto. Sin
+embargo, al ser una técnica invasiva, su uso en contextos clínicos generales es limitado, y el EEG
+continúa siendo la alternativa más accesible.
 
 \subsection{Aprendizaje profundo para la detección de la P300}
 
@@ -42,29 +41,19 @@ entonces se propusieron arquitecturas como BN3 \cite{liu2018}, OCLNN \cite{shan2
 como SepConv1D, con apenas cuatro filtros en su única capa convolucional, pueden alcanzar un AUC
 similar a la de redes mucho más grandes \cite{alvarado2021}.
 
-En el ámbito nacional, la tesis de maestría titulada ``Sistema clasificador de señales EEG para
-el control de una neuroprótesis por medio de un dispositivo móvil'' \cite{contreras2021},
-desarrollada en la Escuela Superior de Cómputo del Instituto Politécnico Nacional, implementó un
-sistema basado en la arquitectura SepConv1D para la detección del componente P300 con solo cuatro
-electrodos secos, reportando valores promedio de AUC cercanos a 0.82 en evaluaciones intrasujeto y
-de 0.70 en escenarios intersujeto sin calibración individual al considerar filas y columnas. Este
+En el ámbito nacional, Contreras desarrolló en la Escuela Superior de Cómputo del Instituto
+Politécnico Nacional la tesis de maestría ``Sistema clasificador de señales EEG para el control de
+una neuroprótesis por medio de un dispositivo móvil'' \cite{contreras2021}. Su sistema usa la
+arquitectura SepConv1D para detectar la P300 con solo cuatro electrodos secos. Al considerar filas y
+columnas, reportó valores promedio de AUC cercanos a 0.82 en la evaluación intrasujeto y de 0.70 en
+la intersujeto, esta última sin calibración individual. Este
 trabajo demostró la viabilidad técnica de integrar procesamiento EEG, extracción automática de
-características y modelos de aprendizaje profundo en un sistema funcional; sin embargo, su
+características y modelos de aprendizaje profundo en un sistema funcional. Sin embargo, su
 aplicación estuvo orientada al control de una neuroprótesis y no específicamente a la
 implementación de un sistema de comunicación mediante deletreo. En la misma escuela, Santos,
 Romero y Fernández desarrollaron una aplicación para manipular un brazo robótico virtual mediante
 potenciales P300 con matrices de $5\times5$ de iconos y de letras, clasificadas con el
-discriminante lineal de Fisher \cite{santos2017}, y Anguiano y Ramírez utilizaron señales de EEG
-y redes neuronales artificiales para detectar estrés en estudiantes \cite{anguiano2019}.
-
-\subsection{Modelos de lenguaje en el P300 Speller}
-
-La incorporación de información lingüística es la línea más reciente para acelerar la escritura.
-Ryan et al. \cite{ryan2011} y Speier et al. \cite{speier2012} mostraron que la predicción de
-palabras y los modelos de lenguaje reducen el tiempo de escritura o mejoran la tasa de
-transferencia, y más recientemente la investigación ``ChatBCI'' \cite{hong2026} incorporó modelos
-de lenguaje de gran escala para mejorar las selecciones dentro de un sistema P300 Speller, logrando
-una reducción del tiempo promedio de escritura de 62.14\%.
+discriminante lineal de Fisher \cite{santos2017}.
 
 \subsection{Resumen comparativo}
 

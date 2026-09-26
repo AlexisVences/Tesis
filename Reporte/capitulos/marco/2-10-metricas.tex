@@ -1,5 +1,5 @@
 % ---------------------------------------------------------------------
-% 2.11 Métricas de evaluación
+% 2.10 Métricas de evaluación
 % ---------------------------------------------------------------------
 \section[MÉTRICAS DE EVALUACIÓN]{Métricas de evaluación}
 \label{sec:metricas}
@@ -13,10 +13,14 @@ usuario logra seleccionar caracteres.
 
 En un problema de clasificación binaria, las predicciones del modelo pueden compararse con las
 etiquetas reales mediante una tabla cruzada conocida como matriz de confusión, representada en la
-Figura~\ref{fig:confusion}. Sus cuatro celdas corresponden a los verdaderos positivos (TP), épocas
-con P300 clasificadas correctamente; los falsos positivos (FP), épocas sin P300 clasificadas como
-positivas; los verdaderos negativos (TN), épocas sin P300 clasificadas correctamente; y los falsos
-negativos (FN), épocas con P300 que el modelo no detectó \cite{fawcett2006}.
+Figura~\ref{fig:confusion}. Sus cuatro celdas son las siguientes
+\cite{fawcett2006}:
+\begin{itemize}
+  \item \textbf{Verdaderos positivos (TP):} épocas con P300 clasificadas correctamente.
+  \item \textbf{Falsos positivos (FP):} épocas sin P300 clasificadas como positivas.
+  \item \textbf{Verdaderos negativos (TN):} épocas sin P300 clasificadas correctamente.
+  \item \textbf{Falsos negativos (FN):} épocas con P300 que el modelo no detectó.
+\end{itemize}
 
 \begin{figure}[htbp]
 \centering
@@ -73,14 +77,13 @@ Exactitud balanceada & Promedio de la sensibilidad y la especificidad. & $\dfrac
 Los clasificadores de la P300 suelen producir un puntaje continuo, y la etiqueta final depende del
 umbral que se elija: al disminuirlo se detectan más épocas con P300, pero también aumentan los
 falsos positivos. La curva ROC (\textit{Receiver Operating Characteristic}) representa este
-compromiso graficando la sensibilidad contra la tasa de falsos positivos para todos los umbrales
-posibles, y el área bajo esta curva (AUC) resume el desempeño en un solo número que puede
-interpretarse como la probabilidad de que el clasificador asigne un puntaje mayor a una época
-positiva elegida al azar que a una negativa elegida al azar \cite{fawcett2006}. Un AUC de 0.5
-corresponde a un clasificador aleatorio, cuyas distribuciones de puntajes para ambas clases se
-encuentran superpuestas, mientras que un AUC de 1 indica una separación perfecta, como se ilustra
-en la Figura~\ref{fig:roc}; esta es la métrica utilizada en los trabajos de Alvarado-González et al.
-y de Contreras, en el que se considera aceptable a partir de 0.7 \cite{alvarado2021,contreras2021}.
+compromiso. Para ello, grafica la sensibilidad contra la tasa de falsos positivos en todos los
+umbrales posibles. El área bajo esta curva (AUC) resume el desempeño en un solo número. Este valor
+indica la probabilidad de que el clasificador dé un puntaje mayor a una época positiva que a una
+negativa, ambas elegidas al azar \cite{fawcett2006}. Un AUC de 0.5 corresponde a un clasificador
+aleatorio, en el que los puntajes de ambas clases se superponen. Un AUC de 1 indica una separación
+perfecta, como se ilustra en la Figura~\ref{fig:roc}. Esta es la métrica utilizada en los trabajos de Alvarado-González et al.
+y de Contreras. Este último la considera aceptable a partir de 0.7 \cite{alvarado2021,contreras2021}.
 
 \begin{figure}[htbp]
 \centering
@@ -103,11 +106,11 @@ B = \log_2 N + P\log_2 P + (1-P)\log_2\!\left(\frac{1-P}{N-1}\right),
 \label{eq:itr}
 \end{equation}
 donde $N$ es el número de opciones posibles, 36 en una matriz de $6\times6$, y $P$ es la exactitud
-por carácter; al multiplicar $B$ por el número de selecciones por minuto se obtiene la ITR en bits
+por carácter. Al multiplicar $B$ por el número de selecciones por minuto se obtiene la ITR en bits
 por minuto. La Figura~\ref{fig:itr} muestra que, para una misma exactitud, reducir el número de
-repeticiones incrementa notablemente la ITR, aunque en la práctica disminuir las repeticiones
-también reduce la exactitud, por lo que el número óptimo de repeticiones es aquel que maximiza el
-producto de ambos efectos.
+repeticiones incrementa notablemente la ITR. Sin embargo, en la práctica menos repeticiones también
+reducen la exactitud, por lo que el número óptimo de repeticiones es el que mejor equilibra ambos
+efectos.
 
 \begin{figure}[htbp]
 \centering

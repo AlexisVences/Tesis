@@ -1,5 +1,5 @@
 % ---------------------------------------------------------------------
-% 2.4 Potenciales relacionados con eventos y componente P300
+% 2.3 Potenciales relacionados con eventos y componente P300
 % ---------------------------------------------------------------------
 \section[POTENCIALES RELACIONADOS CON EVENTOS Y COMPONENTE P300]{Potenciales relacionados con
 eventos y componente P300}
@@ -7,14 +7,13 @@ eventos y componente P300}
 
 \subsection{Potenciales relacionados con eventos}
 
-A diferencia de los ritmos del EEG, que se presentan de manera espontánea, los potenciales
-relacionados con eventos (ERP, por sus siglas en inglés) son variaciones del voltaje que aparecen
-acopladas en el tiempo a un evento específico, ya sea un estímulo sensorial, una respuesta motora o
-una operación cognitiva como el reconocimiento de un estímulo o la actualización de la memoria de
-trabajo \cite{kropotov2009}. La suma de los potenciales postsinápticos sincronizados con el evento
-se registra en el cuero cabelludo como una serie de deflexiones positivas y negativas, conocidas
-como componentes, que se nombran con la letra P o N según su polaridad y con un número que indica su
-latencia aproximada en milisegundos o su posición ordinal \cite{luck2014}. La
+Los ritmos del EEG se presentan de manera espontánea. En cambio, los potenciales relacionados con
+eventos (ERP, por sus siglas en inglés) son variaciones del voltaje que aparecen ligadas en el tiempo
+a un evento específico. Este evento puede ser un estímulo sensorial, una respuesta motora o una
+operación cognitiva, como reconocer un estímulo \cite{kropotov2009}. En el cuero cabelludo, un ERP
+se registra como una serie de ondas positivas y negativas llamadas componentes. Cada componente se
+nombra con la letra P o N según su polaridad, seguida de un número que indica su latencia
+aproximada en milisegundos o su posición en la secuencia \cite{luck2014}. La
 Tabla~\ref{tab:componentes} describe las componentes que aparecen con mayor frecuencia en
 paradigmas de estimulación visual.
 
@@ -27,12 +26,10 @@ paradigmas de estimulación visual.
 \toprule
 \textbf{Componente} & \textbf{Latencia} & \textbf{Polaridad} & \textbf{Proceso asociado} \\
 \midrule
-P100 (P1) & 80--130 ms & Positiva & Procesamiento sensorial temprano en corteza visual extraestriada; se modula con la atención espacial. \\
 N100 (N1) & 100--200 ms & Negativa & Procesamiento sensorial y orientación de la atención hacia el estímulo. \\
 P200 (P2) & 150--250 ms & Positiva & Evaluación de las características físicas del estímulo. \\
 N200 (N2) & 200--350 ms & Negativa & Detección de desajuste entre el estímulo y lo esperado; clasificación del estímulo. \\
 P300 (P3) & 250--500 ms & Positiva & Actualización del contexto en la memoria de trabajo ante estímulos relevantes o poco frecuentes. \\
-N400 & 300--500 ms & Negativa & Procesamiento semántico; incongruencia de significado. \\
 \bottomrule
 \end{tabularx}
 \par\smallskip{\footnotesize Elaboración propia con información de \cite{luck2014,kropotov2009,polich2007}.}
@@ -53,9 +50,9 @@ entre ensayos, el promedio de $N$ ensayos queda como
 \end{equation}
 donde la desviación estándar del ruido residual se reduce a $\sigma/\sqrt{N}$, de modo que la
 relación señal-ruido mejora en proporción a la raíz cuadrada del número de ensayos
-\cite{luck2014}. La Figura~\ref{fig:erp} ilustra ambas ideas: del lado izquierdo, la forma de onda
-típica ante un estímulo objetivo y ante uno no objetivo; del lado derecho, cómo la componente P300
-va emergiendo del ruido conforme aumenta el número de ensayos promediados. Esta relación explica
+\cite{luck2014}. La Figura~\ref{fig:erp} ilustra ambas ideas. El panel (a) muestra la forma
+de onda típica ante un estímulo objetivo y ante uno no objetivo. El panel (b) muestra cómo la P300
+se vuelve visible conforme aumenta el número de ensayos promediados. Esta relación explica
 por qué el P300 Speller necesita repetir varias veces la intensificación de cada fila y columna, y
 por qué reducir dichas repeticiones, objetivo de este trabajo, compromete directamente la
 confiabilidad de la detección.
@@ -74,20 +71,20 @@ sintéticas, elaboración propia.}
 La componente P300 fue descrita por primera vez en 1965 por Sutton et al., quienes observaron que
 los estímulos cuya ocurrencia era incierta para el sujeto evocaban una onda positiva de gran
 amplitud alrededor de 300~ms después de su presentación \cite{sutton1965}. Años más tarde, Squires,
-Squires y Hillyard distinguieron dos variantes de esta onda: la P3a, de latencia más temprana y
-distribución frontocentral, provocada por estímulos novedosos que captan la atención de manera
-involuntaria, y la P3b, de distribución parietal, que aparece ante estímulos relevantes para la
-tarea que el sujeto está realizando \cite{squires1975}. Es esta última la que se aprovecha en el
+Squires y Hillyard distinguieron dos variantes de esta onda \cite{squires1975}. La P3a aparece
+antes, se registra en la región frontocentral y la provocan estímulos novedosos que captan la
+atención de forma involuntaria. La P3b se registra en la región parietal y aparece ante estímulos
+relevantes para la tarea que el sujeto está realizando. Es esta última la que se aprovecha en el
 P300 Speller, pues su aparición depende de que el usuario atienda deliberadamente al carácter que
 desea seleccionar \cite{polich2007}.
 
 La explicación más aceptada sobre el origen de la P300 es la teoría de actualización del contexto,
 propuesta inicialmente por Donchin \cite{donchin1981} y posteriormente integrada por Polich
-\cite{polich2007}. De acuerdo con ella, cada estímulo entrante se compara con la representación
-del contexto que se mantiene en la memoria de trabajo; si no se detecta un cambio, el modelo mental
-se conserva y solo se registran los potenciales sensoriales tempranos, mientras que si el estímulo
-es distinto y el sujeto le asigna recursos de atención, la representación se actualiza y se genera
-la P300, tal como se muestra en la Figura~\ref{fig:contexto}.
+\cite{polich2007}. Según esta teoría, cada estímulo nuevo se compara con la representación del
+contexto guardada en la memoria de trabajo. Si no hay cambio, el modelo mental se mantiene y solo
+aparecen los potenciales sensoriales tempranos. Si el estímulo es diferente y el sujeto le presta
+atención, la representación se actualiza y se genera la P300, como se muestra en la
+Figura~\ref{fig:contexto}.
 
 \begin{figure}[htbp]
 \centering
@@ -115,16 +112,15 @@ en \cite{polich2007}.}
 \label{fig:contexto}
 \end{figure}
 
-La P300 se caracteriza a partir de su amplitud, definida como la diferencia entre el voltaje de la
-línea base previa al estímulo y el pico positivo de mayor magnitud dentro de una ventana de
-búsqueda, típicamente entre 250 y 500~ms, y de su latencia, que corresponde al tiempo transcurrido
-desde el inicio del estímulo hasta dicho pico \cite{polich2007}. Su distribución topográfica se
-evalúa sobre los electrodos de la línea media, en los que la amplitud aumenta de las regiones
-frontales hacia las parietales, alcanzando su máximo en Pz \cite{picton1992}. Tanto la amplitud
-como la latencia dependen de varios factores: la amplitud es mayor mientras menos probable sea el
-estímulo objetivo y más relevante resulte para la tarea, y disminuye con la fatiga, la habituación
-y los intervalos cortos entre estímulos, mientras que la latencia se asocia con el tiempo que toma
-clasificar el estímulo y tiende a aumentar con la edad \cite{polich2007,picton1992}.
+La P300 se describe principalmente con dos medidas. La amplitud es la diferencia entre el voltaje
+de la línea base previa al estímulo y el pico positivo más alto, que se busca típicamente entre 250
+y 500~ms. La latencia es el tiempo que pasa desde el inicio del estímulo hasta ese pico
+\cite{polich2007}. En los electrodos de la línea media, la amplitud aumenta de las regiones
+frontales hacia las parietales y alcanza su máximo en Pz \cite{picton1992}. La amplitud es mayor
+cuando el estímulo objetivo es menos probable y más relevante para la tarea. En cambio, disminuye
+con la fatiga, la habituación y los intervalos cortos entre estímulos. La latencia refleja el
+tiempo que se tarda en clasificar el estímulo y tiende a aumentar con la edad
+\cite{polich2007,picton1992}.
 
 \subsection{Paradigma del evento raro}
 
@@ -134,7 +130,7 @@ dos categorías, una de las cuales aparece con mucha menor frecuencia que la otr
 atienda o cuente únicamente los estímulos de la categoría poco frecuente
 \cite{farwell1988,polich2007}. Los estímulos raros, que en el contexto de una BCI corresponden al
 objetivo elegido por el usuario, producen una P300 cuya amplitud es inversamente proporcional a su
-probabilidad de aparición \cite{farwell1988}; la Figura~\ref{fig:oddball} representa una secuencia
+probabilidad de aparición \cite{farwell1988}. La Figura~\ref{fig:oddball} representa una secuencia
 típica de este paradigma.
 
 \begin{figure}[htbp]

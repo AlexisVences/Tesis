@@ -1,5 +1,5 @@
 % ---------------------------------------------------------------------
-% 2.12 Reducción de canales y repeticiones
+% 2.11 Reducción de canales y repeticiones
 % ---------------------------------------------------------------------
 \section[REDUCCIÓN DE CANALES Y REPETICIONES]{Reducción de canales y repeticiones}
 
@@ -14,9 +14,9 @@ velocidad de comunicación y aumenta la fatiga del usuario \cite{krusienski2008,
 
 La selección de canales busca identificar el subconjunto mínimo de electrodos que conserve la
 información necesaria para detectar la P300. Krusienski et al. evaluaron distintos conjuntos de
-electrodos y encontraron que un conjunto de ocho canales, Fz, Cz, Pz, P3, P4, PO7, PO8 y Oz, que
-combina posiciones de la línea media con posiciones parieto-occipitales, ofrecía un desempeño
-superior al de los tres canales de la línea media utilizados tradicionalmente \cite{krusienski2008}.
+electrodos. El mejor fue un conjunto de ocho canales (Fz, Cz, Pz, P3, P4, PO7, PO8 y Oz), que
+combina posiciones de la línea media con posiciones parieto-occipitales. Este conjunto superó a los
+tres canales de la línea media que se usaban tradicionalmente \cite{krusienski2008}.
 Por otra parte, Cecotti y Gräser aprovecharon los pesos aprendidos por la capa espacial de su CNN
 para ordenar los electrodos según su contribución a la clasificación y eliminar los menos
 relevantes \cite{cecotti2011}, estrategia que resulta natural en arquitecturas como EEGNet, cuya
@@ -34,6 +34,6 @@ decir, la capacidad del modelo de detectar la P300 en una sola época sin promed
 objetivo que persiguen las arquitecturas convolucionales descritas en la Sección~\ref{sec:cnn}
 \cite{cecotti2011,lawhern2018}. Una segunda estrategia es la parada dinámica, en la que el sistema
 deja de presentar repeticiones en cuanto la confianza acumulada sobre algún carácter supera un
-umbral, en lugar de usar siempre un número fijo; Speier et al. mostraron que combinar este tipo de
+umbral, en lugar de usar siempre un número fijo. Speier et al. mostraron que combinar este tipo de
 clasificación dinámica con información del lenguaje mejora tanto la exactitud como la tasa de
 transferencia del P300 Speller \cite{speier2012}.

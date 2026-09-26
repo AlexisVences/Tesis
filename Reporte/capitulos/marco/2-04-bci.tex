@@ -1,0 +1,77 @@
+% ---------------------------------------------------------------------
+% 2.4 Interfaces cerebro-computadora
+% ---------------------------------------------------------------------
+\section[INTERFACES CEREBRO-COMPUTADORA]{Interfaces cerebro-computadora}
+\label{sec:bci}
+
+\subsection{Definición y componentes}
+
+Las interfaces cerebro-computadora (BCI) permiten entablar comunicación directa entre la
+actividad cerebral de un individuo y un dispositivo externo, sin depender de ninguna otra señal o
+movimiento muscular. De acuerdo con Wolpaw et al., una BCI es un sistema de comunicación en el que
+los mensajes o comandos que el usuario envía al mundo exterior no pasan por las vías de salida
+normales del cerebro, es decir, por los nervios periféricos y los músculos \cite{wolpaw2002}, y
+como se menciona en el trabajo de Felton et al., estos sistemas traducen las señales cerebrales
+registradas en acciones en tiempo real, lo cual abre la posibilidad de restaurar funciones
+comunicativas o motoras en personas con discapacidad severa \cite{felton2007}.
+
+Independientemente de la señal que utilice, una BCI se compone de una serie de etapas que se
+ejecutan de forma cíclica, como se ilustra en la Figura~\ref{fig:bci}. Primero se adquiere y digitaliza la
+señal cerebral. Después se preprocesa para reducir el ruido y los artefactos. Luego se extraen las
+características que mejor representan la intención del usuario, y un clasificador las convierte en
+un comando para el dispositivo. Finalmente, el resultado se muestra al usuario como
+retroalimentación para que pueda ajustar su estrategia \cite{wolpaw2012,nicolasalonso2012}.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  node distance=0.38cm,
+  etapa/.style={draw, rounded corners=2pt, fill=gray!8, align=center, minimum height=1.1cm, text width=2.15cm, font=\footnotesize},
+  flecha/.style={-{Stealth[length=2mm]}, thick}]
+  \node[etapa, fill=red!8] (usr) {Usuario\\(actividad cerebral)};
+  \node[etapa, right=of usr] (adq) {Adquisición\\(EEG)};
+  \node[etapa, right=of adq] (pre) {Preprocesa-\\miento};
+  \node[etapa, right=of pre] (car) {Extracción de\\características};
+  \node[etapa, right=of car] (cla) {Clasificación};
+  \node[etapa, below=1.1cm of cla, fill=blue!6] (app) {Aplicación\\(deletreador)};
+  \draw[flecha] (usr) -- (adq);
+  \draw[flecha] (adq) -- (pre);
+  \draw[flecha] (pre) -- (car);
+  \draw[flecha] (car) -- (cla);
+  \draw[flecha] (cla) -- node[right, font=\footnotesize] {comando} (app);
+  \draw[flecha, dashed] (app.west) -| node[pos=0.25, below, font=\footnotesize] {retroalimentación visual} (usr.south);
+  \begin{scope}[on background layer]
+    \node[draw=gray, dashed, rounded corners, fit=(pre)(car)(cla), inner sep=6pt,
+          label={[font=\footnotesize]above:Procesamiento de la señal}] {};
+  \end{scope}
+\end{tikzpicture}
+\caption{Diagrama general de una interfaz cerebro-computadora. Elaboración propia con base en
+\cite{wolpaw2002,wolpaw2012}.}
+\label{fig:bci}
+\end{figure}
+
+\subsection{Clasificación de las BCI}
+
+Las BCI pueden clasificarse bajo distintos criterios. Según la forma en que se registra la señal,
+se dividen en invasivas, que requieren colocar electrodos dentro o sobre el cerebro, y no
+invasivas, que registran la actividad desde el exterior \cite{nicolasalonso2012}. Según el origen
+de la actividad que aprovechan, se distinguen las exógenas, que dependen de una estimulación
+externa como la iluminación de una matriz de caracteres, y las endógenas, en las que el usuario
+modula voluntariamente su actividad cerebral sin estímulo alguno, por ejemplo al imaginar el
+movimiento de una mano \cite{nicolasalonso2012}. Asimismo, una BCI es síncrona cuando el sistema
+determina los intervalos en los que el usuario puede emitir un comando, y asíncrona cuando el
+usuario puede hacerlo en cualquier momento, lo que exige detectar también los periodos en los que
+no desea comunicarse \cite{wolpaw2012}. Bajo estos criterios, el P300 Speller es una BCI no
+invasiva, exógena y síncrona.
+
+\subsection{Paradigmas de control}
+
+Las BCI basadas en EEG utilizan principalmente cuatro tipos de señales. Las basadas en ritmos sensoriomotores aprovechan la
+disminución de los ritmos mu y beta sobre la corteza motora al imaginar un movimiento. Las de
+potenciales evocados visuales de estado estable (SSVEP) usan la respuesta de la corteza visual a
+estímulos que parpadean a una frecuencia fija. Las de potenciales corticales lentos requieren que
+el usuario aprenda a modificar voluntariamente la línea base de su EEG. Por último, las basadas en
+la P300 aprovechan la respuesta del paradigma del evento raro descrita en la sección anterior
+\cite{nicolasalonso2012,wolpaw2002}. Una de las principales ventajas de este último enfoque es que
+la P300 es una respuesta natural ante los estímulos relevantes, por lo que prácticamente no
+requiere entrenamiento previo del usuario \cite{farwell1988,contreras2021}.

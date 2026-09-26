@@ -1,5 +1,5 @@
 % ---------------------------------------------------------------------
-% 2.13 Modelado del lenguaje y predicción de palabras
+% 2.12 Modelado del lenguaje y predicción de palabras
 % ---------------------------------------------------------------------
 \section[MODELADO DEL LENGUAJE Y PREDICCIÓN DE PALABRAS]{Modelado del lenguaje y predicción de
 palabras}
@@ -25,22 +25,11 @@ mismo texto sin y con predicción, respectivamente.
 
 \subsection{Modelos de lenguaje probabilísticos}
 
-Un modelo de lenguaje asigna una probabilidad a cada secuencia de palabras $w_1, \dots, w_m$, lo
-que permite estimar cuál es la palabra, o el carácter, más probable dado lo que se ha escrito. Por
-la regla de la cadena, esta probabilidad puede descomponerse como el producto de probabilidades
-condicionales, y los modelos de $n$-gramas la aproximan suponiendo que cada palabra depende
-únicamente de las $n-1$ anteriores, supuesto conocido como de Markov \cite{jurafsky2025}:
-\begin{equation}
-P(w_1,\dots,w_m) = \prod_{i=1}^{m} P(w_i \mid w_1,\dots,w_{i-1}) \approx \prod_{i=1}^{m} P(w_i \mid w_{i-n+1},\dots,w_{i-1}).
-\label{eq:ngramas}
-\end{equation}
-Las probabilidades condicionales se estiman contando las frecuencias de aparición en un corpus de
-texto, y dado que muchas secuencias válidas no aparecen en él, se aplican técnicas de suavizado que
-reservan parte de la probabilidad para eventos no observados \cite{jurafsky2025}. La calidad de un
-modelo de lenguaje se evalúa comúnmente mediante la perplejidad, $PP = P(w_1,\dots,w_m)^{-1/m}$,
-que puede interpretarse como el número promedio de opciones entre las que el modelo duda en cada
-paso, concepto que se relaciona directamente con la noción de entropía de la teoría de la
-información de Shannon \cite{shannon1948,jurafsky2025}.
+Un modelo de lenguaje asigna una probabilidad a cada secuencia de palabras, lo que permite estimar
+cuál es la palabra, o el carácter, más probable dado lo que se ha escrito. Los modelos más simples
+son los de $n$-gramas, que suponen que cada palabra depende únicamente de las $n-1$ palabras
+anteriores. Sus probabilidades se estiman contando cuántas veces aparece cada secuencia en un
+corpus de texto \cite{jurafsky2025}.
 
 \subsection{Modelos de lenguaje neuronales}
 

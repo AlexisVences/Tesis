@@ -1,5 +1,5 @@
 % ---------------------------------------------------------------------
-% 2.8 Inteligencia artificial y aprendizaje automático
+% 2.7 Inteligencia artificial y aprendizaje automático
 % ---------------------------------------------------------------------
 \section[INTELIGENCIA ARTIFICIAL Y APRENDIZAJE AUTOMÁTICO]{Inteligencia Artificial y aprendizaje
 automático}
@@ -37,10 +37,10 @@ experiencia con un programa que aprendía a jugar damas mejor que su propio crea
 \cite{samuel1959}. En términos más formales, se trata de un conjunto de métodos que construyen
 modelos a partir de los datos mediante el descubrimiento de patrones estadísticamente
 significativos, para después aplicarlos a datos nuevos de la misma naturaleza \cite{bishop2006}.
-Dependiendo de la información disponible durante el entrenamiento, se distinguen los tres tipos de
-aprendizaje que se presentan en la Tabla~\ref{tab:tipos-ml}; la detección de la P300 corresponde a
-un problema de clasificación binaria supervisada, pues cada época está etiquetada como objetivo o
-no objetivo.
+Según la información disponible durante el entrenamiento, el aprendizaje puede ser supervisado o
+no supervisado, como se resume en la Tabla~\ref{tab:tipos-ml}. La detección de la
+P300 corresponde a un problema de clasificación binaria supervisada, pues cada época está
+etiquetada como objetivo o no objetivo.
 
 \begin{table}[htbp]
 \centering
@@ -49,11 +49,10 @@ no objetivo.
 \small
 \begin{tabularx}{\textwidth}{L{2.6cm}YY}
 \toprule
-\textbf{Tipo} & \textbf{Descripción} & \textbf{Ejemplos de tareas} \\
+\textbf{Tipo} & \textbf{Descripción} & \textbf{Ejemplos} \\
 \midrule
-Supervisado & El modelo aprende una función que relaciona entradas con etiquetas conocidas, ajustando sus parámetros según el error entre la salida y la etiqueta. & Clasificación de épocas P300 / no P300; regresión. \\
-No supervisado & El modelo busca estructura en datos sin etiquetas, agrupándolos o reduciendo su dimensión. & Agrupamiento, ICA, análisis de componentes principales. \\
-Por refuerzo & Un agente aprende por prueba y error a partir de recompensas asociadas a sus acciones. & Control, juegos, adaptación en línea de una BCI. \\
+Supervisado & Aprende a partir de datos con etiquetas conocidas y ajusta sus parámetros según el error entre su salida y la etiqueta. & Clasificar cada época como P300 o no P300. \\
+No supervisado & Busca patrones en datos sin etiquetas, por ejemplo agrupándolos o reduciendo su dimensión. & Agrupamiento de datos y ICA para separar artefactos. \\
 \bottomrule
 \end{tabularx}
 \par\smallskip{\footnotesize Elaboración propia con información de \cite{bishop2006,russell2010}.}
@@ -95,10 +94,10 @@ SVM lineal \cite{rakotomamonjy2008} & Busca el hiperplano que maximiza el margen
 El objetivo de un modelo de aprendizaje automático no es reproducir los datos con los que fue
 entrenado sino desempeñarse correctamente con datos que nunca ha visto, capacidad conocida como
 generalización \cite{goodfellow2016}. Cuando un modelo es demasiado complejo para la cantidad de
-datos disponibles, o cuando se entrena durante demasiadas iteraciones, comienza a memorizar el
-ruido particular del conjunto de entrenamiento: el error de entrenamiento sigue disminuyendo
-mientras que el error de validación deja de bajar y empieza a crecer, fenómeno conocido como
-sobreajuste y que se ilustra en la Figura~\ref{fig:sobreajuste} \cite{goodfellow2016,bishop2006}.
+datos disponibles, o se entrena durante demasiadas iteraciones, empieza a memorizar el ruido del
+conjunto de entrenamiento. En ese momento, el error de entrenamiento sigue bajando, pero el error de
+validación deja de disminuir y comienza a subir. Este fenómeno se conoce como sobreajuste y se
+ilustra en la Figura~\ref{fig:sobreajuste} \cite{goodfellow2016,bishop2006}.
 En el caso del EEG este riesgo es particularmente alto, pues las bases de datos suelen contener
 pocos sujetos y un número limitado de épocas objetivo.
 
@@ -112,14 +111,14 @@ comienza a sobreajustarse. Elaboración propia.}
 
 \subsection{Esquemas de validación}
 
-Para estimar la capacidad de generalización, los datos se dividen en un conjunto de
-entrenamiento, uno de validación, que se usa para ajustar hiperparámetros y decidir cuándo
-detener el entrenamiento, y uno de prueba, que solo se utiliza al final \cite{goodfellow2016}. La
+Para estimar la capacidad de generalización, los datos se dividen en tres conjuntos
+\cite{goodfellow2016}. El de entrenamiento sirve para ajustar el modelo. El de validación se usa
+para ajustar hiperparámetros y decidir cuándo detener el entrenamiento. El de prueba solo se
+utiliza al final. La
 validación cruzada de $k$ particiones repite este proceso $k$ veces rotando el subconjunto de
 validación, lo que ofrece una estimación más estable cuando hay pocos datos \cite{bishop2006}. En
-las BCI, además, es importante distinguir entre la evaluación intrasujeto, en la que el modelo se
-entrena y se prueba con datos de la misma persona, y la evaluación intersujeto, en la que se prueba
-con una persona que no participó en el entrenamiento, ya sea mediante el esquema de dejar un sujeto
-fuera o entrenando con sujetos distintos \cite{alvarado2021}. Contreras evaluó ambos escenarios y
+las BCI, además, se distinguen dos tipos de evaluación. En la evaluación intrasujeto, el modelo se
+entrena y se prueba con datos de la misma persona. En la evaluación intersujeto, se prueba con una
+persona que no participó en el entrenamiento \cite{alvarado2021}. Contreras evaluó ambos escenarios y
 obtuvo valores promedio de AUC cercanos a 0.82 en la evaluación intrasujeto y de 0.70 en la
 intersujeto al considerar filas y columnas en conjunto \cite{contreras2021}.

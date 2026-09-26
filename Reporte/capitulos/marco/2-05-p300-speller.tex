@@ -1,5 +1,5 @@
 % ---------------------------------------------------------------------
-% 2.6 El paradigma P300 Speller
+% 2.5 El paradigma P300 Speller
 % ---------------------------------------------------------------------
 \section[EL PARADIGMA P300 SPELLER]{El paradigma P300 Speller}
 \label{sec:speller}
@@ -7,13 +7,13 @@
 \subsection{Deletreador de Farwell y Donchin}
 
 En 1988 Farwell y Donchin publicaron el sistema que hoy se conoce como P300 Speller o deletreador
-de Donchin, aunque en su artículo original no se habla todavía de una BCI sino de una prótesis
-mental que busca servir como canal de comunicación para personas cuya discapacidad motora les
-impide comunicarse \cite{farwell1988}. El sistema presenta en pantalla una matriz de $6\times6$
-celdas que contiene las letras del alfabeto, algunos números y comandos simples; durante su
-funcionamiento, las filas y columnas de la matriz se intensifican una a la vez en orden aleatorio,
-mientras el usuario concentra su atención en la celda que desea seleccionar, por ejemplo contando
-mentalmente las veces que esta se ilumina \cite{farwell1988}. De los doce eventos posibles, seis
+de Donchin. En su artículo original todavía no se habla de una BCI, sino de una prótesis mental
+pensada como canal de comunicación para personas cuya discapacidad motora les impide comunicarse
+\cite{farwell1988}. El sistema muestra en pantalla una matriz de $6\times6$
+celdas con las letras del alfabeto, algunos números y comandos simples. Durante su funcionamiento,
+las filas y columnas se iluminan una por una en orden aleatorio. Mientras tanto, el usuario se
+concentra en la celda que desea seleccionar, por ejemplo, contando mentalmente cuántas veces se
+ilumina \cite{farwell1988}. De los doce eventos posibles, seis
 filas y seis columnas, solamente dos contienen al carácter objetivo, de modo que estas
 intensificaciones funcionan como los estímulos raros del paradigma \textit{oddball} y provocan una
 P300 que no aparece en las diez restantes, tal como se representa en la Figura~\ref{fig:matriz}.
@@ -56,7 +56,7 @@ P300 que no aparece en las diez restantes, tal como se representa en la Figura~\
 \end{tikzpicture}
 \caption{Matriz de $6\times6$ caracteres del P300 Speller. Si el usuario atiende a la letra N
 (recuadro), tanto la intensificación de la fila 3 como la de la columna 2 son eventos objetivo que
-provocan una P300; las diez intensificaciones restantes son eventos no objetivo. Elaboración propia
+provocan una P300. Las diez intensificaciones restantes son eventos no objetivo. Elaboración propia
 con base en \cite{farwell1988}.}
 \label{fig:matriz}
 \end{figure}
@@ -71,12 +71,12 @@ deletreador siguen siendo la base de la mayoría de los sistemas BCI basados en 
 \subsection{Parámetros de estimulación}
 
 El desempeño del P300 Speller depende en buena medida de los tiempos con que se presentan los
-estímulos. La duración de la intensificación indica el tiempo durante el cual una fila o columna
-permanece iluminada; el intervalo entre estímulos (ISI) corresponde al tiempo en que la matriz
-permanece sin intensificar antes del siguiente evento; y la suma de ambos define el intervalo entre
-inicios de estímulos (SOA). A una secuencia completa de las doce intensificaciones se le llama
-repetición, y el número de repeticiones que se realizan antes de decidir el carácter determina el
-compromiso entre velocidad y exactitud \cite{krusienski2008}. La Figura~\ref{fig:tiempos}
+estímulos. La duración de la intensificación es el tiempo que una fila o columna permanece
+iluminada. El intervalo entre estímulos (ISI) es el tiempo que la matriz permanece sin iluminar
+antes del siguiente evento. La suma de ambos se conoce como intervalo entre inicios de estímulos
+(SOA). A una secuencia completa de las doce intensificaciones se le llama repetición, y el número
+de repeticiones que se hacen antes de elegir el carácter determina el equilibrio entre velocidad y
+exactitud \cite{krusienski2008}. La Figura~\ref{fig:tiempos}
 representa estos parámetros con los valores de la base de datos II de la tercera competencia BCI,
 utilizada en este trabajo, en la que cada intensificación dura 100~ms seguida de 75~ms sin
 estímulo, y cada carácter se deletrea con 15 repeticiones, es decir, con 180 intensificaciones
@@ -112,12 +112,10 @@ competencia BCI III (F = fila, C = columna). Elaboración propia con base en \ci
 \subsection{Épocas de EEG y decodificación del carácter}
 
 Para clasificar la señal, el registro continuo se divide en segmentos que inician en el instante
-de cada intensificación, llamados épocas. Siguiendo la notación de Mercado \cite{mercado2016},
-retomada por Contreras \cite{contreras2021}, una sesión de registro puede expresarse como
-$x_{i,ch}(n)$, donde $i$ es el número de registro, $ch$ el canal y $n=1,2,\dots,N$ las muestras;
-una época se denota como $x^{k,y}_{i,ch}(n)$, donde $k\in\{a,u\}$ indica si se trata de una época
-atendida, sincronizada con una fila o columna que contiene al carácter objetivo, o no atendida, y
-$y\in\{f,c\}$ indica si la intensificación correspondió a una fila o a una columna.
+de cada intensificación, llamados épocas. Una época es atendida si corresponde a una fila o
+columna que contiene el carácter objetivo, y no atendida en caso contrario \cite{contreras2021}. En
+lo sucesivo, $x^{f}_{j}$ y $x^{c}_{j}$ denotan las épocas asociadas a la fila $f$ y a la columna $c$
+en la repetición $j$.
 
 Una vez que un clasificador asigna a cada época un puntaje $g(\cdot)$ que refleja la probabilidad
 de que contenga una P300, el carácter se decide sumando los puntajes de cada fila y cada columna a
@@ -142,34 +140,15 @@ métricas de evaluación de la Sección~\ref{sec:metricas} deben elegirse con cu
 \subsection{Variantes del paradigma}
 
 El paradigma de filas y columnas presenta algunos problemas conocidos. Los errores de adyacencia
-ocurren cuando el sistema selecciona un carácter vecino al objetivo, debido a que las
-intensificaciones de filas o columnas contiguas también atraen parcialmente la atención del
-usuario, y el problema del doble destello aparece cuando la misma fila o columna objetivo se
-intensifica dos veces seguidas, de forma que la segunda P300 se atenúa o se traslapa con la
-primera \cite{townsend2010}. Para mitigarlos se han propuesto distintas variantes, resumidas en la
-Tabla~\ref{tab:variantes}, entre las que destacan el paradigma de tablero de ajedrez de Townsend et
+ocurren cuando el sistema elige un carácter vecino al objetivo, porque las filas o columnas cercanas
+también atraen parte de la atención del usuario. El problema del doble destello aparece cuando la
+misma fila o columna objetivo se ilumina dos veces seguidas. En ese caso, la segunda P300 se atenúa
+o se mezcla con la primera \cite{townsend2010}. Para mitigarlos se han propuesto distintas variantes, entre las que
+destacan el paradigma de tablero de ajedrez de Townsend et
 al., que intensifica grupos de caracteres no contiguos \cite{townsend2010}, y el uso de rostros
 conocidos superpuestos a los caracteres, con el que Kaufmann et al. obtuvieron ERP de mayor
 amplitud y redujeron el número de secuencias necesarias para una selección correcta
 \cite{kaufmann2011}.
-
-\begin{table}[htbp]
-\centering
-\caption{Variantes del paradigma de estimulación del P300 Speller}
-\label{tab:variantes}
-\small
-\begin{tabularx}{\textwidth}{L{3.0cm}YY}
-\toprule
-\textbf{Variante} & \textbf{Descripción} & \textbf{Ventajas y desventajas} \\
-\midrule
-Filas y columnas \cite{farwell1988} & Se intensifica una fila o columna completa a la vez. & Solo 12 eventos por repetición; sufre errores de adyacencia y doble destello. \\
-Carácter único \cite{guger2009} & Se intensifica un solo carácter a la vez. & P300 de mayor amplitud por ser más infrecuente, pero requiere 36 eventos por repetición y resultó menos exacto en \cite{guger2009}. \\
-Tablero de ajedrez \cite{townsend2010} & Se intensifican grupos de caracteres que no comparten fila ni columna. & Reduce errores de adyacencia y doble destello; mayor complejidad en el diseño de los grupos. \\
-Estímulos con rostros \cite{kaufmann2011} & Se superpone la imagen de un rostro conocido sobre los caracteres. & ERP de mayor amplitud y menos repeticiones; requiere estímulos visuales más elaborados. \\
-\bottomrule
-\end{tabularx}
-\par\smallskip{\footnotesize Elaboración propia.}
-\end{table}
 
 \subsection{Bases de datos públicas}
 
@@ -179,7 +158,7 @@ Las más utilizadas provienen de la segunda y tercera competencias internacional
 registradas con 64 canales a 240~Hz con el paradigma de filas y columnas
 \cite{blankertz2004,blankertz2006}, mientras que la base de datos de la Escuela Politécnica Federal
 de Lausana (EPFL) incluye registros de personas con discapacidad motora con un paradigma de seis
-imágenes \cite{hoffmann2008}. La Tabla~\ref{tab:datasets} resume sus características; en el
+imágenes \cite{hoffmann2008}. La Tabla~\ref{tab:datasets} resume sus características. En el
 presente trabajo se emplea la base de datos II de la competencia BCI III, que contiene registros de
 dos sujetos con 85 caracteres de entrenamiento y 100 de prueba cada uno.
 
