@@ -1,0 +1,96 @@
+% =====================================================================
+%  Capítulo 4. Análisis y diseño
+% =====================================================================
+\chapter[ANÁLISIS Y DISEÑO]{Análisis y diseño}
+\label{cap:analisis-diseno}
+
+El análisis consiste en identificar qué debe ocurrir dentro del sistema y cómo se relacionarán
+entre sí los distintos procesos que lo conforman, lo que permite entender el problema y documentar
+las relaciones entre los usuarios, el programa y los componentes que integran la lógica del
+sistema antes de escribir cualquier línea de código \cite{pressman2010}. En el caso del presente
+trabajo, esta etapa corresponde a las fases de definición de requerimientos y de diseño de la
+arquitectura del modelo incremental descrito en el Capítulo~\ref{cap:propuesta}, y se orienta a
+describir, mediante requerimientos y diagramas, el comportamiento esperado de la interfaz del P300
+Speller, del módulo de detección de la componente P300 y del módulo de predicción de palabras,
+combinando el lenguaje del usuario con el enfoque técnico de quien desarrolla el sistema.
+
+Por otra parte, el diseño se encarga de traducir dicho análisis en decisiones concretas de
+implementación: a partir de los requerimientos y los diagramas generados se define cómo se
+organizará el código en módulos, cómo se intercambiará la información entre la interfaz, el
+modelo de aprendizaje profundo y el modelo de lenguaje, qué datos deberán almacenarse, así como la
+plataforma en la que se ejecutará cada componente y los recursos que requerirá \cite{pressman2010}.
+
+\section[REQUERIMIENTOS]{Requerimientos}
+
+%% ---------------------------------------------------------------------
+%% NOTA: los siguientes requerimientos son una PROPUESTA inicial basada
+%% en el protocolo. Revisar, eliminar o agregar según lo que se decida.
+%% ---------------------------------------------------------------------
+
+\subsection{Requerimientos funcionales}
+
+\begin{itemize}
+  \item \textbf{RF1:} El sistema deberá proveer una interfaz gráfica que muestre una matriz de
+  selección de caracteres de $6\times6$, con letras, números y comandos básicos de edición.
+  \item \textbf{RF2:} El sistema deberá intensificar de manera aleatoria las filas y columnas de la
+  matriz durante cada secuencia de estimulación.
+  \item \textbf{RF3:} El sistema permitirá configurar los parámetros de estimulación, como la
+  duración de la intensificación, el intervalo entre estímulos y el número de repeticiones por
+  selección.
+  \item \textbf{RF4:} El sistema deberá cargar registros de EEG provenientes de bases de datos
+  públicas del paradigma P300 Speller, junto con la información de los estímulos asociados.
+  \item \textbf{RF5:} El sistema deberá preprocesar las señales EEG mediante filtrado pasa banda,
+  remuestreo, segmentación en épocas y normalización por canal.
+  \item \textbf{RF6:} El sistema utilizará un modelo de aprendizaje profundo para clasificar cada
+  época como objetivo o no objetivo, asignándole un puntaje de probabilidad.
+  \item \textbf{RF7:} El sistema deberá determinar el carácter seleccionado a partir de la
+  acumulación de los puntajes de cada fila y cada columna a lo largo de las repeticiones.
+  \item \textbf{RF8:} El sistema mostrará en la interfaz el texto construido por el usuario,
+  actualizándolo después de cada selección.
+  \item \textbf{RF9:} El sistema contará con un módulo de predicción de palabras que genere
+  sugerencias a partir de los caracteres escritos hasta ese momento.
+  \item \textbf{RF10:} El sistema permitirá seleccionar una palabra sugerida mediante el mismo
+  mecanismo de estimulación y detección de la componente P300.
+  \item \textbf{RF11:} El sistema permitirá borrar el último carácter o palabra seleccionados
+  mediante un comando de la matriz.
+  \item \textbf{RF12:} El sistema permitirá configurar el subconjunto de canales EEG empleados por
+  el modelo de detección.
+  \item \textbf{RF13:} El sistema mostrará al finalizar una sesión las métricas de desempeño
+  obtenidas, como la exactitud por carácter, el tiempo por selección y la tasa de transferencia de
+  información.
+\end{itemize}
+
+\subsection{Requerimientos no funcionales}
+
+\begin{itemize}
+  \item \textbf{RNF1:} El sistema deberá implementarse en el lenguaje de programación Python.
+  \item \textbf{RNF2:} El sistema deberá ejecutarse en una computadora con sistema operativo
+  Windows.
+  \item \textbf{RNF3:} La presentación de los estímulos deberá sincronizarse con los instantes
+  registrados de cada intensificación, de modo que cada época corresponda al estímulo que la
+  provocó.
+  \item \textbf{RNF4:} La clasificación de las épocas de una selección deberá completarse en un
+  tiempo que no retrase de manera perceptible la presentación de la siguiente secuencia de
+  estímulos.
+  \item \textbf{RNF5:} La interfaz deberá presentar la matriz con un tamaño de carácter y un
+  contraste suficientes para que el usuario pueda fijar su atención sin esfuerzo visual excesivo.
+  \item \textbf{RNF6:} El sistema deberá tener una arquitectura modular que permita reemplazar el
+  modelo de detección o el modelo de predicción de palabras sin modificar la interfaz.
+  \item \textbf{RNF7:} La etapa de inferencia del modelo deberá poder evaluarse en un
+  microordenador NVIDIA Jetson.
+  \item \textbf{RNF8:} El código fuente deberá estar documentado y acompañarse de un manual de
+  usuario que describa la instalación, la ejecución y el uso general del sistema.
+\end{itemize}
+
+\section[CASOS DE USO]{Casos de uso}
+
+Los casos de uso representan las distintas funcionalidades del sistema y se definen a partir de los
+requerimientos funcionales, de manera que cada uno describe una acción específica, junto con sus
+precondiciones, pasos y posibles errores, que el sistema debe realizar para cumplir con las
+necesidades de quienes interactúan con él \cite{pressman2010}. Los actores, por su parte, son los
+roles que se asignan a las personas o a los sistemas externos que interactúan con dichas
+funcionalidades; en el presente trabajo intervienen principalmente el usuario que construye
+mensajes a través del P300 Speller y quien configura los parámetros de estimulación y del modelo
+de detección.
+
+%% TODO: tabla de actores, tablas de casos de uso y diagramas de casos de uso.

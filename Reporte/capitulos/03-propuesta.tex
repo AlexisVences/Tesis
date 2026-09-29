@@ -2,4 +2,247 @@
 %  Capítulo 3. Propuesta a desarrollar
 % =====================================================================
 \chapter[PROPUESTA A DESARROLLAR]{Propuesta a desarrollar}
-%% TODO
+\label{cap:propuesta}
+
+Se propone el desarrollo de un sistema de comunicación asistida implementado en Python que permita
+a personas con compromisos motores severos construir mensajes a partir de sus señales
+electroencefalográficas, empleando el paradigma P300 Speller descrito en la
+Sección~\ref{sec:speller}. El sistema presentará al usuario una matriz visual de caracteres cuyas
+filas y columnas se iluminarán de manera aleatoria mientras este concentra su atención en el
+carácter que desea seleccionar; las épocas de EEG asociadas a cada intensificación serán
+clasificadas por un modelo de aprendizaje profundo como objetivo o no objetivo, y a partir de estas
+clasificaciones se determinará el carácter elegido \cite{farwell1988}. Para agilizar la escritura,
+el texto construido hasta ese momento alimentará un módulo de predicción de palabras que mostrará
+sugerencias al usuario, de modo que una palabra completa pueda seleccionarse sin deletrearla letra
+por letra, enfoque que ha mostrado reducir el tiempo de escritura en sistemas de este tipo
+\cite{ryan2011,hong2026}.
+
+Dado que la adquisición de señales propias implicaría contar con equipo especializado de 64
+canales, los modelos se entrenarán y evaluarán con bases de datos públicas del paradigma P300,
+principalmente la base de datos II de la tercera competencia internacional de BCI
+\cite{blankertz2006}. Sobre estos datos se evaluarán estrategias para reducir el número de canales
+y el número de repeticiones necesarias por carácter, con el propósito de acercar el sistema a
+condiciones de uso más prácticas sin comprometer de manera importante su exactitud, que son las dos
+limitaciones persistentes identificadas en el estado del arte.
+
+\section[ARQUITECTURA DEL SISTEMA]{Arquitectura del sistema}
+
+La arquitectura general del sistema se compone de las etapas que se muestran en la
+Figura~\ref{fig:arquitectura}: la adquisición de las señales EEG a partir de bases de datos
+públicas, su preprocesamiento, el entrenamiento del modelo de aprendizaje profundo, la
+clasificación de los estímulos como objetivo o no objetivo y, finalmente, la construcción del texto
+apoyada por el modelo de predicción de palabras, que mostrará sugerencias a partir de los caracteres
+seleccionados hasta ese momento.
+
+\begin{figure}[htbp]
+\centering
+\IfFileExists{imagenes/03-propuesta/arquitectura.png}{%
+  \includegraphics[width=0.95\textwidth]{03-propuesta/arquitectura.png}%
+}{%
+  \fbox{\parbox[c][5cm][c]{0.9\textwidth}{\centering\small
+  Colocar la imagen de la arquitectura del sistema en\\
+  \texttt{imagenes/03-propuesta/arquitectura.png}}}%
+}
+\caption{Arquitectura del sistema. Elaboración propia.}
+\label{fig:arquitectura}
+\end{figure}
+
+La etapa de preprocesamiento aplicará las técnicas descritas en la Sección~\ref{sec:pds}, entre
+ellas el filtrado pasa banda, el remuestreo, la segmentación en ventanas temporales posteriores a
+cada estímulo y la normalización de cada canal, con el fin de generar un conjunto de datos adecuado
+para el entrenamiento y la validación del modelo. El modelo de detección se construirá con la
+biblioteca PyTorch, y para el procesamiento y manipulación de los datos se emplearán bibliotecas
+como NumPy y Pandas. La interfaz gráfica, por su parte, se desarrollará con PyQt e integrará la
+matriz visual del P300 Speller, el área en la que se muestra el texto construido y las sugerencias
+del módulo de predicción de palabras.
+
+El sistema se implementará inicialmente en una computadora con sistema operativo Windows, en la
+que se realizará el entrenamiento, la validación y la inferencia de los modelos. Así mismo, se
+analizará la viabilidad de ejecutar únicamente la etapa de inferencia en un microordenador NVIDIA
+Jetson, con el propósito de evaluar la posibilidad de una implementación más portable, en línea con
+el uso de arquitecturas compactas como EEGNet o SepConv1D, cuyo reducido número de parámetros las
+hace convenientes para dispositivos con recursos limitados \cite{lawhern2018,alvarado2021}.
+
+\section[FLUJO DE OPERACIÓN]{Flujo de operación}
+
+Durante el uso del sistema, la selección de cada carácter sigue el ciclo que se representa en la
+Figura~\ref{fig:flujo}. Las filas y columnas de la matriz se intensifican en orden aleatorio y el
+usuario mantiene su atención en el carácter que desea escribir; cuando la fila o la columna que lo
+contiene se ilumina, se genera un potencial P300 aproximadamente 300~ms después del estímulo
+\cite{farwell1988,polich2007}. La señal registrada se divide en épocas sincronizadas con cada
+intensificación, que después de ser preprocesadas se entregan al modelo, el cual asigna a cada una
+un puntaje que refleja la probabilidad de que contenga una P300. Estos puntajes se acumulan por
+fila y por columna a lo largo de las repeticiones, conforme a la Ecuación~\eqref{eq:decodificacion},
+y el carácter seleccionado corresponde a la intersección de la fila y la columna con el puntaje más
+alto.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  node distance=0.55cm and 0.5cm,
+  paso/.style={draw, rounded corners=2pt, fill=gray!8, align=center, minimum height=1.15cm,
+               text width=2.55cm, font=\footnotesize},
+  flecha/.style={-{Stealth[length=2mm]}, thick}]
+  \node[paso, fill=red!8] (est) {Intensificación aleatoria de filas y columnas};
+  \node[paso, right=of est] (eeg) {Registro del EEG y segmentación en épocas};
+  \node[paso, right=of eeg] (pre) {Preprocesamiento (filtrado, remuestreo, normalización)};
+  \node[paso, right=of pre, fill=blue!8] (mod) {Modelo de aprendizaje profundo: puntaje por época};
+  \node[paso, below=0.9cm of mod] (dec) {Acumulación de puntajes y selección del carácter};
+  \node[paso, left=of dec, fill=blue!8] (pal) {Predicción de palabras a partir del texto escrito};
+  \node[paso, left=of pal] (sug) {Presentación de sugerencias en la interfaz};
+  \node[paso, left=of sug, fill=red!8] (usr) {Usuario elige un carácter o una palabra sugerida};
+  \draw[flecha] (est) -- (eeg);
+  \draw[flecha] (eeg) -- (pre);
+  \draw[flecha] (pre) -- (mod);
+  \draw[flecha] (mod) -- (dec);
+  \draw[flecha] (dec) -- (pal);
+  \draw[flecha] (pal) -- (sug);
+  \draw[flecha] (sug) -- (usr);
+  \draw[flecha, dashed] (usr) -- node[left, font=\scriptsize, align=right] {siguiente\\selección} (est);
+\end{tikzpicture}
+\caption{Flujo de operación para la selección de un carácter o de una palabra sugerida.
+Elaboración propia.}
+\label{fig:flujo}
+\end{figure}
+
+Una vez que el carácter se agrega al texto, el módulo de predicción de palabras estima las
+palabras más probables a partir de los caracteres escritos, siguiendo alguno de los enfoques de
+modelado del lenguaje revisados en la Sección~\ref{sec:lenguaje}, y las presenta en la interfaz
+como opciones adicionales que el usuario puede seleccionar mediante el mismo mecanismo de
+atención. De esta forma, cada selección puede corresponder a un carácter o a una palabra completa,
+y el número de repeticiones empleado en cada una de ellas será uno de los parámetros a optimizar,
+pues determina directamente la tasa de transferencia de información del sistema, tal como se
+describió en la Sección~\ref{sec:metricas}.
+
+\section[METODOLOGÍA]{Metodología}
+
+El desarrollo del presente Trabajo Terminal se realizará mediante una combinación de dos
+metodologías, dado que el proyecto involucra tanto la construcción de un sistema de software como
+la de un modelo de aprendizaje profundo. Para el desarrollo general del sistema se empleará un
+modelo de desarrollo incremental, mientras que para el modelo de detección de la componente P300 se
+utilizará la metodología CRISP-ML, la cual estructura el proceso de construcción, validación y
+optimización de modelos de aprendizaje automático en fases iterativas \cite{studer2021}. Ambas
+metodologías se ejecutarán en paralelo y convergerán en la etapa de integración, en la que el
+modelo entrenado se incorpora al sistema completo.
+
+\subsection{Metodología de desarrollo del sistema}
+
+En el modelo incremental, el software se construye de manera progresiva mediante una serie de
+incrementos, cada uno de los cuales agrega funcionalidad a los anteriores y produce una versión
+operativa que puede evaluarse antes de continuar con el siguiente \cite{pressman2010}. En este
+trabajo, cada incremento corresponderá a la implementación e integración de uno de los módulos
+funcionales del sistema, lo que permitirá evaluar sus componentes de forma progresiva mientras el
+modelo de detección de la componente P300 se desarrolla en paralelo. La
+Figura~\ref{fig:incremental} ilustra la organización de los incrementos, y las etapas consideradas
+son las siguientes:
+
+\begin{enumerate}
+  \item \textbf{Definición de requerimientos del sistema.} En esta etapa se realizará una revisión
+  del estado del arte y se identificarán los requerimientos funcionales y no funcionales del
+  sistema de comunicación asistida, así como las características que deberá cumplir la interfaz de
+  usuario y los módulos que integrarán la aplicación.
+  \item \textbf{Diseño de la arquitectura del sistema.} Se definirá la arquitectura general,
+  identificando los módulos que la conforman y las interacciones entre ellos; entre estos se
+  consideran el módulo de detección de la componente P300, el módulo de predicción de palabras y
+  la interfaz de usuario.
+  \item \textbf{Diseño de la interfaz de usuario.} Se desarrollarán los prototipos de la interfaz
+  gráfica que permitirá la interacción del usuario con la matriz del P300 Speller y con las
+  sugerencias del módulo de predicción de palabras.
+  \item \textbf{Desarrollo e integración de módulos.} Se implementarán los distintos módulos del
+  sistema, incluyendo la interfaz de usuario, el módulo de predicción de palabras y la integración
+  del modelo de detección de la componente P300, agregando cada uno como un nuevo incremento sobre
+  la versión anterior.
+  \item \textbf{Pruebas funcionales del sistema.} Se verificará el funcionamiento de la
+  interacción entre los módulos, así como la correcta construcción de palabras mediante el
+  paradigma P300 Speller.
+  \item \textbf{Documentación del sistema.} Finalmente, se generará la documentación técnica del
+  sistema y el manual de usuario correspondiente.
+\end{enumerate}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  fase/.style={draw, minimum height=0.7cm, minimum width=1.75cm, font=\scriptsize, align=center},
+  flecha/.style={-{Stealth[length=1.8mm]}, thick}]
+  \foreach \i/\nombre in {1/{Incremento 1: interfaz y matriz P300}, 2/{Incremento 2: predicción de palabras}, 3/{Incremento 3: integración del modelo P300}}{
+    \pgfmathsetmacro{\x}{(\i-1)*2.2}
+    \pgfmathsetmacro{\y}{-(\i-1)*1.35}
+    \node[fase, fill=gray!10, anchor=west] (a\i) at (\x,\y) {Análisis};
+    \node[fase, fill=blue!8, right=0cm of a\i] (d\i) {Diseño};
+    \node[fase, fill=red!8, right=0cm of d\i] (c\i) {Codificación};
+    \node[fase, fill=green!10, right=0cm of c\i] (p\i) {Pruebas};
+    \node[font=\scriptsize, anchor=south west] at (a\i.north west) {\nombre};
+    \node[font=\scriptsize, right=0.08cm of p\i] {Versión \i};
+  }
+  \draw[flecha] (0,-3.4) -- node[below, font=\scriptsize] {Tiempo de desarrollo} (13.4,-3.4);
+\end{tikzpicture}
+\caption{Organización del desarrollo del sistema mediante el modelo incremental. Elaboración propia
+con base en \cite{pressman2010}.}
+\label{fig:incremental}
+\end{figure}
+
+\subsection{Metodología para el desarrollo del modelo de aprendizaje profundo}
+
+El modelo de detección de la componente P300 se desarrollará siguiendo la metodología CRISP-ML,
+una adaptación del proceso CRISP-DM para proyectos de aprendizaje automático que organiza el
+trabajo en fases con retroalimentación entre ellas, de modo que es posible regresar a la
+preparación de los datos o al modelado cuando los resultados de la evaluación no son
+satisfactorios \cite{studer2021}. La Figura~\ref{fig:crispml} muestra el ciclo de estas fases, que
+en el presente trabajo se describen a continuación:
+
+\begin{enumerate}
+  \item \textbf{Comprensión del problema.} Se establecerán los objetivos particulares de detección
+  del modelo y los criterios con los que se evaluará su desempeño.
+  \item \textbf{Comprensión y análisis de los datos.} Se seleccionarán bases de datos públicas de
+  señales EEG asociadas al paradigma P300 Speller, analizando su estructura, número de sujetos y
+  cantidad de canales, con el fin de determinar las características necesarias para el
+  entrenamiento del modelo.
+  \item \textbf{Preparación de los datos.} Se aplicarán técnicas de preprocesamiento como el
+  filtrado pasa banda, la división en ventanas temporales y la normalización, generando un
+  conjunto de datos adecuado para el entrenamiento y la validación del modelo de detección de la
+  componente P300.
+  \item \textbf{Diseño y modelado.} Se definirán las posibles arquitecturas de aprendizaje profundo
+  para la detección de la componente P300, se realizará el ajuste de hiperparámetros y se
+  llevarán a cabo experimentos orientados a la reducción del número de canales y de repeticiones
+  necesarias para la detección.
+  \item \textbf{Evaluación.} Se analizará el desempeño del modelo mediante métricas de
+  clasificación como la exactitud, la sensibilidad, la precisión y el F1-score, además de la
+  construcción de la matriz de confusión, y se evaluará el impacto de la reducción de canales y
+  repeticiones en el rendimiento del sistema.
+  \item \textbf{Integración del modelo.} El modelo desarrollado se integrará en el sistema completo
+  de comunicación asistida para su uso dentro del paradigma P300 Speller.
+\end{enumerate}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  fase/.style={draw, rounded corners=3pt, fill=blue!6, align=center, text width=2.4cm,
+               minimum height=1.0cm, font=\footnotesize},
+  flecha/.style={-{Stealth[length=2mm]}, thick}]
+  \def\r{3.3}
+  \foreach \i/\ang/\texto in {1/90/Comprensión del problema, 2/30/Comprensión de los datos,
+      3/-30/Preparación de los datos, 4/-90/Diseño y modelado, 5/-150/Evaluación,
+      6/150/Integración del modelo}{
+    \node[fase] (f\i) at (\ang:\r) {\texto};
+  }
+  \node[circle, draw, fill=red!8, align=center, font=\footnotesize, minimum size=2.1cm] (c)
+    at (0,0) {Datos EEG\\públicos};
+  \foreach \a/\b in {1/2, 2/3, 3/4, 4/5, 5/6}{
+    \draw[flecha] (f\a) to[bend left=12] (f\b);
+  }
+  \draw[flecha, dashed] (f5.east) -- node[below, font=\scriptsize] {reajuste} (f3.west);
+  \draw[flecha, dashed] (c) -- (f2);
+\end{tikzpicture}
+\caption{Fases de la metodología CRISP-ML aplicadas al desarrollo del modelo de detección de la
+componente P300. Elaboración propia con base en \cite{studer2021}.}
+\label{fig:crispml}
+\end{figure}
+
+Debido a que el proyecto requiere una integración estrecha entre el procesamiento de las señales
+EEG, el desarrollo del modelo de aprendizaje profundo y la implementación del sistema de
+comunicación asistida, algunas actividades relacionadas con el diseño experimental, el desarrollo y
+la evaluación del modelo serán realizadas por ambos integrantes. No obstante, cada integrante
+tendrá un mayor enfoque en determinadas áreas: uno se orientará principalmente al desarrollo de la
+interfaz gráfica, la integración de módulos y la arquitectura general del sistema, mientras que el
+otro se enfocará en el análisis de los datos EEG, la experimentación y la evaluación del desempeño
+del modelo.
