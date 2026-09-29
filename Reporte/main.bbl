@@ -124,6 +124,15 @@
       \field{year}{2020}
       \field{pages}{255\bibrangedash 265}
       \range{pages}{11}
+      \verb{doi}
+      \verb 10.1016/S1474-4422(19)30411-9
+      \endverb
+      \verb{urlraw}
+      \verb https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9945815/
+      \endverb
+      \verb{url}
+      \verb https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9945815/
+      \endverb
     \endentry
     \entry{oms2011}{report}{}{}
       \name{author}{2}{}{%
@@ -154,6 +163,12 @@
       \field{labeltitlesource}{title}
       \field{title}{Informe mundial sobre la discapacidad}
       \field{year}{2011}
+      \verb{urlraw}
+      \verb https://iris.who.int/handle/10665/75356
+      \endverb
+      \verb{url}
+      \verb https://iris.who.int/handle/10665/75356
+      \endverb
     \endentry
     \entry{inegi2018}{report}{}{}
       \name{author}{1}{}{%
@@ -181,6 +196,12 @@
       \field{labeltitlesource}{title}
       \field{title}{Encuesta Nacional de la Dinámica Demográfica ({ENADID}) 2018}
       \field{year}{2018}
+      \verb{urlraw}
+      \verb https://www.inegi.org.mx/programas/enadid/2018/
+      \endverb
+      \verb{url}
+      \verb https://www.inegi.org.mx/programas/enadid/2018/
+      \endverb
     \endentry
     \entry{birbaumer1999}{article}{}{}
       \name{author}{9}{}{%
@@ -412,6 +433,12 @@
       \verb{doi}
       \verb 10.1016/j.cnp.2017.07.002
       \endverb
+      \verb{urlraw}
+      \verb https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6123891/
+      \endverb
+      \verb{url}
+      \verb https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6123891/
+      \endverb
     \endentry
     \entry{berger1929}{article}{}{}
       \name{author}{1}{}{%
@@ -618,6 +645,12 @@
       \verb{doi}
       \verb 10.1109/TNSRE.2006.875642
       \endverb
+      \verb{urlraw}
+      \verb https://infoscience.epfl.ch/record/146154
+      \endverb
+      \verb{url}
+      \verb https://infoscience.epfl.ch/record/146154
+      \endverb
     \endentry
     \entry{ganong2010}{book}{}{}
       \name{author}{4}{}{%
@@ -786,6 +819,12 @@
       \verb{doi}
       \verb 10.1016/j.clinph.2017.06.254
       \endverb
+      \verb{urlraw}
+      \verb https://archive-ouverte.unige.ch/unige:99725
+      \endverb
+      \verb{url}
+      \verb https://archive-ouverte.unige.ch/unige:99725
+      \endverb
     \endentry
     \entry{guyton2016}{book}{}{}
       \name{author}{1}{}{%
@@ -877,6 +916,12 @@
       \verb{doi}
       \verb 10.1111/1469-8986.3720163
       \endverb
+      \verb{urlraw}
+      \verb https://sccn.ucsd.edu/~jung/pdf/PSY00.pdf
+      \endverb
+      \verb{url}
+      \verb https://sccn.ucsd.edu/~jung/pdf/PSY00.pdf
+      \endverb
     \endentry
     \entry{kropotov2009}{book}{}{}
       \name{author}{1}{}{%
@@ -936,6 +981,12 @@
       \range{pages}{21}
       \verb{doi}
       \verb 10.1016/j.clinph.2007.04.019
+      \endverb
+      \verb{urlraw}
+      \verb https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2715154/
+      \endverb
+      \verb{url}
+      \verb https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2715154/
       \endverb
     \endentry
     \entry{tong2009}{book}{}{}
@@ -1190,6 +1241,12 @@
       \verb{doi}
       \verb 10.3390/s120201211
       \endverb
+      \verb{urlraw}
+      \verb https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3304110/
+      \endverb
+      \verb{url}
+      \verb https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3304110/
+      \endverb
     \endentry
     \entry{krusienski2008}{article}{}{}
       \name{author}{5}{}{%
@@ -1241,6 +1298,12 @@
       \range{pages}{7}
       \verb{doi}
       \verb 10.1016/j.jneumeth.2007.07.017
+      \endverb
+      \verb{urlraw}
+      \verb https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2349091/
+      \endverb
+      \verb{url}
+      \verb https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2349091/
       \endverb
     \endentry
     \entry{rakotomamonjy2008}{article}{}{}
@@ -1313,6 +1376,12 @@
       \range{pages}{13}
       \verb{doi}
       \verb 10.1109/TPAMI.2010.125
+      \endverb
+      \verb{urlraw}
+      \verb https://pure.ulster.ac.uk/en/publications/452a7bd8-8a35-4f40-9976-8203480f778c
+      \endverb
+      \verb{url}
+      \verb https://pure.ulster.ac.uk/en/publications/452a7bd8-8a35-4f40-9976-8203480f778c
       \endverb
     \endentry
     \entry{townsend2010}{article}{}{}
@@ -1389,6 +1458,12 @@
       \range{pages}{12}
       \verb{doi}
       \verb 10.1016/j.clinph.2010.01.030
+      \endverb
+      \verb{urlraw}
+      \verb https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2879474/
+      \endverb
+      \verb{url}
+      \verb https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2879474/
       \endverb
     \endentry
     \entry{kaufmann2011}{article}{}{}
@@ -1522,6 +1597,12 @@
       \verb{doi}
       \verb 10.1109/TBME.2004.826692
       \endverb
+      \verb{urlraw}
+      \verb https://www.bbci.de/competition/ii/
+      \endverb
+      \verb{url}
+      \verb https://www.bbci.de/competition/ii/
+      \endverb
     \endentry
     \entry{hoffmann2008}{article}{}{}
       \name{author}{4}{}{%
@@ -1567,6 +1648,12 @@
       \range{pages}{11}
       \verb{doi}
       \verb 10.1016/j.jneumeth.2007.03.005
+      \endverb
+      \verb{urlraw}
+      \verb https://infoscience.epfl.ch/record/101093
+      \endverb
+      \verb{url}
+      \verb https://infoscience.epfl.ch/record/101093
       \endverb
     \endentry
     \entry{proakis2007}{book}{}{}
@@ -1864,6 +1951,12 @@
       \verb{doi}
       \verb 10.1088/1741-2560/3/4/007
       \endverb
+      \verb{urlraw}
+      \verb https://hal.science/hal-00521054
+      \endverb
+      \verb{url}
+      \verb https://hal.science/hal-00521054
+      \endverb
     \endentry
     \entry{santos2017}{thesis}{}{}
       \name{author}{3}{}{%
@@ -1935,6 +2028,7 @@
       \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
+      \field{eprinttype}{arxiv}
       \field{journaltitle}{Neurocomputing}
       \field{title}{A few filters are enough: Convolutional neural network for {P300} detection}
       \field{volume}{425}
@@ -1943,6 +2037,9 @@
       \range{pages}{16}
       \verb{doi}
       \verb 10.1016/j.neucom.2020.10.104
+      \endverb
+      \verb{eprint}
+      \verb 1909.06970
       \endverb
     \endentry
     \entry{aggarwal2018}{book}{}{}
@@ -2055,6 +2152,7 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{eid}{056013}
+      \field{eprinttype}{arxiv}
       \field{journaltitle}{J. Neural Eng.}
       \field{number}{5}
       \field{title}{{EEGNet}: A compact convolutional neural network for {EEG}-based brain--computer interfaces}
@@ -2062,6 +2160,9 @@
       \field{year}{2018}
       \verb{doi}
       \verb 10.1088/1741-2552/aace8c
+      \endverb
+      \verb{eprint}
+      \verb 1611.08024
       \endverb
     \endentry
     \entry{rumelhart1986}{article}{}{}
@@ -2134,8 +2235,12 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{booktitle}{Proc. 3rd Int. Conf. Learn. Represent. ({ICLR})}
+      \field{eprinttype}{arxiv}
       \field{title}{Adam: A method for stochastic optimization}
       \field{year}{2015}
+      \verb{eprint}
+      \verb 1412.6980
+      \endverb
     \endentry
     \entry{srivastava2014}{article}{}{}
       \name{author}{5}{}{%
@@ -2184,6 +2289,12 @@
       \field{year}{2014}
       \field{pages}{1929\bibrangedash 1958}
       \range{pages}{30}
+      \verb{urlraw}
+      \verb https://jmlr.org/papers/v15/srivastava14a.html
+      \endverb
+      \verb{url}
+      \verb https://jmlr.org/papers/v15/srivastava14a.html
+      \endverb
     \endentry
     \entry{ioffe2015}{inproceedings}{}{}
       \name{author}{2}{}{%
@@ -2211,12 +2322,22 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{booktitle}{Proc. 32nd Int. Conf. Mach. Learn. ({ICML})}
+      \field{eprinttype}{arxiv}
       \field{series}{PMLR}
       \field{title}{Batch normalization: Accelerating deep network training by reducing internal covariate shift}
       \field{volume}{37}
       \field{year}{2015}
       \field{pages}{448\bibrangedash 456}
       \range{pages}{9}
+      \verb{eprint}
+      \verb 1502.03167
+      \endverb
+      \verb{urlraw}
+      \verb https://proceedings.mlr.press/v37/ioffe15.html
+      \endverb
+      \verb{url}
+      \verb https://proceedings.mlr.press/v37/ioffe15.html
+      \endverb
     \endentry
     \entry{liu2018}{article}{}{}
       \name{author}{6}{}{%
@@ -2294,12 +2415,16 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{booktitle}{Proc. IEEE Conf. Comput. Vis. Pattern Recognit. ({CVPR})}
+      \field{eprinttype}{arxiv}
       \field{title}{Xception: Deep learning with depthwise separable convolutions}
       \field{year}{2017}
       \field{pages}{1251\bibrangedash 1258}
       \range{pages}{8}
       \verb{doi}
       \verb 10.1109/CVPR.2017.195
+      \endverb
+      \verb{eprint}
+      \verb 1610.02357
       \endverb
     \endentry
     \entry{schirrmeister2017}{article}{}{}
@@ -2362,6 +2487,7 @@
       \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
+      \field{eprinttype}{arxiv}
       \field{journaltitle}{Hum. Brain Mapp.}
       \field{number}{11}
       \field{title}{Deep learning with convolutional neural networks for {EEG} decoding and visualization}
@@ -2371,6 +2497,15 @@
       \range{pages}{30}
       \verb{doi}
       \verb 10.1002/hbm.23730
+      \endverb
+      \verb{eprint}
+      \verb 1703.05051
+      \endverb
+      \verb{urlraw}
+      \verb https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5655781/
+      \endverb
+      \verb{url}
+      \verb https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5655781/
       \endverb
     \endentry
     \entry{hochreiter1997}{article}{}{}
@@ -2407,6 +2542,12 @@
       \range{pages}{46}
       \verb{doi}
       \verb 10.1162/neco.1997.9.8.1735
+      \endverb
+      \verb{urlraw}
+      \verb https://www.bioinf.jku.at/publications/older/2604.pdf
+      \endverb
+      \verb{url}
+      \verb https://www.bioinf.jku.at/publications/older/2604.pdf
       \endverb
     \endentry
     \entry{fawcett2006}{article}{}{}
@@ -2566,6 +2707,12 @@
       \verb{doi}
       \verb 10.1088/1741-2560/9/1/016004
       \endverb
+      \verb{urlraw}
+      \verb https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3360927/
+      \endverb
+      \verb{url}
+      \verb https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3360927/
+      \endverb
     \endentry
     \entry{ryan2011}{article}{}{}
       \name{author}{7}{}{%
@@ -2626,6 +2773,12 @@
       \range{pages}{16}
       \verb{doi}
       \verb 10.1080/10447318.2011.535754
+      \endverb
+      \verb{urlraw}
+      \verb https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3029027/
+      \endverb
+      \verb{url}
+      \verb https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3029027/
       \endverb
     \endentry
     \entry{jurafsky2025}{book}{}{}
@@ -2724,11 +2877,15 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{booktitle}{Adv. Neural Inf. Process. Syst. ({NeurIPS})}
+      \field{eprinttype}{arxiv}
       \field{title}{Attention is all you need}
       \field{volume}{30}
       \field{year}{2017}
       \field{pages}{5998\bibrangedash 6008}
       \range{pages}{11}
+      \verb{eprint}
+      \verb 1706.03762
+      \endverb
     \endentry
     \entry{brown2020}{inproceedings}{}{}
       \true{moreauthor}
@@ -2753,11 +2910,15 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{booktitle}{Adv. Neural Inf. Process. Syst. ({NeurIPS})}
+      \field{eprinttype}{arxiv}
       \field{title}{Language models are few-shot learners}
       \field{volume}{33}
       \field{year}{2020}
       \field{pages}{1877\bibrangedash 1901}
       \range{pages}{25}
+      \verb{eprint}
+      \verb 2005.14165
+      \endverb
     \endentry
     \entry{hong2026}{article}{}{}
       \name{author}{3}{}{%
@@ -2790,10 +2951,23 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{eid}{6379}
+      \field{eprinttype}{arxiv}
       \field{journaltitle}{Sci. Rep.}
       \field{title}{{ChatBCI}, a {P300} speller {BCI} with context-driven word prediction leveraging large language models}
       \field{volume}{16}
       \field{year}{2026}
+      \verb{doi}
+      \verb 10.1038/s41598-025-25660-7
+      \endverb
+      \verb{eprint}
+      \verb 2411.15395
+      \endverb
+      \verb{urlraw}
+      \verb https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12909297/
+      \endverb
+      \verb{url}
+      \verb https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12909297/
+      \endverb
     \endentry
     \entry{garciacossio2011}{article}{}{}
       \name{author}{6}{}{%
@@ -2846,6 +3020,15 @@
       \field{year}{2011}
       \field{pages}{9\bibrangedash 19}
       \range{pages}{11}
+      \verb{doi}
+      \verb 10.17533/udea.redin.13651
+      \endverb
+      \verb{urlraw}
+      \verb https://revistas.udea.edu.co/index.php/ingenieria/article/view/13651
+      \endverb
+      \verb{url}
+      \verb https://revistas.udea.edu.co/index.php/ingenieria/article/view/13651
+      \endverb
     \endentry
     \entry{brunner2011}{article}{}{}
       \name{author}{5}{}{%
@@ -2895,6 +3078,12 @@
       \verb{doi}
       \verb 10.3389/fnins.2011.00005
       \endverb
+      \verb{urlraw}
+      \verb https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3037528/
+      \endverb
+      \verb{url}
+      \verb https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3037528/
+      \endverb
     \endentry
     \entry{shan2018}{inproceedings}{}{}
       \name{author}{3}{}{%
@@ -2933,6 +3122,12 @@
       \range{pages}{7}
       \verb{doi}
       \verb 10.24963/ijcai.2018/222
+      \endverb
+      \verb{urlraw}
+      \verb https://www.ijcai.org/proceedings/2018/222
+      \endverb
+      \verb{url}
+      \verb https://www.ijcai.org/proceedings/2018/222
       \endverb
     \endentry
     \entry{studer2021}{article}{}{}
@@ -2985,6 +3180,7 @@
       \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
+      \field{eprinttype}{arxiv}
       \field{journaltitle}{Mach. Learn. Knowl. Extr.}
       \field{number}{2}
       \field{title}{Towards {CRISP-ML(Q)}: A machine learning process model with quality assurance methodology}
@@ -2994,6 +3190,9 @@
       \range{pages}{22}
       \verb{doi}
       \verb 10.3390/make3020020
+      \endverb
+      \verb{eprint}
+      \verb 2003.05155
       \endverb
     \endentry
     \entry{pressman2010}{book}{}{}
