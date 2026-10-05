@@ -144,14 +144,16 @@ son las siguientes:
   \item \textbf{Diseño de la arquitectura del sistema.} Se definirá la arquitectura general,
   identificando los módulos que la conforman y las interacciones entre ellos; entre estos se
   consideran el módulo de detección de la componente P300, el módulo de predicción de palabras y
-  la interfaz de usuario.
+  la interfaz de usuario. En esta misma etapa se diseñará el módulo de predicción de palabras y se
+  definirá el flujo completo del sistema, desde la carga de las señales EEG hasta la presentación
+  del texto y las sugerencias en la interfaz.
   \item \textbf{Diseño de la interfaz de usuario.} Se desarrollarán los prototipos de la interfaz
   gráfica que permitirá la interacción del usuario con la matriz del P300 Speller y con las
   sugerencias del módulo de predicción de palabras.
   \item \textbf{Desarrollo e integración de módulos.} Se implementarán los distintos módulos del
-  sistema, incluyendo la interfaz de usuario, el módulo de predicción de palabras y la integración
-  del modelo de detección de la componente P300, agregando cada uno como un nuevo incremento sobre
-  la versión anterior.
+  sistema, comenzando por el módulo de predicción de palabras, seguido de la interfaz de usuario y,
+  por último, la integración del modelo de detección de la componente P300, agregando cada uno como
+  un nuevo incremento sobre la versión anterior.
   \item \textbf{Pruebas funcionales del sistema.} Se verificará el funcionamiento de la
   interacción entre los módulos, así como la correcta construcción de palabras mediante el
   paradigma P300 Speller.
@@ -164,7 +166,7 @@ son las siguientes:
 \begin{tikzpicture}[
   fase/.style={draw, minimum height=0.7cm, minimum width=1.75cm, font=\scriptsize, align=center},
   flecha/.style={-{Stealth[length=1.8mm]}, thick}]
-  \foreach \i/\nombre in {1/{Incremento 1: interfaz y matriz P300}, 2/{Incremento 2: predicción de palabras}, 3/{Incremento 3: integración del modelo P300}}{
+  \foreach \i/\nombre in {1/{Incremento 1: predicción de palabras}, 2/{Incremento 2: interfaz y matriz P300}, 3/{Incremento 3: integración del modelo P300}}{
     \pgfmathsetmacro{\x}{(\i-1)*2.2}
     \pgfmathsetmacro{\y}{-(\i-1)*1.35}
     \node[fase, fill=gray!10, anchor=west] (a\i) at (\x,\y) {Análisis};
@@ -192,7 +194,8 @@ en el presente trabajo se describen a continuación:
 
 \begin{enumerate}
   \item \textbf{Comprensión del problema.} Se establecerán los objetivos particulares de detección
-  del modelo y los criterios con los que se evaluará su desempeño.
+  del modelo, las métricas con las que se evaluará su desempeño y las estrategias de validación que
+  se emplearán, tanto intrasujeto como intersujeto.
   \item \textbf{Comprensión y análisis de los datos.} Se seleccionarán bases de datos públicas de
   señales EEG asociadas al paradigma P300 Speller, analizando su estructura, número de sujetos y
   cantidad de canales, con el fin de determinar las características necesarias para el
@@ -242,7 +245,12 @@ Debido a que el proyecto requiere una integración estrecha entre el procesamien
 EEG, el desarrollo del modelo de aprendizaje profundo y la implementación del sistema de
 comunicación asistida, algunas actividades relacionadas con el diseño experimental, el desarrollo y
 la evaluación del modelo serán realizadas por ambos integrantes. No obstante, cada integrante
-tendrá un mayor enfoque en determinadas áreas: uno se orientará principalmente al desarrollo de la
-interfaz gráfica, la integración de módulos y la arquitectura general del sistema, mientras que el
-otro se enfocará en el análisis de los datos EEG, la experimentación y la evaluación del desempeño
-del modelo.
+tendrá un mayor enfoque en determinadas áreas: uno de los integrantes se orientará principalmente a
+la selección y el análisis de las bases de datos EEG, el diseño del \textit{pipeline} de
+preprocesamiento, las estrategias de validación, la arquitectura general y el flujo del sistema,
+así como al desarrollo de la interfaz, mientras que el otro se encargará de la revisión del estado
+del arte, la definición de los requerimientos y de las métricas de evaluación, el diseño de los
+prototipos de la interfaz y el módulo de predicción de palabras. De esta forma, solo las
+actividades críticas, como la definición de las arquitecturas candidatas, el diseño experimental
+para la reducción de canales y repeticiones, la implementación del modelo de detección, la
+integración de los módulos y las pruebas funcionales, se realizarán de manera colaborativa.
