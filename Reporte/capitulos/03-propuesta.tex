@@ -115,6 +115,7 @@ pues determina directamente la tasa de transferencia de información del sistema
 describió en la Sección~\ref{sec:metricas}.
 
 \section[METODOLOGÍA]{Metodología}
+\label{sec:metodologia}
 
 El desarrollo del presente Trabajo Terminal se realizará mediante una combinación de dos
 metodologías, dado que el proyecto involucra tanto la construcción de un sistema de software como
@@ -122,61 +123,143 @@ la de un modelo de aprendizaje profundo. Para el desarrollo general del sistema 
 modelo de desarrollo incremental, mientras que para el modelo de detección de la componente P300 se
 utilizará la metodología CRISP-ML, la cual estructura el proceso de construcción, validación y
 optimización de modelos de aprendizaje automático en fases iterativas \cite{studer2021}. Ambas
-metodologías se ejecutarán en paralelo y convergerán en la etapa de integración, en la que el
-modelo entrenado se incorpora al sistema completo.
+metodologías se ejecutarán en paralelo y convergerán en el último incremento del sistema, en el que
+el modelo entrenado se incorpora a la aplicación.
 
 \subsection{Metodología de desarrollo del sistema}
+\label{sec:met-sistema}
 
 En el modelo incremental, el software se construye de manera progresiva mediante una serie de
 incrementos, cada uno de los cuales agrega funcionalidad a los anteriores y produce una versión
-operativa que puede evaluarse antes de continuar con el siguiente \cite{pressman2010}. En este
-trabajo, cada incremento corresponderá a la implementación e integración de uno de los módulos
-funcionales del sistema, lo que permitirá evaluar sus componentes de forma progresiva mientras el
-modelo de detección de la componente P300 se desarrolla en paralelo. La
-Figura~\ref{fig:incremental} ilustra la organización de los incrementos, y las etapas consideradas
-son las siguientes:
+operativa que puede evaluarse antes de continuar con el siguiente. Este modelo combina flujos de
+proceso lineales y paralelos: los requerimientos generales y la arquitectura se establecen al
+inicio para todo el sistema, y a partir de ellos los incrementos se construyen de forma escalonada
+en el tiempo, de modo que dos incrementos pueden desarrollarse de manera simultánea cuando
+corresponden a módulos independientes \cite{pressman2010}.
+
+En consecuencia, el diseño del sistema se realizará en dos niveles. El primero es el diseño
+general o arquitectónico, que define los módulos que componen el sistema, la responsabilidad de
+cada uno y la forma en que intercambian información; el segundo es el diseño detallado o a nivel
+de componentes, que especifica cómo se implementará internamente cada módulo
+\cite{pressman2010}. El diseño general se realizará durante el Trabajo Terminal I, ya que fija los
+elementos que no cambiarán a lo largo del desarrollo y permite que los módulos se construyan por
+separado y se integren sin conflictos. El diseño detallado, en cambio, se realizará al inicio de
+cada incremento durante el Trabajo Terminal II, debido a que varias de sus decisiones dependen de
+resultados que se obtendrán en ese periodo; por ejemplo, el número de canales que recibirá el
+modelo de detección dependerá de los experimentos de reducción de canales, y la técnica de
+predicción de palabras dependerá de su desempeño con el corpus seleccionado. La
+Figura~\ref{fig:incremental} ilustra esta organización.
+
+\subsubsection{Análisis y diseño general}
+
+Esta etapa se llevará a cabo durante el Trabajo Terminal I, de agosto a noviembre, y sus resultados
+se presentan en el Capítulo~\ref{cap:analisis-diseno}. Comprende las siguientes actividades:
 
 \begin{enumerate}
-  \item \textbf{Definición de requerimientos del sistema.} En esta etapa se realizará una revisión
-  del estado del arte y se identificarán los requerimientos funcionales y no funcionales del
-  sistema de comunicación asistida, así como las características que deberá cumplir la interfaz de
-  usuario y los módulos que integrarán la aplicación.
+  \item \textbf{Definición de requerimientos del sistema.} Se realizará una revisión del estado del
+  arte y se identificarán los requerimientos funcionales y no funcionales del sistema de
+  comunicación asistida, así como las características que deberá cumplir la interfaz de usuario y
+  los módulos que integrarán la aplicación.
   \item \textbf{Diseño de la arquitectura del sistema.} Se definirá la arquitectura general,
   identificando los módulos que la conforman y las interacciones entre ellos; entre estos se
   consideran el módulo de detección de la componente P300, el módulo de predicción de palabras y
-  la interfaz de usuario. En esta misma etapa se diseñará el módulo de predicción de palabras y se
-  definirá el flujo completo del sistema, desde la carga de las señales EEG hasta la presentación
-  del texto y las sugerencias en la interfaz.
+  la interfaz de usuario. En esta etapa se definirán también las entradas y salidas de cada módulo,
+  es decir, los datos que recibe y los que entrega a los demás, así como el flujo completo del
+  sistema, desde la carga de las señales EEG hasta la presentación del texto y las sugerencias en
+  la interfaz.
+  \item \textbf{Diseño del módulo de predicción de palabras.} Se determinará la función del
+  módulo dentro del sistema y los enfoques de modelado del lenguaje que podrán emplearse, de entre
+  los revisados en la Sección~\ref{sec:lenguaje}.
   \item \textbf{Diseño de la interfaz de usuario.} Se desarrollarán los prototipos de la interfaz
   gráfica que permitirá la interacción del usuario con la matriz del P300 Speller y con las
   sugerencias del módulo de predicción de palabras.
-  \item \textbf{Desarrollo e integración de módulos.} Se implementarán los distintos módulos del
-  sistema, comenzando por el módulo de predicción de palabras, seguido de la interfaz de usuario y,
-  por último, la integración del modelo de detección de la componente P300, agregando cada uno como
-  un nuevo incremento sobre la versión anterior.
-  \item \textbf{Pruebas funcionales del sistema.} Se verificará el funcionamiento de la
-  interacción entre los módulos, así como la correcta construcción de palabras mediante el
-  paradigma P300 Speller.
-  \item \textbf{Documentación del sistema.} Finalmente, se generará la documentación técnica del
-  sistema y el manual de usuario correspondiente.
 \end{enumerate}
+
+\subsubsection{Incrementos del sistema}
+
+Durante el Trabajo Terminal II el sistema se construirá mediante tres incrementos. Cada uno seguirá
+el mismo ciclo: diseño detallado del módulo correspondiente, codificación, pruebas del módulo y de
+su integración con las versiones anteriores y, finalmente, la entrega de una versión operativa que
+servirá como base para el siguiente incremento. Los incrementos considerados son los siguientes:
+
+\begin{enumerate}
+  \item \textbf{Incremento 1: módulo de predicción de palabras (enero a marzo).} En el diseño
+  detallado se seleccionará la técnica de predicción y el corpus en español con el que se
+  construirá, se definirá el número de sugerencias que se mostrarán y se elaborará el diagrama de
+  clases del módulo. Posteriormente se implementará el módulo, cuyas pruebas verificarán que las
+  sugerencias sean coherentes con el texto introducido y medirán el ahorro de selecciones obtenido
+  al escribir frases de prueba. Como resultado se obtendrá una primera versión capaz de construir
+  texto y generar sugerencias.
+  \item \textbf{Incremento 2: interfaz de usuario y matriz del P300 Speller (febrero a marzo).}
+  En el diseño detallado se definirán las clases de la interfaz, el control de los tiempos de
+  intensificación y el registro de los eventos de estimulación. Después se implementará la
+  interfaz gráfica con la matriz de caracteres, la intensificación aleatoria de filas y columnas,
+  el área de texto y la presentación de las sugerencias del incremento anterior. Debido a que en
+  este punto el modelo de detección aún se encontrará en desarrollo, la selección de caracteres se
+  probará en un modo de simulación que utiliza las etiquetas de la base de datos, lo que permitirá
+  validar el funcionamiento de la interfaz de manera independiente. Como resultado se obtendrá una
+  segunda versión con la interfaz completa.
+  \item \textbf{Incremento 3: integración del modelo de detección de la componente P300 (marzo a
+  abril).} En el diseño detallado se definirá la forma de cargar el modelo obtenido mediante la
+  metodología CRISP-ML, de entregarle las épocas de EEG y de acumular sus puntajes por fila y
+  columna, así como el número de repeticiones que se empleará, de acuerdo con los resultados de la
+  evaluación del modelo. Posteriormente se implementará la selección del carácter conforme a la
+  Ecuación~\eqref{eq:decodificacion}, sustituyendo el modo de simulación del incremento anterior.
+  Las pruebas de este incremento consistirán en deletrear los caracteres del conjunto de prueba de
+  la base de datos II de la competencia BCI III, midiendo la exactitud por carácter y la tasa de
+  transferencia de información. Como resultado se obtendrá la tercera versión, que corresponde al
+  sistema completo.
+\end{enumerate}
+
+Los incrementos 1 y 2 se desarrollarán de manera simultánea durante febrero y marzo, lo cual es
+posible porque corresponden a módulos independientes y a que las entradas y salidas de cada módulo
+quedarán definidas en el diseño general. Mientras el módulo de predicción no esté terminado, la
+interfaz empleará una versión provisional de este que entrega sugerencias fijas, la cual será
+sustituida por el módulo real al concluir el primer incremento. El tercer incremento, en cambio,
+no puede comenzar sino hasta contar con la interfaz y con un modelo de detección entrenado, por lo
+que se ubica al final.
+
+\subsubsection{Pruebas del sistema y documentación}
+
+Una vez concluidos los incrementos, entre abril y mayo se realizarán las pruebas funcionales del
+sistema completo, con el fin de verificar la interacción entre los módulos y la correcta
+construcción de palabras mediante el paradigma P300 Speller. En esta misma etapa se analizará la
+viabilidad de ejecutar la inferencia del modelo en un microordenador NVIDIA Jetson. Por su parte,
+la documentación técnica y el manual de usuario se elaborarán de forma progresiva a lo largo de
+todo el proyecto, registrando las decisiones de diseño de cada etapa y las funciones de cada
+versión conforme se entregan, y se consolidarán en su versión final al término de las pruebas del
+sistema.
 
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}[
-  fase/.style={draw, minimum height=0.7cm, minimum width=1.75cm, font=\scriptsize, align=center},
+  fase/.style={draw, minimum height=0.7cm, minimum width=1.7cm, font=\scriptsize, align=center},
+  carril/.style={draw, rounded corners=2pt, minimum height=0.6cm, font=\scriptsize, align=center},
   flecha/.style={-{Stealth[length=1.8mm]}, thick}]
-  \foreach \i/\nombre in {1/{Incremento 1: predicción de palabras}, 2/{Incremento 2: interfaz y matriz P300}, 3/{Incremento 3: integración del modelo P300}}{
-    \pgfmathsetmacro{\x}{(\i-1)*2.2}
-    \pgfmathsetmacro{\y}{-(\i-1)*1.35}
-    \node[fase, fill=gray!10, anchor=west] (a\i) at (\x,\y) {Análisis};
-    \node[fase, fill=blue!8, right=0cm of a\i] (d\i) {Diseño};
+  \node[fase, fill=gray!10, minimum width=2.0cm, text width=1.8cm, minimum height=4.0cm,
+        anchor=north west] (gen) at (0,0.65) {Análisis y diseño general\\[3pt] requerimientos,
+        arquitectura, flujo y prototipos de la interfaz};
+  \node[font=\scriptsize, anchor=south, align=center] at (gen.north) {TT I\\(ago--nov)};
+  \foreach \i/\nombre in {1/{Incremento 1: predicción de palabras (ene--mar)},
+                          2/{Incremento 2: interfaz y matriz P300 (feb--mar)},
+                          3/{Incremento 3: integración del modelo P300 (mar--abr)}}{
+    \pgfmathsetmacro{\x}{2.55+(\i-1)*1.85}
+    \pgfmathsetmacro{\y}{-(\i-1)*1.45}
+    \node[fase, fill=blue!8, anchor=west] (d\i) at (\x,\y) {Diseño\\detallado};
     \node[fase, fill=red!8, right=0cm of d\i] (c\i) {Codificación};
     \node[fase, fill=green!10, right=0cm of c\i] (p\i) {Pruebas};
-    \node[font=\scriptsize, anchor=south west] at (a\i.north west) {\nombre};
+    \node[font=\scriptsize, anchor=south west] at (d\i.north west) {\nombre};
     \node[font=\scriptsize, right=0.08cm of p\i] {Versión \i};
+    \draw[flecha] (gen.east |- d\i.west) -- (d\i.west);
   }
-  \draw[flecha] (0,-3.4) -- node[below, font=\scriptsize] {Tiempo de desarrollo} (13.4,-3.4);
+  \node[font=\scriptsize, anchor=south] at (8.2,0.75) {TT II (ene--may)};
+  \node[carril, fill=orange!12, anchor=west, text width=3.3cm] (crisp) at (2.55,-4.15)
+    {Modelo P300 con CRISP-ML\\(ene--abr)};
+  \draw[flecha, dashed] (crisp.east) -| (d3.south);
+  \node[carril, fill=gray!10, anchor=west, text width=3.6cm] (cierre) at (9.0,-4.15)
+    {Pruebas del sistema y\\documentación (abr--may)};
+  \draw[flecha] (p3.south) -- (p3.south |- cierre.north);
+  \draw[flecha] (0,-4.95) -- node[below, font=\scriptsize] {Tiempo de desarrollo} (13.6,-4.95);
 \end{tikzpicture}
 \caption{Organización del desarrollo del sistema mediante el modelo incremental. Elaboración propia
 con base en \cite{pressman2010}.}
@@ -184,13 +267,22 @@ con base en \cite{pressman2010}.}
 \end{figure}
 
 \subsection{Metodología para el desarrollo del modelo de aprendizaje profundo}
+\label{sec:met-modelo}
 
 El modelo de detección de la componente P300 se desarrollará siguiendo la metodología CRISP-ML,
 una adaptación del proceso CRISP-DM para proyectos de aprendizaje automático que organiza el
 trabajo en fases con retroalimentación entre ellas, de modo que es posible regresar a la
 preparación de los datos o al modelado cuando los resultados de la evaluación no son
-satisfactorios \cite{studer2021}. La Figura~\ref{fig:crispml} muestra el ciclo de estas fases, que
-en el presente trabajo se describen a continuación:
+satisfactorios \cite{studer2021}. En su forma original, CRISP-ML(Q) considera seis fases:
+comprensión del negocio y de los datos, preparación de los datos, ingeniería del modelo,
+evaluación del modelo, despliegue, y monitoreo y mantenimiento \cite{studer2021}. En el presente
+trabajo se emplea una adaptación de estas fases: la comprensión del problema y la de los datos se
+tratan por separado, debido a que la selección y el análisis de las bases de datos públicas
+constituyen una tarea propia; el despliegue corresponde a la integración del modelo en el sistema,
+que se realiza en el tercer incremento; y se omite la fase de monitoreo y mantenimiento, ya que el
+sistema se evaluará con bases de datos públicas y no será puesto en operación con usuarios de forma
+continua. La Figura~\ref{fig:crispml} muestra el ciclo de estas fases, que en el presente trabajo
+se describen a continuación:
 
 \begin{enumerate}
   \item \textbf{Comprensión del problema.} Se establecerán los objetivos particulares de detección
@@ -200,20 +292,23 @@ en el presente trabajo se describen a continuación:
   señales EEG asociadas al paradigma P300 Speller, analizando su estructura, número de sujetos y
   cantidad de canales, con el fin de determinar las características necesarias para el
   entrenamiento del modelo.
-  \item \textbf{Preparación de los datos.} Se aplicarán técnicas de preprocesamiento como el
-  filtrado pasa banda, la división en ventanas temporales y la normalización, generando un
-  conjunto de datos adecuado para el entrenamiento y la validación del modelo de detección de la
-  componente P300.
-  \item \textbf{Diseño y modelado.} Se definirán las posibles arquitecturas de aprendizaje profundo
-  para la detección de la componente P300, se realizará el ajuste de hiperparámetros y se
-  llevarán a cabo experimentos orientados a la reducción del número de canales y de repeticiones
-  necesarias para la detección.
+  \item \textbf{Preparación de los datos.} Se diseñará e implementará el \textit{pipeline} de
+  preprocesamiento, que aplicará técnicas como el filtrado pasa banda, la división en ventanas
+  temporales y la normalización, generando un conjunto de datos adecuado para el entrenamiento y la
+  validación del modelo de detección de la componente P300.
+  \item \textbf{Diseño y modelado.} Durante el Trabajo Terminal I se definirán las posibles
+  arquitecturas de aprendizaje profundo para la detección de la componente P300 y se diseñarán los
+  experimentos orientados a la reducción del número de canales y de repeticiones. Durante el
+  Trabajo Terminal II se implementarán y entrenarán dichas arquitecturas, se realizará el ajuste de
+  hiperparámetros y se ejecutarán los experimentos diseñados.
   \item \textbf{Evaluación.} Se analizará el desempeño del modelo mediante métricas de
   clasificación como la exactitud, la sensibilidad, la precisión y el F1-score, además de la
   construcción de la matriz de confusión, y se evaluará el impacto de la reducción de canales y
-  repeticiones en el rendimiento del sistema.
-  \item \textbf{Integración del modelo.} El modelo desarrollado se integrará en el sistema completo
-  de comunicación asistida para su uso dentro del paradigma P300 Speller.
+  repeticiones en el rendimiento del sistema. Si los resultados no son satisfactorios, se regresará
+  a la preparación de los datos o al modelado.
+  \item \textbf{Integración del modelo.} El modelo seleccionado se integrará en el sistema completo
+  de comunicación asistida durante el tercer incremento descrito en la
+  Sección~\ref{sec:met-sistema}.
 \end{enumerate}
 
 \begin{figure}[htbp]
@@ -240,17 +335,3 @@ en el presente trabajo se describen a continuación:
 componente P300. Elaboración propia con base en \cite{studer2021}.}
 \label{fig:crispml}
 \end{figure}
-
-Debido a que el proyecto requiere una integración estrecha entre el procesamiento de las señales
-EEG, el desarrollo del modelo de aprendizaje profundo y la implementación del sistema de
-comunicación asistida, algunas actividades relacionadas con el diseño experimental, el desarrollo y
-la evaluación del modelo serán realizadas por ambos integrantes. No obstante, cada integrante
-tendrá un mayor enfoque en determinadas áreas: uno de los integrantes se orientará principalmente a
-la selección y el análisis de las bases de datos EEG, el diseño del \textit{pipeline} de
-preprocesamiento, las estrategias de validación, la arquitectura general y el flujo del sistema,
-así como al desarrollo de la interfaz, mientras que el otro se encargará de la revisión del estado
-del arte, la definición de los requerimientos y de las métricas de evaluación, el diseño de los
-prototipos de la interfaz y el módulo de predicción de palabras. De esta forma, solo las
-actividades críticas, como la definición de las arquitecturas candidatas, el diseño experimental
-para la reducción de canales y repeticiones, la implementación del modelo de detección, la
-integración de los módulos y las pruebas funcionales, se realizarán de manera colaborativa.

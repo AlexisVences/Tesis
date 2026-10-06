@@ -96,16 +96,16 @@ Figura~\ref{fig:contexto}.
   \node[caja] (est) {Estímulo entrante};
   \node[caja, right=of est] (sens) {Procesamiento sensorial};
   \node[decision, right=of sens] (comp) {¿Mismo\\estímulo?};
-  \node[caja, above right=0.3cm and 0.9cm of comp, fill=gray!12] (igual) {Se mantiene el modelo\\ \footnotesize N100, P200, N200};
-  \node[caja, below right=0.3cm and 0.9cm of comp, fill=red!8] (dif) {Actualización del contexto\\ \footnotesize P300};
+  \node[caja, right=1.4cm of comp, yshift=1.15cm, fill=gray!12] (igual) {Se mantiene el modelo\\ \footnotesize N100, P200, N200};
+  \node[caja, right=1.4cm of comp, yshift=-1.15cm, fill=red!8] (dif) {Actualización del contexto\\ \footnotesize P300};
   \node[caja, below=0.9cm of sens, text width=3.2cm] (mem) {Memoria de trabajo\\(representación del contexto)};
   \draw[flecha] (est) -- (sens);
   \draw[flecha] (sens) -- (comp);
-  \draw[thick] (comp.east) -- ++(0.35,0) coordinate (bif);
-  \draw[flecha] (bif) |- node[pos=0.25, left, font=\footnotesize] {Sí} (igual);
-  \draw[flecha] (bif) |- node[pos=0.25, left, font=\footnotesize] {No} (dif);
+  \draw[thick] (comp.east) -- ++(0.5,0) coordinate (bif);
+  \draw[flecha] (bif) |- node[pos=0.75, above, font=\footnotesize] {Sí} (igual.west);
+  \draw[flecha] (bif) |- node[pos=0.75, above, font=\footnotesize] {No} (dif.west);
   \draw[flecha, dashed] (mem) -| (comp);
-  \draw[flecha, dashed] (dif.south) |- ++(0,-0.9) -| ([xshift=0.4cm]mem.south);
+  \draw[flecha, dashed] (dif.south) |- ([xshift=0.4cm, yshift=-0.5cm]mem.south) -- ([xshift=0.4cm]mem.south);
 \end{tikzpicture}
 \caption{Modelo de actualización del contexto de la componente P300. Elaboración propia con base
 en \cite{polich2007}.}
