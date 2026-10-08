@@ -17,11 +17,11 @@ Figura~\ref{fig:ia}.
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}[font=\small]
-  \draw[fill=gray!8, rounded corners=18pt] (-5.2,-2.1) rectangle (5.2,2.1);
+  \draw[fill=white, rounded corners=18pt] (-5.2,-2.1) rectangle (5.2,2.1);
   \node[anchor=north west, align=left] at (-5.0,2.0) {\textbf{Inteligencia artificial}\\ \footnotesize Búsqueda, lógica,\\ \footnotesize planeación,\\ \footnotesize sistemas expertos};
-  \draw[fill=blue!6, rounded corners=14pt] (-1.1,-1.85) rectangle (4.95,1.25);
+  \draw[fill=gray!12, rounded corners=14pt] (-1.1,-1.85) rectangle (4.95,1.25);
   \node[anchor=north west, align=left] at (-0.9,1.15) {\textbf{Aprendizaje automático}\\ \footnotesize SVM, LDA, árboles de decisión};
-  \draw[fill=red!10, rounded corners=10pt] (0.6,-1.65) rectangle (4.75,0.05);
+  \draw[fill=gray!24, rounded corners=10pt] (0.6,-1.65) rectangle (4.75,0.05);
   \node[align=center] at (2.67,-0.8) {\textbf{Aprendizaje profundo}\\ \footnotesize CNN, RNN, EEGNet};
 \end{tikzpicture}
 \caption{Relación entre la inteligencia artificial, el aprendizaje automático y el aprendizaje
@@ -81,9 +81,9 @@ Tabla~\ref{tab:clasicos} resume estos métodos.
 \toprule
 \textbf{Clasificador} & \textbf{Descripción} & \textbf{Ventajas} & \textbf{Desventajas} \\
 \midrule
-LDA / Fisher \cite{krusienski2006,santos2017} & Proyecta los datos sobre la dirección que maximiza la separación entre las medias de las clases respecto a su dispersión. & Simple, rápido y con pocos parámetros; buen desempeño en P300. & Supone clases gaussianas con igual covarianza; sensible con muchas características. \\
-SWLDA \cite{krusienski2006} & LDA con selección de características por pasos (se agregan o eliminan según su significancia estadística). & Reduce la dimensión y el sobreajuste; de los mejores en la comparación de \cite{krusienski2006}. & Selección costosa con muchos canales. \\
-SVM lineal \cite{rakotomamonjy2008} & Busca el hiperplano que maximiza el margen entre clases. & Robusta en alta dimensión; ganó la competencia BCI III. & Requiere ajustar el parámetro de regularización; entrenamiento más lento. \\
+LDA / Fisher \cite{krusienski2006,santos2017} & Proyecta los datos sobre la dirección que maximiza la separación entre las medias de las clases respecto a su dispersión. & Simple, rápido y con pocos parámetros, con buen desempeño en P300. & Supone clases gaussianas con igual covarianza, y es sensible con muchas características. \\
+SWLDA \cite{krusienski2006} & LDA con selección de características por pasos (se agregan o eliminan según su significancia estadística). & Reduce la dimensión y el sobreajuste, y es de los mejores en la comparación de \cite{krusienski2006}. & Selección costosa con muchos canales. \\
+SVM lineal \cite{rakotomamonjy2008} & Busca el hiperplano que maximiza el margen entre clases. & Robusta en alta dimensión, y ganó la competencia BCI III. & Requiere ajustar el parámetro de regularización, con entrenamiento más lento. \\
 \bottomrule
 \end{tabularx}
 \par\smallskip{\footnotesize Elaboración propia.}

@@ -44,13 +44,14 @@ modelo de aprendizaje profundo desarrollado en Python.
 \subsection{Objetivos específicos}
 
 \begin{enumerate}
-    \item Analizar y recolectar bases de datos públicas de señales electroencefalográficas
-    sobre el paradigma P300 Speller, con el fin de identificar las características más
-    importantes para el desempeño del modelo.
+    \item Analizar bases de datos públicas de señales electroencefalográficas sobre el
+    paradigma P300 Speller y recolectar señales propias de voluntarios, con el fin de
+    identificar las características más importantes para el desempeño del modelo.
     \item Revisar el estado del arte para seleccionar y analizar los modelos de aprendizaje
     profundo más adecuados para la detección de la componente P300 en señales cerebrales.
     \item Diseñar e implementar un modelo de aprendizaje profundo para la clasificación de la
-    componente P300 en señales EEG.
+    componente P300 en señales EEG, entrenado de forma individual para cada usuario a partir
+    de una sesión de calibración.
     \item Evaluar el desempeño del modelo mediante métricas de clasificación buscando minimizar
     los canales o ciclos necesarios para la detección de la componente P300.
     \item Diseñar e implementar el sistema de comunicación asistida, integrando el modelo de
@@ -73,7 +74,7 @@ problemas de comunicación.
 
 De acuerdo con el trabajo de Feigin et al. \cite{feigin2020}, los desórdenes neurológicos son la
 principal causa de discapacidad a nivel mundial, y es posible que la magnitud de estas aumente
-debido al crecimiento y envejecimiento de la población; en enfermedades como la esclerosis
+debido al crecimiento y envejecimiento de la población, y en enfermedades como la esclerosis
 lateral amiotrófica (ELA) la comunicación puede verse gravemente limitada, lo que impacta
 directamente en la calidad de vida del paciente.
 
@@ -103,7 +104,8 @@ implementación y entrenamiento de modelos de aprendizaje profundo, la integraci
 modelos en una aplicación y la evaluación de los resultados, lo cual requiere la aplicación
 avanzada de conocimientos en procesamiento de señales, aprendizaje profundo y desarrollo de
 sistemas, competencias propias del área de ingeniería en inteligencia artificial. Finalmente, el
-proyecto resulta viable en términos de tiempo y recursos, ya que los modelos de aprendizaje
-profundo pueden entrenarse utilizando bases de datos públicas de paradigmas P300, evitando la
-necesidad de adquisición propia de las mismas y reduciendo costos asociados a hardware
-especializado con 64 canales de detección de señales EEG.
+proyecto resulta viable en términos de tiempo y recursos, ya que la exploración de
+arquitecturas y del preprocesamiento puede apoyarse en bases de datos públicas de paradigmas P300,
+mientras que la adquisición de señales propias, necesaria para adaptar el modelo a cada usuario, se
+realizará con un casco comercial de 14 canales, lo que evita el costo del hardware especializado
+con 64 canales de detección de señales EEG.

@@ -11,7 +11,8 @@ sistema antes de escribir cualquier línea de código \cite{pressman2010}. En el
 trabajo, esta etapa corresponde a las fases de definición de requerimientos y de diseño de la
 arquitectura del modelo incremental descrito en el Capítulo~\ref{cap:propuesta}, y se orienta a
 describir, mediante requerimientos y diagramas, el comportamiento esperado de la interfaz del P300
-Speller, del módulo de detección de la componente P300 y del módulo de predicción de palabras,
+Speller, de la adquisición y calibración con el casco EEG, del módulo de detección de la
+componente P300 y del módulo de predicción de palabras,
 combinando el lenguaje del usuario con el enfoque técnico de quien desarrolla el sistema.
 
 Por otra parte, el diseño se encarga de traducir dicho análisis en decisiones concretas de
@@ -30,7 +31,7 @@ respetar sin importar la forma en que se implemente, y de ellas se desprenden ta
 requerimientos como las validaciones que se describirán más adelante en los casos de uso. En este
 trabajo provienen principalmente del funcionamiento del paradigma P300 Speller descrito en la
 Sección~\ref{sec:speller} y de la necesidad de que la herramienta pueda ser utilizada por más de
-una persona, conservando cada una sus mensajes de manera independiente; las reglas consideradas se
+una persona, conservando cada una sus mensajes y su modelo de detección de manera independiente, y las reglas consideradas se
 resumen en la Tabla~\ref{tab:reglas}.
 
 %% NOTA: reglas PROPUESTAS a partir de lo ya descrito en el Capítulo 3. Revisar, quitar o agregar.
@@ -49,6 +50,9 @@ RN-3 & Carácter seleccionado & El elemento seleccionado es el que se encuentra 
 RN-4 & Tipo de selección & Cada selección corresponde a un carácter, a una palabra sugerida o al comando de borrado. \\
 RN-5 & Sincronización de épocas & Cada época de EEG deberá asociarse a una única intensificación, la que se presentó en el instante en que inicia dicha época. \\
 RN-6 & Privacidad de los mensajes & Los mensajes construidos se guardarán en la sesión del usuario que los escribió y solo este podrá consultarlos. \\
+RN-7 & Consentimiento y privacidad de las señales & Las señales EEG de una persona solo se registrarán con su consentimiento informado, se asociarán únicamente a su cuenta y solo podrán consultarlas ella y el operador. \\
+RN-8 & Modelo por usuario & Cada usuario contará con un modelo de detección entrenado con los registros de su propia sesión de calibración, y el sistema solo utilizará el modelo asociado a la cuenta con la que se inició sesión. \\
+RN-9 & Calibración previa & Un usuario solo podrá iniciar el deletreo cuando su cuenta cuente con un modelo de detección entrenado. \\
 \bottomrule
 \end{tabularx}
 \par\smallskip{\footnotesize Elaboración propia.}
@@ -61,10 +65,10 @@ RN-6 & Privacidad de los mensajes & Los mensajes construidos se guardarán en la
 
 Los requerimientos establecen lo que el sistema debe hacer, en el caso de los funcionales, y las
 condiciones de plataforma, calidad y documentación bajo las que debe hacerlo, en el caso de los no
-funcionales \cite{pressman2010}. Cabe señalar que la evaluación del modelo de detección mediante
-métricas de clasificación y de tasa de transferencia de información se efectúa de manera previa
+funcionales \cite{pressman2010}. Cabe señalar que el entrenamiento del modelo de cada usuario y su evaluación mediante
+métricas de clasificación y de tasa de transferencia de información se efectúan de manera previa
 por parte de quienes desarrollan el sistema, como se describe en la
-Sección~\ref{sec:flujo-entrenamiento}, por lo que no forma parte de lo que la aplicación ofrece a
+Sección~\ref{sec:flujo-entrenamiento}, por lo que no forman parte de lo que la aplicación ofrece a
 la persona que la utiliza.
 
 %% ---------------------------------------------------------------------
@@ -80,7 +84,7 @@ la persona que la utiliza.
   \item \textbf{RF2:} El sistema deberá intensificar de manera aleatoria las filas y columnas de la
   matriz durante cada secuencia de estimulación.
   \item \textbf{RF3:} El sistema deberá efectuar el preprocesamiento de las señales EEG.
-  \item \textbf{RF4:} El sistema utilizará un modelo de aprendizaje profundo para clasificar cada
+  \item \textbf{RF4:} El sistema utilizará el modelo de aprendizaje profundo del usuario para clasificar cada
   época como objetivo o no objetivo, asignándole un puntaje de probabilidad.
   \item \textbf{RF5:} El sistema deberá determinar el carácter seleccionado a partir de la
   acumulación de los puntajes de cada fila y cada columna a lo largo de las repeticiones.
@@ -99,6 +103,18 @@ la persona que la utiliza.
   \item \textbf{RF12:} El sistema permitirá cerrar la sesión activa.
   \item \textbf{RF13:} El sistema guardará los mensajes construidos en la sesión del usuario y le
   permitirá consultarlos posteriormente.
+  %% PROPUESTA nueva: adquisición de señales propias y calibración por usuario
+  \item \textbf{RF14:} El sistema deberá conectarse al casco EEG y recibir en tiempo real las
+  señales de sus canales, sincronizadas con los estímulos presentados.
+  \item \textbf{RF15:} El sistema permitirá verificar la calidad de la señal de los canales antes
+  de iniciar una calibración o una sesión de deletreo.
+  \item \textbf{RF16:} El sistema contará con un modo de calibración en el que se indique al
+  usuario el carácter en el que debe fijar su atención, se presenten las secuencias de estimulación
+  y se registren las señales correspondientes.
+  \item \textbf{RF17:} El sistema guardará los registros de cada sesión de calibración en la cuenta
+  del usuario que los generó.
+  \item \textbf{RF18:} El sistema cargará, al iniciar sesión, el modelo de detección entrenado para
+  ese usuario y no permitirá iniciar el deletreo si la cuenta aún no cuenta con uno.
 \end{itemize}
 
 \subsection{Requerimientos no funcionales}
@@ -123,8 +139,11 @@ la persona que la utiliza.
   usuario que describa la instalación, la ejecución y el uso general del sistema.
   %% PROPUESTA nueva: derivada de las cuentas de usuario
   \item \textbf{RNF9:} Las credenciales de los usuarios deberán almacenarse de forma protegida, sin
-  guardar las contraseñas en texto plano, y los mensajes de cada usuario solo deberán ser accesibles
-  desde su propia sesión.
+  guardar las contraseñas en texto plano, y los mensajes y registros EEG de cada usuario solo deberán ser accesibles
+  desde su propia sesión y por el operador.
+  \item \textbf{RNF10:} El sistema deberá ser compatible con el casco EEG de 14 canales
+  seleccionado y con la frecuencia de muestreo con la que este entrega las señales (PENDIENTE DE
+  CONFIRMAR EL MODELO DEL CASCO).
 \end{itemize}
 
 %% =====================================================================
@@ -142,7 +161,7 @@ ocurrió y, cuando proceda, qué debe hacerse a continuación.
 
 Los mensajes de error informan que una operación no pudo completarse, ya sea porque los datos
 proporcionados no son válidos, como al registrar una cuenta o iniciar sesión, o porque un recurso
-necesario no está disponible, como el modelo de detección o el registro de señales EEG.
+necesario no está disponible, como el modelo de detección o la conexión con el casco EEG.
 
 %% TODO: tabla de mensajes de error (MSJE) con causa y contenido.
 
@@ -171,8 +190,8 @@ requerimientos funcionales, de manera que cada uno describe una acción específ
 precondiciones, pasos y posibles errores, que el sistema debe realizar para cumplir con las
 necesidades de quienes interactúan con él \cite{pressman2010}. Los actores, por su parte, son los
 roles que se asignan a las personas o a los sistemas externos que interactúan con dichas
-funcionalidades; en el presente trabajo intervienen principalmente el usuario que construye
-mensajes a través del P300 Speller y la fuente de las señales EEG, tal como se describe en la
+funcionalidades, y en el presente trabajo intervienen principalmente el usuario que construye
+mensajes a través del P300 Speller y el casco EEG que proporciona las señales, tal como se describe en la
 Tabla~\ref{tab:actores}.
 
 \subsection{Actores}
@@ -187,7 +206,7 @@ Tabla~\ref{tab:actores}.
 \textbf{Actor} & \textbf{Descripción} \\
 \midrule
 Usuario & Es el actor principal del sistema. Cuenta con una sesión propia desde la cual fija su atención en la matriz del P300 Speller, construye mensajes mediante la selección de caracteres o de palabras sugeridas y consulta los mensajes que ha guardado. \\
-Registro EEG & Actor externo que proporciona las señales electroencefalográficas y las marcas de los estímulos que el sistema procesa; en este trabajo corresponde a bases de datos públicas del paradigma P300 Speller. \\
+Casco EEG & Actor externo que corresponde al casco comercial de 14 canales, el cual entrega al sistema, en tiempo real, las señales electroencefalográficas del usuario, que se sincronizan con los estímulos presentados. \\
 \bottomrule
 \end{tabularx}
 \par\smallskip{\footnotesize Elaboración propia.}
@@ -197,8 +216,10 @@ Registro EEG & Actor externo que proporciona las señales electroencefalográfic
 %% misma con un dispositivo convencional, esos pasos podrían hacerlos quien la asiste. DEFINIR.
 
 Cabe aclarar que quienes desarrollan el sistema, a quienes en adelante se llama operador, entrenan
-el modelo de detección y evalúan su desempeño de manera previa e independiente del uso de la
-aplicación, por lo que estas actividades no se modelan como casos de uso.
+el modelo de detección de cada usuario con los registros de su sesión de calibración, apoyándose en
+bases de datos públicas para explorar arquitecturas y preprocesamiento, y evalúan su desempeño de
+manera previa e independiente del uso de la aplicación, por lo que estas actividades no se modelan
+como casos de uso.
 
 \subsection{Casos de uso de gestión de sesiones}
 
@@ -207,6 +228,14 @@ herramienta conservando cada una su propio espacio: crear una cuenta, iniciar se
 sesión activa y consultar los mensajes guardados.
 
 %% TODO: tablas de casos de uso (crear cuenta, iniciar sesión, cerrar sesión, consultar mensajes).
+
+\subsection{Casos de uso de adquisición y calibración}
+
+Este grupo comprende la conexión con el casco EEG, la verificación de la calidad de la señal y la
+sesión de calibración, en la que se presentan al usuario caracteres objetivo conocidos y se
+registran sus señales, que posteriormente el operador emplea para entrenar el modelo de esa cuenta.
+
+%% TODO: tablas de casos de uso (conectar el casco, verificar la señal, realizar la calibración).
 
 \subsection{Casos de uso del deletreo}
 
@@ -238,14 +267,15 @@ cómo se relacionan entre sí, y complementan las tablas descriptivas de las sec
 
 La arquitectura presentada en la Figura~\ref{fig:arquitectura} del Capítulo~\ref{cap:propuesta}
 describe las etapas por las que transita la señal, desde su adquisición hasta la construcción del
-texto; la arquitectura de software, en cambio, describe cómo se organiza el código que realiza
+texto, mientras que la arquitectura de software describe cómo se organiza el código que realiza
 dichas etapas y de qué manera se comunican los componentes entre sí. Para ello se propone una
 división en tres capas: la capa de presentación, desarrollada con PyQt, que contiene la matriz del
-P300 Speller, el área del texto, las sugerencias y las pantallas de registro e inicio de sesión; la
-capa de lógica, que agrupa el control de la sesión de deletreo, la generación de estímulos, el
+P300 Speller, el área del texto, las sugerencias y las pantallas de registro, inicio de sesión y calibración, luego la
+capa de lógica, que agrupa el control de la sesión de deletreo y de calibración, la adquisición de las señales, la
+generación de estímulos, el
 preprocesamiento, la detección de la componente P300, la decodificación del carácter y la
-predicción de palabras; y la capa de datos, responsable de las cuentas de usuario, los mensajes
-guardados, los registros EEG y el modelo entrenado. Esta separación responde al requerimiento de
+predicción de palabras, y por último la capa de datos, responsable de las cuentas de usuario, los mensajes
+guardados, los registros EEG de calibración y el modelo entrenado de cada usuario. Esta separación responde al requerimiento de
 modularidad, ya que permite sustituir el modelo de detección o el de predicción de palabras sin
 modificar la interfaz.
 
@@ -259,7 +289,8 @@ modificar la interfaz.
 El diagrama de clases define la estructura estática del sistema a nivel de código, es decir, las
 clases que lo componen con sus atributos y métodos, así como las relaciones entre ellas. A partir
 de la arquitectura anterior se identifican clases para las ventanas de la interfaz, para el control
-de la sesión de deletreo, para la generación de estímulos, el preprocesamiento, el clasificador de
+de la sesión de deletreo y de calibración, para la adquisición de las señales del casco, para la
+generación de estímulos, el preprocesamiento, el clasificador de
 la componente P300 y el decodificador del carácter, para el predictor de palabras y para el acceso
 a los datos de usuarios y mensajes.
 
@@ -272,7 +303,7 @@ a los datos de usuarios y mensajes.
 
 A diferencia del diagrama de clases, el diagrama de objetos representa instancias concretas de
 dichas clases en un momento determinado de la ejecución, lo que permite visualizar cómo
-colaboran los componentes mientras se realiza una tarea; en este caso se ilustrará el instante en
+colaboran los componentes mientras se realiza una tarea, y en este caso se ilustrará el instante en
 que un usuario con su sesión abierta selecciona un carácter.
 
 %% TODO: diagrama de objetos.
@@ -285,12 +316,12 @@ que un usuario con su sesión abierta selecciona un carácter.
 Dado que la herramienta puede ser utilizada por más de una persona, cada una con su propia sesión,
 el sistema debe conservar de forma persistente las cuentas de usuario y los mensajes que cada uno
 construye, además de los archivos que ya forman parte del flujo de trabajo, como los registros EEG
-y el modelo de aprendizaje profundo entrenado. En esta sección se define qué información se
+de las sesiones de calibración y el modelo de aprendizaje profundo entrenado para cada usuario. En esta sección se define qué información se
 almacena y cómo se relacionan los datos entre sí, mientras que la elección de la tecnología con la
 que se implementará se discute en el Capítulo~5.
 
 %% TODO: modelo de datos (usuarios y mensajes) y estructura de carpetas/archivos
-%% (registros EEG, modelo entrenado, corpus del predictor).
+%% (registros de calibración por usuario, modelo por usuario, corpus del predictor).
 
 %% =====================================================================
 %% 4.9 DIAGRAMAS DE FLUJO
@@ -307,7 +338,8 @@ carácter seleccionado.
 El preprocesamiento aplica a las señales las técnicas descritas en la Sección~\ref{sec:pds}, entre
 ellas el filtrado pasa banda, el remuestreo, la segmentación en épocas posteriores a cada estímulo
 y la normalización de cada canal, y es común tanto al flujo de entrenamiento como al de uso del
-sistema, de modo que el modelo recibe en ambos casos datos con el mismo formato. Los valores
+sistema, de modo que el modelo recibe en ambos casos datos con el mismo formato, ya provengan de las bases de datos públicas o
+del casco EEG. Los valores
 específicos de cada parámetro se definirán durante el diseño experimental.
 
 %% TODO: diagrama de flujo del preprocesamiento.
@@ -317,12 +349,15 @@ específicos de cada parámetro se definirán durante el diseño experimental.
 
 El entrenamiento y la evaluación del modelo de detección de la componente P300 se realizan antes y
 fuera de la aplicación, por parte del operador, siguiendo las fases de la metodología CRISP-ML
-descritas en el Capítulo~\ref{cap:propuesta}. En este flujo se preparan los datos de las bases
-públicas, se entrenan las arquitecturas candidatas y se evalúa su desempeño con las métricas de
-clasificación revisadas en la Sección~\ref{sec:metricas}, bajo esquemas de validación intrasujeto e
-intersujeto, así como el efecto de reducir el número de canales y de repeticiones; ninguno de estos
-resultados se presenta a quien utiliza el sistema, que únicamente recibe como producto el archivo
-con el modelo seleccionado.
+descritas en el Capítulo~\ref{cap:propuesta}, y constan de dos etapas. En la primera, de
+exploración, se preparan los datos de las bases públicas, se entrenan las arquitecturas candidatas y
+se evalúa su desempeño con las métricas de clasificación revisadas en la
+Sección~\ref{sec:metricas}, bajo esquemas de validación intrasujeto e intersujeto, así como el
+efecto de reducir el número de canales y de repeticiones. En la segunda, el modelo seleccionado se
+entrena o ajusta para cada usuario con los registros de su sesión de calibración, que se
+preprocesan con el mismo flujo de la sección anterior, y se evalúa antes de entregarlo. Ninguno de
+estos resultados se presenta a quien utiliza el sistema, que únicamente recibe como producto el
+archivo con el modelo entrenado para su cuenta.
 
 %% TODO: diagrama de flujo del entrenamiento y evaluación del modelo.
 
@@ -343,7 +378,8 @@ puntaje más alto.
 
 La interfaz del P300 Speller cambia de comportamiento a lo largo de una sesión de deletreo, pues
 alterna entre la presentación de las secuencias de estimulación, la clasificación de las épocas
-registradas y la actualización del texto, y el diagrama de estados permite describir cada una de
+registradas y la actualización del texto, a lo que se suman la conexión con el casco y la
+calibración, y el diagrama de estados permite describir cada una de
 estas situaciones junto con los eventos que provocan la transición de una a otra.
 
 %% TODO: diagrama de estados de la sesión de deletreo.
@@ -383,7 +419,8 @@ Un \textit{mockup} es una representación visual estática de la interfaz de usu
 reflejar su apariencia final antes de iniciar la codificación, lo que permite revisar la
 distribución de los elementos y el cumplimiento de los requerimientos antes de invertir esfuerzo en
 su implementación. Corresponden a la etapa de diseño de la interfaz del modelo incremental y
-comprenden las pantallas de registro e inicio de sesión, así como la pantalla principal del
+comprenden las pantallas de registro e inicio de sesión, la de conexión con el casco y calibración,
+así como la pantalla principal del
 deletreo con la matriz, el texto construido y las sugerencias de palabras.
 
-%% TODO: figuras de los mockups (registro e inicio de sesión, pantalla principal, mensajes guardados).
+%% TODO: figuras de los mockups (registro e inicio de sesión, conexión y calibración, pantalla principal, mensajes guardados).

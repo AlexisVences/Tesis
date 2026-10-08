@@ -35,7 +35,7 @@ P300 que no aparece en las diez restantes, tal como se representa en la Figura~\
         {\node[text=white, font=\sffamily\bfseries] at (\c+0.5,5.5-\f) {\l};}
         {\node[text=gray!70] at (\c+0.5,5.5-\f) {\l};}
     }
-    \draw[red!70!black, very thick] (1,3) rectangle (2,4);
+    \draw[black, very thick] (1,3) rectangle (2,4);
     \node[below, align=center] at (3,-0.4) {(a) Intensificación de la fila 3};
   \end{scope}
   % matriz derecha: columna 2 intensificada
@@ -50,7 +50,7 @@ P300 que no aparece en las diez restantes, tal como se representa en la Figura~\
         {\node[text=white, font=\sffamily\bfseries] at (\c+0.5,5.5-\f) {\l};}
         {\node[text=gray!70] at (\c+0.5,5.5-\f) {\l};}
     }
-    \draw[red!70!black, very thick] (1,3) rectangle (2,4);
+    \draw[black, very thick] (1,3) rectangle (2,4);
     \node[below, align=center] at (3,-0.4) {(b) Intensificación de la columna 2};
   \end{scope}
 \end{tikzpicture}
@@ -91,7 +91,7 @@ estímulo, y cada carácter se deletrea con 15 repeticiones, es decir, con 180 i
     \pgfmathsetmacro{\xa}{\k*1.75+0.3}
     \pgfmathsetmacro{\xb}{\xa+1.0}
     \ifthenelse{\obj=1}
-      {\fill[red!25] (\xa,0) rectangle (\xb,1.2);}
+      {\fill[gray!50] (\xa,0) rectangle (\xb,1.2);}
       {\fill[gray!25] (\xa,0) rectangle (\xb,1.2);}
     \draw (\xa,0) rectangle (\xb,1.2);
     \node at ({\xa+0.5},0.6) {\footnotesize \et};
@@ -102,7 +102,7 @@ estímulo, y cada carácter se deletrea con 15 repeticiones, es decir, con 180 i
   \draw[|<->|] (1.3,1.55) -- (2.05,1.55); \node[font=\footnotesize, anchor=west] at (2.1,1.55) {ISI = 75 ms};
   \draw[|<->|] (0.3,-0.45) -- node[below, font=\footnotesize] {SOA = 175 ms} (2.05,-0.45);
   \draw[decorate, decoration={brace, amplitude=5pt, mirror}] (0.3,-1.3) -- node[below=6pt, font=\footnotesize, align=center] {1 repetición = 12 intensificaciones (6 filas y 6 columnas) $\approx$ 2.1 s} (13.2,-1.3);
-  \node[font=\footnotesize, align=left, anchor=west] at (8.6,1.7) {\tikz\fill[red!25] (0,0) rectangle (0.3,0.2); objetivo\quad \tikz\fill[gray!25] (0,0) rectangle (0.3,0.2); no objetivo};
+  \node[font=\footnotesize, align=left, anchor=west] at (8.6,1.7) {\tikz\fill[gray!50] (0,0) rectangle (0.3,0.2); objetivo\quad \tikz\fill[gray!25] (0,0) rectangle (0.3,0.2); no objetivo};
 \end{tikzpicture}
 \caption{Parámetros de estimulación del P300 Speller con los valores de la base de datos II de la
 competencia BCI III (F = fila, C = columna). Elaboración propia con base en \cite{blankertz2006}.}
@@ -159,8 +159,9 @@ registradas con 64 canales a 240~Hz con el paradigma de filas y columnas
 \cite{blankertz2004,blankertz2006}, mientras que la base de datos de la Escuela Politécnica Federal
 de Lausana (EPFL) incluye registros de personas con discapacidad motora con un paradigma de seis
 imágenes \cite{hoffmann2008}. La Tabla~\ref{tab:datasets} resume sus características. En el
-presente trabajo se emplea la base de datos II de la competencia BCI III, que contiene registros de
-dos sujetos con 85 caracteres de entrenamiento y 100 de prueba cada uno.
+presente trabajo se emplea, en la fase exploratoria, la base de datos II de la competencia BCI III, que contiene registros de
+dos sujetos con 85 caracteres de entrenamiento y 100 de prueba cada uno, y más adelante se complementa con señales propias de voluntarios
+(Capítulo~\ref{cap:propuesta}).
 
 \begin{table}[htbp]
 \centering
@@ -172,8 +173,8 @@ dos sujetos con 85 caracteres de entrenamiento y 100 de prueba cada uno.
 \textbf{Base de datos} & \textbf{Sujetos} & \textbf{Canales} & \textbf{Frec. (Hz)} & \textbf{Paradigma} \\
 \midrule
 BCI Competition II, conjunto IIb \cite{blankertz2004} & 1 & 64 & 240 & Matriz $6\times6$, filas y columnas, 15 repeticiones. \\
-BCI Competition III, conjunto II \cite{blankertz2006} & 2 & 64 & 240 & Matriz $6\times6$, filas y columnas, 15 repeticiones; 85 caracteres de entrenamiento y 100 de prueba por sujeto. \\
-EPFL \cite{hoffmann2008} & 8 & 32 & 2048 & Seis imágenes intensificadas de una en una; incluye sujetos con discapacidad motora. \\
+BCI Competition III, conjunto II \cite{blankertz2006} & 2 & 64 & 240 & Matriz $6\times6$, filas y columnas, 15 repeticiones, con 85 caracteres de entrenamiento y 100 de prueba por sujeto. \\
+EPFL \cite{hoffmann2008} & 8 & 32 & 2048 & Seis imágenes intensificadas de una en una, e incluye sujetos con discapacidad motora. \\
 \bottomrule
 \end{tabularx}
 \par\smallskip{\footnotesize Elaboración propia.}

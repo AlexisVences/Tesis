@@ -15,11 +15,11 @@ from scipy import signal
 OUT = os.path.join(os.path.dirname(__file__), "..", "imagenes", "02-marco-referencial")
 os.makedirs(OUT, exist_ok=True)
 
-GUINDA = "#7A142A"
-AZUL = "#1F4E79"
-GRIS = "#6B6B6B"
+GUINDA = "#1A1A1A"
+AZUL = "#4A4A4A"
+GRIS = "#7F7F7F"
 GRIS_CLARO = "#BDBDBD"
-ORO = "#B8860B"
+ORO = "#9C9C9C"
 
 plt.rcParams.update({
     "font.family": "serif",
@@ -123,7 +123,7 @@ def fig_erp():
             r = signal.filtfilt(bb, aa, rng.standard_normal(t.size))
             return 8 * r / np.std(r)
         ensayos = np.array([erp_plantilla(t) + ruido() for _ in range(n)])
-        ax.plot(t * 1000, ensayos.mean(0), color=col, lw=lw, label=f"N = {n}")
+        ax.plot(t * 1000, ensayos.mean(0), color=col, lw=lw, ls={1: ":", 10: "--", 60: "-"}[n], label=f"N = {n}")
     ax.axvline(0, color="k", lw=0.6)
     ax.axhline(0, color="k", lw=0.4)
     ax.set_xlabel("Tiempo desde el estímulo (ms)")
@@ -318,7 +318,7 @@ def fig_sobreajuste():
     mejor = np.argmin(va)
     fig, ax = plt.subplots(figsize=(4.6, 2.5))
     ax.plot(e, tr, color=AZUL, lw=1.3, label="Pérdida de entrenamiento")
-    ax.plot(e, va, color=GUINDA, lw=1.3, label="Pérdida de validación")
+    ax.plot(e, va, color=GUINDA, lw=1.3, ls="--", label="Pérdida de validación")
     ax.axvline(e[mejor], color=GRIS, lw=0.8, ls="--")
     ax.text(e[mejor] + 1.5, 0.05, "Parada temprana", fontsize=8, color=GRIS)
     ax.text(70, 0.5, "Sobreajuste", fontsize=8, color=GUINDA)
@@ -347,12 +347,12 @@ def fig_roc():
     ax.set_ylim(0, 0.62)
     ax.legend(frameon=False, fontsize=6.5, loc="upper left")
     ax = axs[1]
-    for d, col in [(0.0, GRIS), (0.75, AZUL), (1.5, GUINDA), (3.0, ORO)]:
+    for d, col, est in [(0.0, GRIS, ":"), (0.75, AZUL, "-."), (1.5, GUINDA, "--"), (3.0, GUINDA, "-")]:
         umbrales = np.linspace(8, -8, 400)
         fpr = 1 - norm.cdf(umbrales, 0, 1)
         tpr = 1 - norm.cdf(umbrales, d, 1)
         auc = norm.cdf(d / np.sqrt(2))
-        ax.plot(fpr, tpr, color=col, lw=1.3, label=f"AUC = {auc:.2f}")
+        ax.plot(fpr, tpr, color=col, lw=1.3, ls=est, label=f"AUC = {auc:.2f}")
     ax.set_xlabel("Tasa de falsos positivos (FPR)")
     ax.set_ylabel("Sensibilidad (TPR)")
     ax.set_title("(b) Curvas ROC")
@@ -380,8 +380,8 @@ def fig_itr():
     axs[0].set_title("(a) Información por selección (N = 36)")
     reps = np.arange(1, 16)
     t_sel = 12 * 0.175 * reps + 2.5
-    for pc, col in [(0.70, GRIS), (0.85, AZUL), (0.95, GUINDA)]:
-        axs[1].plot(reps, itr_bits(pc, n) * 60 / t_sel, marker="o", ms=3, color=col, lw=1.2,
+    for pc, col, est, mk in [(0.70, GRIS, ":", "o"), (0.85, AZUL, "--", "s"), (0.95, GUINDA, "-", "^")]:
+        axs[1].plot(reps, itr_bits(pc, n) * 60 / t_sel, marker=mk, ms=3, color=col, lw=1.2, ls=est,
                     label=f"exactitud = {int(pc*100)} %")
     axs[1].set_xlabel("Repeticiones por carácter")
     axs[1].set_ylabel("ITR (bits/min)")

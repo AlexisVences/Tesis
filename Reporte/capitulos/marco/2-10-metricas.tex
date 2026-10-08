@@ -25,10 +25,10 @@ Figura~\ref{fig:confusion}. Sus cuatro celdas son las siguientes
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}[celda/.style={draw, minimum width=3.6cm, minimum height=1.4cm, align=center, font=\small}]
-  \node[celda, fill=green!12] (tp) at (0,0) {\textbf{TP}\\Verdaderos positivos};
-  \node[celda, fill=red!10] (fn) at (3.6,0) {\textbf{FN}\\Falsos negativos};
-  \node[celda, fill=red!10] (fp) at (0,-1.4) {\textbf{FP}\\Falsos positivos};
-  \node[celda, fill=green!12] (tn) at (3.6,-1.4) {\textbf{TN}\\Verdaderos negativos};
+  \node[celda, fill=white] (tp) at (0,0) {\textbf{TP}\\Verdaderos positivos};
+  \node[celda, fill=gray!24] (fn) at (3.6,0) {\textbf{FN}\\Falsos negativos};
+  \node[celda, fill=gray!24] (fp) at (0,-1.4) {\textbf{FP}\\Falsos positivos};
+  \node[celda, fill=white] (tn) at (3.6,-1.4) {\textbf{TN}\\Verdaderos negativos};
   \node[font=\small] at (0,1.05) {P300};
   \node[font=\small] at (3.6,1.05) {No P300};
   \node[font=\small\bfseries] at (1.8,1.55) {Predicción del modelo};

@@ -61,11 +61,11 @@ temporales de tamaño $1\times16$ sobre épocas de 64 canales por 78 muestras.
 \begin{tikzpicture}[
   capa/.style={draw, rounded corners=2pt, align=center, minimum height=1.35cm, text width=2.0cm, font=\scriptsize},
   flecha/.style={-{Stealth[length=1.8mm]}, thick}, node distance=0.28cm]
-  \node[capa, fill=gray!8] (in) {Entrada\\$C\times T$\\(64 $\times$ 78)};
-  \node[capa, fill=blue!8, right=of in] (c1) {Conv. temporal\\$F_1$ filtros $1\times K$\\+ BatchNorm};
-  \node[capa, fill=blue!8, right=of c1] (dw) {Conv. \textit{depthwise}\\espacial $C\times1$\\BN + ELU\\Pool + Dropout};
-  \node[capa, fill=red!8, right=of dw] (sep) {Conv. separable\\$F_2$ filtros\\BN + ELU\\Pool + Dropout};
-  \node[capa, fill=gray!8, right=of sep, text width=1.6cm] (out) {Densa\\+ softmax\\P300 / no P300};
+  \node[capa, fill=white] (in) {Entrada\\$C\times T$\\(64 $\times$ 78)};
+  \node[capa, fill=white, right=of in] (c1) {Conv. temporal\\$F_1$ filtros $1\times K$\\+ BatchNorm};
+  \node[capa, fill=white, right=of c1] (dw) {Conv. \textit{depthwise}\\espacial $C\times1$\\BN + ELU\\Pool + Dropout};
+  \node[capa, fill=gray!24, right=of dw] (sep) {Conv. separable\\$F_2$ filtros\\BN + ELU\\Pool + Dropout};
+  \node[capa, fill=white, right=of sep, text width=1.6cm] (out) {Densa\\+ softmax\\P300 / no P300};
   \foreach \a/\b in {in/c1, c1/dw, dw/sep, sep/out} \draw[flecha] (\a) -- (\b);
   \draw[decorate, decoration={brace, amplitude=5pt, mirror}] ([yshift=-3pt]c1.south west) -- node[below=6pt, font=\scriptsize] {Bloque 1: filtrado temporal y espacial} ([yshift=-3pt]dw.south east);
   \draw[decorate, decoration={brace, amplitude=5pt, mirror}] ([yshift=-3pt]sep.south west) -- node[below=6pt, font=\scriptsize] {Bloque 2} ([yshift=-3pt]sep.south east);
@@ -95,7 +95,7 @@ SepConv1D en su sistema con cuatro canales \cite{contreras2021}.
 \toprule
 \textbf{Arquitectura} & \textbf{Descripción} & \textbf{AUC intra} & \textbf{AUC inter} \\
 \midrule
-CNN-1 \cite{cecotti2011} & 4 capas: convolución espacial (10 filtros) y temporal con tangente hiperbólica escalada; salida sigmoide. & 0.82 & 0.78 \\
+CNN-1 \cite{cecotti2011} & 4 capas: convolución espacial (10 filtros) y temporal con tangente hiperbólica escalada, con salida sigmoide. & 0.82 & 0.78 \\
 DeepConvNet \cite{schirrmeister2017} & Cuatro bloques convolucionales seguidos de softmax. & 0.84 & 0.79 \\
 EEGNet \cite{lawhern2018} & Red compacta con convoluciones \textit{depthwise} y separables. & 0.84 & 0.80 \\
 SepConv1D \cite{alvarado2021} & Una capa convolucional 1D separable (4 filtros) y una neurona sigmoide. & 0.84 & 0.78 \\

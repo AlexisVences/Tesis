@@ -9,7 +9,7 @@ a personas con compromisos motores severos construir mensajes a partir de sus se
 electroencefalográficas, empleando el paradigma P300 Speller descrito en la
 Sección~\ref{sec:speller}. El sistema presentará al usuario una matriz visual de caracteres cuyas
 filas y columnas se iluminarán de manera aleatoria mientras este concentra su atención en el
-carácter que desea seleccionar; las épocas de EEG asociadas a cada intensificación serán
+carácter que desea seleccionar, y las épocas de EEG asociadas a cada intensificación serán
 clasificadas por un modelo de aprendizaje profundo como objetivo o no objetivo, y a partir de estas
 clasificaciones se determinará el carácter elegido \cite{farwell1988}. Para agilizar la escritura,
 el texto construido hasta ese momento alimentará un módulo de predicción de palabras que mostrará
@@ -17,19 +17,23 @@ sugerencias al usuario, de modo que una palabra completa pueda seleccionarse sin
 por letra, enfoque que ha mostrado reducir el tiempo de escritura en sistemas de este tipo
 \cite{ryan2011,hong2026}.
 
-Dado que la adquisición de señales propias implicaría contar con equipo especializado de 64
-canales, los modelos se entrenarán y evaluarán con bases de datos públicas del paradigma P300,
-principalmente la base de datos II de la tercera competencia internacional de BCI
-\cite{blankertz2006}. Sobre estos datos se evaluarán estrategias para reducir el número de canales
-y el número de repeticiones necesarias por carácter, con el propósito de acercar el sistema a
-condiciones de uso más prácticas sin comprometer de manera importante su exactitud, que son las dos
-limitaciones persistentes identificadas en el estado del arte.
+El desarrollo del modelo se apoyará en dos fuentes de datos. Las bases de datos públicas del
+paradigma P300, principalmente la base de datos II de la tercera competencia internacional de BCI
+\cite{blankertz2006}, se emplearán para comparar arquitecturas de clasificación, definir el
+preprocesamiento y evaluar estrategias para reducir el número de canales y el número de repeticiones
+necesarias por carácter, a fin de acercar el sistema a condiciones de uso más prácticas sin
+comprometer de manera importante su exactitud, que son las dos limitaciones persistentes
+identificadas en el estado del arte. Debido a que el desempeño de un modelo entrenado con datos de
+otras personas suele ser menor que el de uno ajustado al propio usuario \cite{alvarado2021}, el
+modelo de cada usuario se entrenará además con señales propias registradas en una sesión de
+calibración con un casco comercial de 14 canales, lo que evita depender de equipo especializado de
+64 canales.
 
 \section[ARQUITECTURA DEL SISTEMA]{Arquitectura del sistema}
 
 La arquitectura general del sistema se compone de las etapas que se muestran en la
-Figura~\ref{fig:arquitectura}: la adquisición de las señales EEG a partir de bases de datos
-públicas, su preprocesamiento, el entrenamiento del modelo de aprendizaje profundo, la
+Figura~\ref{fig:arquitectura}: la adquisición de las señales EEG, que durante la exploración provienen de bases de datos
+públicas y durante la calibración y el uso del sistema, del casco de 14 canales, su preprocesamiento, el entrenamiento del modelo de aprendizaje profundo, la
 clasificación de los estímulos como objetivo o no objetivo y, finalmente, la construcción del texto
 apoyada por el modelo de predicción de palabras, que mostrará sugerencias a partir de los caracteres
 seleccionados hasta ese momento.
@@ -49,8 +53,8 @@ seleccionados hasta ese momento.
 
 La etapa de preprocesamiento aplicará las técnicas descritas en la Sección~\ref{sec:pds}, entre
 ellas el filtrado pasa banda, el remuestreo, la segmentación en ventanas temporales posteriores a
-cada estímulo y la normalización de cada canal, con el fin de generar un conjunto de datos adecuado
-para el entrenamiento y la validación del modelo. El modelo de detección se construirá con la
+cada estímulo y la normalización de cada canal, de las cuales resultará el conjunto de datos con el
+que se entrenará y validará el modelo. El modelo de detección se construirá con la
 biblioteca PyTorch, y para el procesamiento y manipulación de los datos se emplearán bibliotecas
 como NumPy y Pandas. La interfaz gráfica, por su parte, se desarrollará con PyQt e integrará la
 matriz visual del P300 Speller, el área en la que se muestra el texto construido y las sugerencias
@@ -59,7 +63,7 @@ del módulo de predicción de palabras.
 El sistema se implementará inicialmente en una computadora con sistema operativo Windows, en la
 que se realizará el entrenamiento, la validación y la inferencia de los modelos. Así mismo, se
 analizará la viabilidad de ejecutar únicamente la etapa de inferencia en un microordenador NVIDIA
-Jetson, con el propósito de evaluar la posibilidad de una implementación más portable, en línea con
+Jetson, para evaluar si es posible una implementación más portable, en línea con
 el uso de arquitecturas compactas como EEGNet o SepConv1D, cuyo reducido número de parámetros las
 hace convenientes para dispositivos con recursos limitados \cite{lawhern2018,alvarado2021}.
 
@@ -67,7 +71,7 @@ hace convenientes para dispositivos con recursos limitados \cite{lawhern2018,alv
 
 Durante el uso del sistema, la selección de cada carácter sigue el ciclo que se representa en la
 Figura~\ref{fig:flujo}. Las filas y columnas de la matriz se intensifican en orden aleatorio y el
-usuario mantiene su atención en el carácter que desea escribir; cuando la fila o la columna que lo
+usuario mantiene su atención en el carácter que desea escribir, de modo que cuando la fila o la columna que lo
 contiene se ilumina, se genera un potencial P300 aproximadamente 300~ms después del estímulo
 \cite{farwell1988,polich2007}. La señal registrada se divide en épocas sincronizadas con cada
 intensificación, que después de ser preprocesadas se entregan al modelo, el cual asigna a cada una
@@ -80,17 +84,17 @@ alto.
 \centering
 \begin{tikzpicture}[
   node distance=0.55cm and 0.5cm,
-  paso/.style={draw, rounded corners=2pt, fill=gray!8, align=center, minimum height=1.15cm,
+  paso/.style={draw, rounded corners=2pt, fill=white, align=center, minimum height=1.15cm,
                text width=2.55cm, font=\footnotesize},
   flecha/.style={-{Stealth[length=2mm]}, thick}]
-  \node[paso, fill=red!8] (est) {Intensificación aleatoria de filas y columnas};
+  \node[paso, fill=gray!24] (est) {Intensificación aleatoria de filas y columnas};
   \node[paso, right=of est] (eeg) {Registro del EEG y segmentación en épocas};
   \node[paso, right=of eeg] (pre) {Preprocesamiento (filtrado, remuestreo, normalización)};
-  \node[paso, right=of pre, fill=blue!8] (mod) {Modelo de aprendizaje profundo: puntaje por época};
+  \node[paso, right=of pre, fill=gray!12] (mod) {Modelo de aprendizaje profundo: puntaje por época};
   \node[paso, below=0.9cm of mod] (dec) {Acumulación de puntajes y selección del carácter};
-  \node[paso, left=of dec, fill=blue!8] (pal) {Predicción de palabras a partir del texto escrito};
+  \node[paso, left=of dec, fill=gray!12] (pal) {Predicción de palabras a partir del texto escrito};
   \node[paso, left=of pal] (sug) {Presentación de sugerencias en la interfaz};
-  \node[paso, left=of sug, fill=red!8] (usr) {Usuario elige un carácter o una palabra sugerida};
+  \node[paso, left=of sug, fill=gray!24] (usr) {Usuario elige un carácter o una palabra sugerida};
   \draw[flecha] (est) -- (eeg);
   \draw[flecha] (eeg) -- (pre);
   \draw[flecha] (pre) -- (mod);
@@ -132,23 +136,21 @@ el modelo entrenado se incorpora a la aplicación.
 En el modelo incremental, el software se construye de manera progresiva mediante una serie de
 incrementos, cada uno de los cuales agrega funcionalidad a los anteriores y produce una versión
 operativa que puede evaluarse antes de continuar con el siguiente. Este modelo combina flujos de
-proceso lineales y paralelos: los requerimientos generales y la arquitectura se establecen al
+proceso lineales y paralelos. Los requerimientos generales y la arquitectura se establecen al
 inicio para todo el sistema, y a partir de ellos los incrementos se construyen de forma escalonada
-en el tiempo, de modo que dos incrementos pueden desarrollarse de manera simultánea cuando
+en el tiempo, lo que permite que dos incrementos se desarrollen de manera simultánea cuando
 corresponden a módulos independientes \cite{pressman2010}.
 
 En consecuencia, el diseño del sistema se realizará en dos niveles. El primero es el diseño
 general o arquitectónico, que define los módulos que componen el sistema, la responsabilidad de
-cada uno y la forma en que intercambian información; el segundo es el diseño detallado o a nivel
-de componentes, que especifica cómo se implementará internamente cada módulo
-\cite{pressman2010}. El diseño general se realizará durante el Trabajo Terminal I, ya que fija los
+cada uno, la forma en que intercambian información y el segundo es el diseño detallado o a nivel
+de componentes, que especifica cómo se implementará internamente cada módulo. El diseño general se realizará durante el Trabajo Terminal I, ya que fija los
 elementos que no cambiarán a lo largo del desarrollo y permite que los módulos se construyan por
 separado y se integren sin conflictos. El diseño detallado, en cambio, se realizará al inicio de
 cada incremento durante el Trabajo Terminal II, debido a que varias de sus decisiones dependen de
-resultados que se obtendrán en ese periodo; por ejemplo, el número de canales que recibirá el
-modelo de detección dependerá de los experimentos de reducción de canales, y la técnica de
-predicción de palabras dependerá de su desempeño con el corpus seleccionado. La
-Figura~\ref{fig:incremental} ilustra esta organización.
+resultados que se obtendrán en ese periodo, como el número de canales que recibirá el
+modelo de detección dependerá de los experimentos de reducción de canales. La
+Figura~\ref{fig:incremental} ilustra esta metodología.
 
 \subsubsection{Análisis y diseño general}
 
@@ -156,23 +158,23 @@ Esta etapa se llevará a cabo durante el Trabajo Terminal I, de agosto a noviemb
 se presentan en el Capítulo~\ref{cap:analisis-diseno}. Comprende las siguientes actividades:
 
 \begin{enumerate}
-  \item \textbf{Definición de requerimientos del sistema.} Se realizará una revisión del estado del
-  arte y se identificarán los requerimientos funcionales y no funcionales del sistema de
+  \item \textbf{Definición de requerimientos del sistema.} A partir de una revisión del estado del
+  arte se identificarán los requerimientos funcionales y no funcionales del sistema de
   comunicación asistida, así como las características que deberá cumplir la interfaz de usuario y
   los módulos que integrarán la aplicación.
   \item \textbf{Diseño de la arquitectura del sistema.} Se definirá la arquitectura general,
-  identificando los módulos que la conforman y las interacciones entre ellos; entre estos se
+  identificando los módulos que la conforman y las interacciones entre ellos, y entre estos se
   consideran el módulo de detección de la componente P300, el módulo de predicción de palabras y
   la interfaz de usuario. En esta etapa se definirán también las entradas y salidas de cada módulo,
   es decir, los datos que recibe y los que entrega a los demás, así como el flujo completo del
-  sistema, desde la carga de las señales EEG hasta la presentación del texto y las sugerencias en
+  sistema, desde la adquisición de las señales EEG hasta la presentación del texto y las sugerencias en
   la interfaz.
-  \item \textbf{Diseño del módulo de predicción de palabras.} Se determinará la función del
+  \item \textbf{Diseño del módulo de predicción de palabras.} Aquí se determinará la función del
   módulo dentro del sistema y los enfoques de modelado del lenguaje que podrán emplearse, de entre
   los revisados en la Sección~\ref{sec:lenguaje}.
-  \item \textbf{Diseño de la interfaz de usuario.} Se desarrollarán los prototipos de la interfaz
-  gráfica que permitirá la interacción del usuario con la matriz del P300 Speller y con las
-  sugerencias del módulo de predicción de palabras.
+  \item \textbf{Diseño de la interfaz de usuario.} Los prototipos de la interfaz gráfica, mediante
+  la cual el usuario interactuará con la matriz del P300 Speller y con las sugerencias del módulo
+  de predicción de palabras, se desarrollarán en esta misma etapa.
 \end{enumerate}
 
 \subsubsection{Incrementos del sistema}
@@ -197,17 +199,17 @@ servirá como base para el siguiente incremento. Los incrementos considerados so
   el área de texto y la presentación de las sugerencias del incremento anterior. Debido a que en
   este punto el modelo de detección aún se encontrará en desarrollo, la selección de caracteres se
   probará en un modo de simulación que utiliza las etiquetas de la base de datos, lo que permitirá
-  validar el funcionamiento de la interfaz de manera independiente. Como resultado se obtendrá una
-  segunda versión con la interfaz completa.
+  validar el funcionamiento de la interfaz de manera independiente. Con ello se contará con una
+  segunda versión que incluye la interfaz completa.
   \item \textbf{Incremento 3: integración del modelo de detección de la componente P300 (marzo a
   abril).} En el diseño detallado se definirá la forma de cargar el modelo obtenido mediante la
   metodología CRISP-ML, de entregarle las épocas de EEG y de acumular sus puntajes por fila y
   columna, así como el número de repeticiones que se empleará, de acuerdo con los resultados de la
-  evaluación del modelo. Posteriormente se implementará la selección del carácter conforme a la
+  evaluación del modelo. A continuación se implementará la selección del carácter conforme a la
   Ecuación~\eqref{eq:decodificacion}, sustituyendo el modo de simulación del incremento anterior.
   Las pruebas de este incremento consistirán en deletrear los caracteres del conjunto de prueba de
   la base de datos II de la competencia BCI III, midiendo la exactitud por carácter y la tasa de
-  transferencia de información. Como resultado se obtendrá la tercera versión, que corresponde al
+  transferencia de información. El resultado será la tercera versión, que corresponde al
   sistema completo.
 \end{enumerate}
 
@@ -222,8 +224,9 @@ que se ubica al final.
 \subsubsection{Pruebas del sistema y documentación}
 
 Una vez concluidos los incrementos, entre abril y mayo se realizarán las pruebas funcionales del
-sistema completo, con el fin de verificar la interacción entre los módulos y la correcta
-construcción de palabras mediante el paradigma P300 Speller. En esta misma etapa se analizará la
+sistema completo, para verificar la interacción entre los módulos y la correcta
+construcción de palabras mediante el paradigma P300 Speller, tanto con las bases de datos públicas
+como con voluntarios que utilicen el casco. En esta misma etapa se analizará la
 viabilidad de ejecutar la inferencia del modelo en un microordenador NVIDIA Jetson. Por su parte,
 la documentación técnica y el manual de usuario se elaborarán de forma progresiva a lo largo de
 todo el proyecto, registrando las decisiones de diseño de cada etapa y las funciones de cada
@@ -236,7 +239,7 @@ sistema.
   fase/.style={draw, minimum height=0.7cm, minimum width=1.7cm, font=\scriptsize, align=center},
   carril/.style={draw, rounded corners=2pt, minimum height=0.6cm, font=\scriptsize, align=center},
   flecha/.style={-{Stealth[length=1.8mm]}, thick}]
-  \node[fase, fill=gray!10, minimum width=2.0cm, text width=1.8cm, minimum height=4.0cm,
+  \node[fase, fill=white, minimum width=2.0cm, text width=1.8cm, minimum height=4.0cm,
         anchor=north west] (gen) at (0,0.65) {Análisis y diseño general\\[3pt] requerimientos,
         arquitectura, flujo y prototipos de la interfaz};
   \node[font=\scriptsize, anchor=south, align=center] at (gen.north) {TT I\\(ago--nov)};
@@ -245,18 +248,18 @@ sistema.
                           3/{Incremento 3: integración del modelo P300 (mar--abr)}}{
     \pgfmathsetmacro{\x}{2.55+(\i-1)*1.85}
     \pgfmathsetmacro{\y}{-(\i-1)*1.45}
-    \node[fase, fill=blue!8, anchor=west] (d\i) at (\x,\y) {Diseño\\detallado};
-    \node[fase, fill=red!8, right=0cm of d\i] (c\i) {Codificación};
-    \node[fase, fill=green!10, right=0cm of c\i] (p\i) {Pruebas};
+    \node[fase, fill=white, anchor=west] (d\i) at (\x,\y) {Diseño\\detallado};
+    \node[fase, fill=gray!24, right=0cm of d\i] (c\i) {Codificación};
+    \node[fase, fill=white, right=0cm of c\i] (p\i) {Pruebas};
     \node[font=\scriptsize, anchor=south west] at (d\i.north west) {\nombre};
     \node[font=\scriptsize, right=0.08cm of p\i] {Versión \i};
     \draw[flecha] (gen.east |- d\i.west) -- (d\i.west);
   }
   \node[font=\scriptsize, anchor=south] at (8.2,0.75) {TT II (ene--may)};
-  \node[carril, fill=orange!12, anchor=west, text width=3.3cm] (crisp) at (2.55,-4.15)
+  \node[carril, fill=gray!16, anchor=west, text width=3.3cm] (crisp) at (2.55,-4.15)
     {Modelo P300 con CRISP-ML\\(ene--abr)};
   \draw[flecha, dashed] (crisp.east) -| (d3.south);
-  \node[carril, fill=gray!10, anchor=west, text width=3.6cm] (cierre) at (9.0,-4.15)
+  \node[carril, fill=white, anchor=west, text width=3.6cm] (cierre) at (9.0,-4.15)
     {Pruebas del sistema y\\documentación (abr--may)};
   \draw[flecha] (p3.south) -- (p3.south |- cierre.north);
   \draw[flecha] (0,-4.95) -- node[below, font=\scriptsize] {Tiempo de desarrollo} (13.6,-4.95);
@@ -271,16 +274,16 @@ con base en \cite{pressman2010}.}
 
 El modelo de detección de la componente P300 se desarrollará siguiendo la metodología CRISP-ML,
 una adaptación del proceso CRISP-DM para proyectos de aprendizaje automático que organiza el
-trabajo en fases con retroalimentación entre ellas, de modo que es posible regresar a la
+trabajo en fases con retroalimentación entre ellas, lo que permite regresar a la
 preparación de los datos o al modelado cuando los resultados de la evaluación no son
 satisfactorios \cite{studer2021}. En su forma original, CRISP-ML(Q) considera seis fases:
 comprensión del negocio y de los datos, preparación de los datos, ingeniería del modelo,
 evaluación del modelo, despliegue, y monitoreo y mantenimiento \cite{studer2021}. En el presente
 trabajo se emplea una adaptación de estas fases: la comprensión del problema y la de los datos se
 tratan por separado, debido a que la selección y el análisis de las bases de datos públicas
-constituyen una tarea propia; el despliegue corresponde a la integración del modelo en el sistema,
-que se realiza en el tercer incremento; y se omite la fase de monitoreo y mantenimiento, ya que el
-sistema se evaluará con bases de datos públicas y no será puesto en operación con usuarios de forma
+constituyen una tarea propia, el despliegue corresponde a la integración del modelo en el sistema,
+que se realiza en el tercer incremento, y se omite la fase de monitoreo y mantenimiento, ya que el
+sistema se evaluará con bases de datos públicas y con sesiones controladas de voluntarios, sin ponerse en operación de forma
 continua. La Figura~\ref{fig:crispml} muestra el ciclo de estas fases, que en el presente trabajo
 se describen a continuación:
 
@@ -290,17 +293,21 @@ se describen a continuación:
   se emplearán, tanto intrasujeto como intersujeto.
   \item \textbf{Comprensión y análisis de los datos.} Se seleccionarán bases de datos públicas de
   señales EEG asociadas al paradigma P300 Speller, analizando su estructura, número de sujetos y
-  cantidad de canales, con el fin de determinar las características necesarias para el
-  entrenamiento del modelo.
+  cantidad de canales, para determinar qué características son necesarias al entrenar el
+  modelo. Así mismo, se definirá el protocolo de registro de las señales propias, que incluye el
+  número de voluntarios, la duración de la sesión de calibración y los canales del casco que se
+  emplearán.
   \item \textbf{Preparación de los datos.} Se diseñará e implementará el \textit{pipeline} de
-  preprocesamiento, que aplicará técnicas como el filtrado pasa banda, la división en ventanas
-  temporales y la normalización, generando un conjunto de datos adecuado para el entrenamiento y la
-  validación del modelo de detección de la componente P300.
+  preprocesamiento, que aplicará, tanto a las bases de datos públicas como a las señales del casco,
+  técnicas como el filtrado pasa banda, la división en ventanas
+  temporales y la normalización, de las que se obtendrá el conjunto de datos sobre el cual se
+  entrenará y validará el modelo de detección de la componente P300.
   \item \textbf{Diseño y modelado.} Durante el Trabajo Terminal I se definirán las posibles
   arquitecturas de aprendizaje profundo para la detección de la componente P300 y se diseñarán los
   experimentos orientados a la reducción del número de canales y de repeticiones. Durante el
   Trabajo Terminal II se implementarán y entrenarán dichas arquitecturas, se realizará el ajuste de
-  hiperparámetros y se ejecutarán los experimentos diseñados.
+  hiperparámetros, se ejecutarán los experimentos diseñados y se entrenará el modelo de cada
+  usuario con los datos de su sesión de calibración.
   \item \textbf{Evaluación.} Se analizará el desempeño del modelo mediante métricas de
   clasificación como la exactitud, la sensibilidad, la precisión y el F1-score, además de la
   construcción de la matriz de confusión, y se evaluará el impacto de la reducción de canales y
@@ -314,7 +321,7 @@ se describen a continuación:
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}[
-  fase/.style={draw, rounded corners=3pt, fill=blue!6, align=center, text width=2.4cm,
+  fase/.style={draw, rounded corners=3pt, fill=white, align=center, text width=2.4cm,
                minimum height=1.0cm, font=\footnotesize},
   flecha/.style={-{Stealth[length=2mm]}, thick}]
   \def\r{3.3}
@@ -323,8 +330,8 @@ se describen a continuación:
       6/150/Integración del modelo}{
     \node[fase] (f\i) at (\ang:\r) {\texto};
   }
-  \node[circle, draw, fill=red!8, align=center, font=\footnotesize, minimum size=2.1cm] (c)
-    at (0,0) {Datos EEG\\públicos};
+  \node[circle, draw, fill=gray!24, align=center, font=\footnotesize, minimum size=2.1cm] (c)
+    at (0,0) {Datos EEG\\públicos y\\propios};
   \foreach \a/\b in {1/2, 2/3, 3/4, 4/5, 5/6}{
     \draw[flecha] (f\a) to[bend left=12] (f\b);
   }

@@ -26,14 +26,14 @@ retroalimentación para que pueda ajustar su estrategia \cite{wolpaw2012,nicolas
 \centering
 \begin{tikzpicture}[
   node distance=0.38cm,
-  etapa/.style={draw, rounded corners=2pt, fill=gray!8, align=center, minimum height=1.1cm, text width=2.15cm, font=\footnotesize},
+  etapa/.style={draw, rounded corners=2pt, fill=white, align=center, minimum height=1.1cm, text width=2.15cm, font=\footnotesize},
   flecha/.style={-{Stealth[length=2mm]}, thick}]
-  \node[etapa, fill=red!8] (usr) {Usuario\\(actividad cerebral)};
+  \node[etapa, fill=gray!24] (usr) {Usuario\\(actividad cerebral)};
   \node[etapa, right=of usr] (adq) {Adquisición\\(EEG)};
   \node[etapa, right=of adq] (pre) {Preprocesa-\\miento};
   \node[etapa, right=of pre] (car) {Extracción de\\características};
   \node[etapa, right=of car] (cla) {Clasificación};
-  \node[etapa, below=1.1cm of cla, fill=blue!6] (app) {Aplicación\\(deletreador)};
+  \node[etapa, below=1.1cm of cla, fill=white] (app) {Aplicación\\(deletreador)};
   \draw[flecha] (usr) -- (adq);
   \draw[flecha] (adq) -- (pre);
   \draw[flecha] (pre) -- (car);

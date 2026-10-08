@@ -33,8 +33,8 @@ proviene el término aprendizaje profundo \cite{goodfellow2016}.
   \node at (0,-0.35) {$\vdots$};
   \node[ent] (xn) at (0,-1.2) {$x_n$};
   \node[ent] (b) at (1.9,2.1) {$1$};
-  \node[circle, draw, thick, minimum size=1.2cm, fill=gray!10] (sum) at (3.6,0.3) {$\Sigma$};
-  \node[rectangle, draw, thick, minimum size=1.0cm, fill=red!8] (act) at (5.6,0.3) {$\varphi(\cdot)$};
+  \node[circle, draw, thick, minimum size=1.2cm, fill=white] (sum) at (3.6,0.3) {$\Sigma$};
+  \node[rectangle, draw, thick, minimum size=1.0cm, fill=gray!24] (act) at (5.6,0.3) {$\varphi(\cdot)$};
   \node (y) at (7.4,0.3) {$y$};
   \draw[flecha] (x1) -- node[above, font=\footnotesize, sloped] {$w_1$} (sum);
   \draw[flecha] (x2) -- node[above, font=\footnotesize, sloped] {$w_2$} (sum);
@@ -75,9 +75,9 @@ Tabla~\ref{tab:activaciones} presenta su definición y la Figura~\ref{fig:activa
 \textbf{Función} & \textbf{Definición} & \textbf{Rango} & \textbf{Uso típico} \\
 \midrule
 Sigmoide & $\sigma(z) = \dfrac{1}{1+e^{-z}}$ & $(0,1)$ & Salida de clasificación binaria (probabilidad de P300). \\[8pt]
-Tangente hiperbólica & $\tanh(z) = \dfrac{e^{z}-e^{-z}}{e^{z}+e^{-z}}$ & $(-1,1)$ & Capas ocultas en \cite{cecotti2011,alvarado2021}; redes recurrentes. \\[8pt]
+Tangente hiperbólica & $\tanh(z) = \dfrac{e^{z}-e^{-z}}{e^{z}+e^{-z}}$ & $(-1,1)$ & Capas ocultas en \cite{cecotti2011,alvarado2021} y en redes recurrentes. \\[8pt]
 ReLU & $\max(0,z)$ & $[0,\infty)$ & Capas ocultas de redes profundas. \\[4pt]
-ELU & $z$ si $z>0$; $\alpha(e^{z}-1)$ si $z\le0$ & $(-\alpha,\infty)$ & Capas ocultas de EEGNet \cite{lawhern2018}. \\[4pt]
+ELU & $z$ si $z>0$, y $\alpha(e^{z}-1)$ si $z\le0$ & $(-\alpha,\infty)$ & Capas ocultas de EEGNet \cite{lawhern2018}. \\[4pt]
 Softmax & $\dfrac{e^{z_k}}{\sum_{j} e^{z_j}}$ & $(0,1)$, suma 1 & Salida de clasificación multiclase. \\
 \bottomrule
 \end{tabularx}
