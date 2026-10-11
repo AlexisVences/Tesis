@@ -76,38 +76,10 @@ iluminada. El intervalo entre estímulos (ISI) es el tiempo que la matriz perman
 antes del siguiente evento. La suma de ambos se conoce como intervalo entre inicios de estímulos
 (SOA). A una secuencia completa de las doce intensificaciones se le llama repetición, y el número
 de repeticiones que se hacen antes de elegir el carácter determina el equilibrio entre velocidad y
-exactitud \cite{krusienski2008}. La Figura~\ref{fig:tiempos}
-representa estos parámetros con los valores de la base de datos II de la tercera competencia BCI,
-utilizada en este trabajo, en la que cada intensificación dura 100~ms seguida de 75~ms sin
-estímulo, y cada carácter se deletrea con 15 repeticiones, es decir, con 180 intensificaciones
-\cite{blankertz2006}.
-
-\begin{figure}[htbp]
-\centering
-\begin{tikzpicture}[x=1.05cm, y=0.8cm, font=\small]
-  % señal de estimulación
-  \draw[->] (0,0) -- (13.6,0) node[right] {$t$};
-  \foreach \k/\et/\obj in {0/F1/0,1/C4/0,2/F3/1,3/C2/1,4/F6/0,5/C5/0}{
-    \pgfmathsetmacro{\xa}{\k*1.75+0.3}
-    \pgfmathsetmacro{\xb}{\xa+1.0}
-    \ifthenelse{\obj=1}
-      {\fill[gray!50] (\xa,0) rectangle (\xb,1.2);}
-      {\fill[gray!25] (\xa,0) rectangle (\xb,1.2);}
-    \draw (\xa,0) rectangle (\xb,1.2);
-    \node at ({\xa+0.5},0.6) {\footnotesize \et};
-  }
-  \node at (11.3,0.6) {$\cdots$};
-  % cotas
-  \draw[|<->|] (0.3,1.55) -- node[above, font=\footnotesize] {100 ms} (1.3,1.55);
-  \draw[|<->|] (1.3,1.55) -- (2.05,1.55); \node[font=\footnotesize, anchor=west] at (2.1,1.55) {ISI = 75 ms};
-  \draw[|<->|] (0.3,-0.45) -- node[below, font=\footnotesize] {SOA = 175 ms} (2.05,-0.45);
-  \draw[decorate, decoration={brace, amplitude=5pt, mirror}] (0.3,-1.3) -- node[below=6pt, font=\footnotesize, align=center] {1 repetición = 12 intensificaciones (6 filas y 6 columnas) $\approx$ 2.1 s} (13.2,-1.3);
-  \node[font=\footnotesize, align=left, anchor=west] at (8.6,1.7) {\tikz\fill[gray!50] (0,0) rectangle (0.3,0.2); objetivo\quad \tikz\fill[gray!25] (0,0) rectangle (0.3,0.2); no objetivo};
-\end{tikzpicture}
-\caption{Parámetros de estimulación del P300 Speller con los valores de la base de datos II de la
-competencia BCI III (F = fila, C = columna). Elaboración propia con base en \cite{blankertz2006}.}
-\label{fig:tiempos}
-\end{figure}
+exactitud \cite{krusienski2008}. En la base de datos II de la tercera competencia BCI, utilizada
+en la fase exploratoria de este trabajo, cada intensificación dura 100~ms seguida de 75~ms sin
+estímulo, por lo que cada repetición dura alrededor de 2.1~s, y cada carácter se deletrea con 15
+repeticiones, es decir, con 180 intensificaciones \cite{blankertz2006}.
 
 \subsection{Épocas de EEG y decodificación del carácter}
 

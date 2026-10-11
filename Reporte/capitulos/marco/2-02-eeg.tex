@@ -30,10 +30,7 @@ Cada canal de EEG mide en realidad una diferencia de potencial, por lo que es ne
 contra qué punto se mide. En un montaje unipolar, cada electrodo se compara con un electrodo
 de referencia común, ubicado en un sitio con poca actividad cerebral, como el lóbulo de la oreja o
 las mastoides. En un montaje bipolar, en cambio, se registra la diferencia entre pares de
-electrodos vecinos \cite{ganong2010}. Una tercera
-alternativa, muy utilizada en el procesamiento digital, es la referencia promedio común (CAR), en
-la que a cada canal se le resta el promedio de todos los canales en cada instante de tiempo
-\cite{luck2014}.
+electrodos vecinos \cite{ganong2010}.
 
 \subsection{Sistema internacional 10-20}
 
@@ -70,33 +67,26 @@ el ritmo alfa, por ejemplo, predomina en la región occipital cuando la persona 
 reposo y con los ojos cerrados, y se sustituye por actividad beta de menor amplitud cuando la
 atención se dirige a una tarea, fenómeno conocido como bloqueo alfa \cite{guyton2016,ganong2010}.
 La Tabla~\ref{tab:ritmos} resume sus
-características y la Figura~\ref{fig:ritmos} ilustra su forma de onda.
+características.
 
 \begin{table}[htbp]
 \centering
 \caption{Bandas de frecuencia del EEG}
 \label{tab:ritmos}
 \small
-\begin{tabularx}{\textwidth}{L{1.7cm}L{1.85cm}L{1.9cm}L{2.55cm}Y}
+\begin{tabularx}{\textwidth}{L{2.0cm}L{2.0cm}L{2.8cm}Y}
 \toprule
-\textbf{Ritmo} & \textbf{Frecuencia} & \textbf{Amplitud} & \textbf{Región} & \textbf{Estado asociado} \\
+\textbf{Ritmo} & \textbf{Frecuencia} & \textbf{Región} & \textbf{Estado asociado} \\
 \midrule
-Delta ($\delta$) & 0.5--4 Hz & 20--200 $\mu$V & Variable & Sueño profundo, lactancia, y en vigilia puede indicar patología. \\
-Theta ($\theta$) & 4--8 Hz & 10--50 $\mu$V & Parietal, temporal & Somnolencia, niñez, algunos estados de estrés emocional. \\
-Alfa ($\alpha$) & 8--13 Hz & 50--100 $\mu$V & Occipital & Vigilia relajada con ojos cerrados, y se bloquea al atender. \\
-Beta ($\beta$) & 13--30 Hz & $<$30 $\mu$V & Frontal, central & Alerta, concentración y actividad mental. \\
-Gamma ($\gamma$) & $>$30 Hz & $<$10 $\mu$V & Difusa & Procesamiento sensorial y atención focalizada. \\
+Delta ($\delta$) & 0.5--4 Hz & Variable & Sueño profundo. \\
+Theta ($\theta$) & 4--8 Hz & Parietal, temporal & Somnolencia. \\
+Alfa ($\alpha$) & 8--13 Hz & Occipital & Vigilia relajada con ojos cerrados, y se bloquea al atender. \\
+Beta ($\beta$) & 13--30 Hz & Frontal, central & Alerta, concentración y actividad mental. \\
+Gamma ($\gamma$) & $>$30 Hz & Difusa & Procesamiento sensorial y atención focalizada. \\
 \bottomrule
 \end{tabularx}
 \par\smallskip{\footnotesize Elaboración propia con información de \cite{guyton2016,ganong2010,kane2017}.}
 \end{table}
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.85\textwidth]{02-marco-referencial/ritmos_eeg.pdf}
-\caption{Forma de onda ilustrativa de los principales ritmos del EEG. Elaboración propia.}
-\label{fig:ritmos}
-\end{figure}
 
 \subsection{Artefactos en la señal de EEG}
 
@@ -118,13 +108,13 @@ para mitigarlos, algunas de las cuales se retoman en la Sección~\ref{sec:pds}.
 \toprule
 \textbf{Artefacto} & \textbf{Origen} & \textbf{Banda afectada} & \textbf{Mitigación} \\
 \midrule
-Parpadeo y movimiento ocular (EOG) & Fisiológico & $<$4 Hz & Filtrado pasa altas, regresión con canales EOG, ICA. \\
-Actividad muscular (EMG) & Fisiológico & $>$20 Hz & Filtrado pasa bajas, instrucciones al sujeto, ICA. \\
-Actividad cardiaca (ECG) & Fisiológico & 1--2 Hz y armónicos & Referencia adecuada, ICA. \\
+Parpadeo y movimiento ocular (EOG) & Fisiológico & $<$4 Hz & Filtrado pasa altas y rechazo de épocas por umbral de amplitud. \\
+Actividad muscular (EMG) & Fisiológico & $>$20 Hz & Filtrado pasa bajas e instrucciones al sujeto. \\
+Actividad cardiaca (ECG) & Fisiológico & 1--2 Hz y armónicos & Referencia adecuada. \\
 Sudoración y deriva de línea base & Fisiológico / electrodo & $<$0.5 Hz & Filtrado pasa altas, corrección de línea base. \\
 Interferencia de la red eléctrica & Técnico & 60 Hz (México) & Filtro notch, blindaje, buena impedancia. \\
 Movimiento o mal contacto del electrodo & Técnico & Banda ancha & Rechazo de épocas por umbral de amplitud. \\
 \bottomrule
 \end{tabularx}
-\par\smallskip{\footnotesize Elaboración propia con información de \cite{sanei2007,niedermeyer2005,jung2000}.}
+\par\smallskip{\footnotesize Elaboración propia con información de \cite{sanei2007,niedermeyer2005}.}
 \end{table}

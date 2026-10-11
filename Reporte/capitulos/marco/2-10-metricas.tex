@@ -82,16 +82,8 @@ umbrales posibles. El área bajo esta curva (AUC) resume el desempeño en un sol
 indica la probabilidad de que el clasificador dé un puntaje mayor a una época positiva que a una
 negativa, ambas elegidas al azar \cite{fawcett2006}. Un AUC de 0.5 corresponde a un clasificador
 aleatorio, en el que los puntajes de ambas clases se superponen. Un AUC de 1 indica una separación
-perfecta, como se ilustra en la Figura~\ref{fig:roc}. Esta es la métrica utilizada en los trabajos de Alvarado-González et al.
+perfecta. Esta es la métrica utilizada en los trabajos de Alvarado-González et al.
 y de Contreras. Este último la considera aceptable a partir de 0.7 \cite{alvarado2021,contreras2021}.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=\textwidth]{02-marco-referencial/roc_auc.pdf}
-\caption{(a) Distribuciones de puntajes de un clasificador para ambas clases y un umbral de
-decisión. (b) Curvas ROC para distintos grados de separación entre clases. Elaboración propia.}
-\label{fig:roc}
-\end{figure}
 
 \subsection{Métricas a nivel de sistema}
 
@@ -107,17 +99,7 @@ B = \log_2 N + P\log_2 P + (1-P)\log_2\!\left(\frac{1-P}{N-1}\right),
 \end{equation}
 donde $N$ es el número de opciones posibles, 36 en una matriz de $6\times6$, y $P$ es la exactitud
 por carácter. Al multiplicar $B$ por el número de selecciones por minuto se obtiene la ITR en bits
-por minuto. La Figura~\ref{fig:itr} muestra que, para una misma exactitud, reducir el número de
-repeticiones incrementa notablemente la ITR. Sin embargo, en la práctica menos repeticiones también
-reducen la exactitud, por lo que el número óptimo de repeticiones es el que mejor equilibra ambos
-efectos.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=\textwidth]{02-marco-referencial/itr_repeticiones.pdf}
-\caption{(a) Bits por selección en función de la exactitud para $N=36$ según la
-Ecuación~\eqref{eq:itr}. (b) ITR teórica en función del número de repeticiones para tres niveles
-de exactitud, considerando 175~ms por intensificación y 2.5~s entre caracteres. Elaboración
-propia.}
-\label{fig:itr}
-\end{figure}
+por minuto. Por ello, para una misma exactitud, reducir el número de repeticiones incrementa la
+ITR, ya que aumenta el número de selecciones que pueden realizarse por minuto. Sin embargo, en la
+práctica menos repeticiones también reducen la exactitud, por lo que el número óptimo de
+repeticiones es el que mejor equilibra ambos efectos.

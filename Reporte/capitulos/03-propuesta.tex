@@ -27,7 +27,9 @@ identificadas en el estado del arte. Debido a que el desempeño de un modelo ent
 otras personas suele ser menor que el de uno ajustado al propio usuario \cite{alvarado2021}, el
 modelo de cada usuario se entrenará además con señales propias registradas en una sesión de
 calibración con un casco comercial de 14 canales, lo que evita depender de equipo especializado de
-64 canales.
+64 canales. Esta calibración formará parte del registro del usuario en el sistema, que al
+concluirla entrenará de forma automática su modelo con la arquitectura y la configuración
+seleccionadas a partir de las bases de datos públicas.
 
 \section[ARQUITECTURA DEL SISTEMA]{Arquitectura del sistema}
 
@@ -128,7 +130,7 @@ modelo de desarrollo incremental, mientras que para el modelo de detección de l
 utilizará la metodología CRISP-ML, la cual estructura el proceso de construcción, validación y
 optimización de modelos de aprendizaje automático en fases iterativas \cite{studer2021}. Ambas
 metodologías se ejecutarán en paralelo y convergerán en el último incremento del sistema, en el que
-el modelo entrenado se incorpora a la aplicación.
+la arquitectura seleccionada y el procedimiento para entrenarla se incorporan a la aplicación.
 
 \subsection{Metodología de desarrollo del sistema}
 \label{sec:met-sistema}
@@ -201,16 +203,19 @@ servirá como base para el siguiente incremento. Los incrementos considerados so
   probará en un modo de simulación que utiliza las etiquetas de la base de datos, lo que permitirá
   validar el funcionamiento de la interfaz de manera independiente. Con ello se contará con una
   segunda versión que incluye la interfaz completa.
-  \item \textbf{Incremento 3: integración del modelo de detección de la componente P300 (marzo a
-  abril).} En el diseño detallado se definirá la forma de cargar el modelo obtenido mediante la
-  metodología CRISP-ML, de entregarle las épocas de EEG y de acumular sus puntajes por fila y
-  columna, así como el número de repeticiones que se empleará, de acuerdo con los resultados de la
-  evaluación del modelo. A continuación se implementará la selección del carácter conforme a la
+  \item \textbf{Incremento 3: calibración e integración del modelo de detección de la componente
+  P300 (marzo a abril).} En el diseño detallado se definirá el modo de calibración, la forma en que
+  el sistema entrenará y validará el modelo de cada usuario con la arquitectura y la configuración
+  obtenidas mediante la metodología CRISP-ML, la forma de entregarle las épocas de EEG y de acumular
+  sus puntajes por fila y columna, así como el número de repeticiones que se empleará, de acuerdo
+  con los resultados de la evaluación del modelo. A continuación se implementarán la calibración, el
+  entrenamiento automático y la selección del carácter conforme a la
   Ecuación~\eqref{eq:decodificacion}, sustituyendo el modo de simulación del incremento anterior.
-  Las pruebas de este incremento consistirán en deletrear los caracteres del conjunto de prueba de
-  la base de datos II de la competencia BCI III, midiendo la exactitud por carácter y la tasa de
-  transferencia de información. El resultado será la tercera versión, que corresponde al
-  sistema completo.
+  Las pruebas de este incremento consistirán en ejecutar el entrenamiento automático con los
+  caracteres de entrenamiento de la base de datos II de la competencia BCI III, como si se tratara
+  de una sesión de calibración, y en deletrear sus caracteres de prueba, midiendo la exactitud por
+  carácter y la tasa de transferencia de información. El resultado será la tercera versión, que
+  corresponde al sistema completo.
 \end{enumerate}
 
 Los incrementos 1 y 2 se desarrollarán de manera simultánea durante febrero y marzo, lo cual es
@@ -218,8 +223,8 @@ posible porque corresponden a módulos independientes y a que las entradas y sal
 quedarán definidas en el diseño general. Mientras el módulo de predicción no esté terminado, la
 interfaz empleará una versión provisional de este que entrega sugerencias fijas, la cual será
 sustituida por el módulo real al concluir el primer incremento. El tercer incremento, en cambio,
-no puede comenzar sino hasta contar con la interfaz y con un modelo de detección entrenado, por lo
-que se ubica al final.
+no puede comenzar sino hasta contar con la interfaz y con la arquitectura y la configuración del
+modelo definidas mediante CRISP-ML, por lo que se ubica al final.
 
 \subsubsection{Pruebas del sistema y documentación}
 
@@ -245,7 +250,7 @@ sistema.
   \node[font=\scriptsize, anchor=south, align=center] at (gen.north) {TT I\\(ago--nov)};
   \foreach \i/\nombre in {1/{Incremento 1: predicción de palabras (ene--mar)},
                           2/{Incremento 2: interfaz y matriz P300 (feb--mar)},
-                          3/{Incremento 3: integración del modelo P300 (mar--abr)}}{
+                          3/{Incremento 3: calibración e integración del modelo P300 (mar--abr)}}{
     \pgfmathsetmacro{\x}{2.55+(\i-1)*1.85}
     \pgfmathsetmacro{\y}{-(\i-1)*1.45}
     \node[fase, fill=white, anchor=west] (d\i) at (\x,\y) {Diseño\\detallado};
@@ -306,16 +311,18 @@ se describen a continuación:
   arquitecturas de aprendizaje profundo para la detección de la componente P300 y se diseñarán los
   experimentos orientados a la reducción del número de canales y de repeticiones. Durante el
   Trabajo Terminal II se implementarán y entrenarán dichas arquitecturas, se realizará el ajuste de
-  hiperparámetros, se ejecutarán los experimentos diseñados y se entrenará el modelo de cada
-  usuario con los datos de su sesión de calibración.
+  hiperparámetros y se ejecutarán los experimentos diseñados, con el fin de seleccionar la
+  arquitectura y la configuración con las que el sistema entrenará el modelo de cada usuario a
+  partir de su sesión de calibración.
   \item \textbf{Evaluación.} Se analizará el desempeño del modelo mediante métricas de
   clasificación como la exactitud, la sensibilidad, la precisión y el F1-score, además de la
   construcción de la matriz de confusión, y se evaluará el impacto de la reducción de canales y
   repeticiones en el rendimiento del sistema. Si los resultados no son satisfactorios, se regresará
   a la preparación de los datos o al modelado.
-  \item \textbf{Integración del modelo.} El modelo seleccionado se integrará en el sistema completo
-  de comunicación asistida durante el tercer incremento descrito en la
-  Sección~\ref{sec:met-sistema}.
+  \item \textbf{Integración del modelo.} La arquitectura seleccionada, junto con el procedimiento
+  para entrenarla y validarla, se integrará en el sistema completo de comunicación asistida durante
+  el tercer incremento descrito en la Sección~\ref{sec:met-sistema}, de modo que el modelo de cada
+  usuario se entrene dentro de la aplicación al concluir su calibración.
 \end{enumerate}
 
 \begin{figure}[htbp]

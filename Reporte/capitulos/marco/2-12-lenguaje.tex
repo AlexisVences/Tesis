@@ -34,13 +34,9 @@ corpus de texto \cite{jurafsky2025}.
 \subsection{Modelos de lenguaje neuronales}
 
 Los modelos de $n$-gramas están limitados a un contexto corto y fijo, por lo que fueron
-reemplazados progresivamente por modelos neuronales. Las redes recurrentes, y en particular las
-LSTM, permitieron condicionar la predicción en un contexto de longitud variable
-\cite{hochreiter1997,jurafsky2025}, y posteriormente la arquitectura Transformer, basada
-exclusivamente en mecanismos de atención, eliminó la recurrencia y permitió entrenar modelos
-mucho más grandes de forma paralela \cite{vaswani2017}. Sobre esta arquitectura se construyen los
-modelos de lenguaje de gran escala (LLM), entrenados con enormes cantidades de texto, que son
-capaces de realizar tareas nuevas a partir de unas cuantas instrucciones o ejemplos
+reemplazados progresivamente por modelos neuronales, primero basados en redes recurrentes
+\cite{jurafsky2025} y después en la arquitectura Transformer \cite{vaswani2017}, sobre la cual se
+construyen los modelos de lenguaje de gran escala (LLM), entrenados con enormes cantidades de texto
 \cite{brown2020}.
 
 \subsection{Integración del lenguaje en el P300 Speller}

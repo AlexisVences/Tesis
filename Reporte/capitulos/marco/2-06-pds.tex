@@ -42,16 +42,7 @@ la frecuencia. En el caso del EEG suele emplearse el método de Welch, que divid
 segmentos traslapados, calcula el espectro de cada uno y los promedia para obtener una estimación
 más estable \cite{oppenheim2010}. Contreras utilizó este análisis para identificar que la
 información útil para detectar la P300 en sus registros se encontraba entre 1 y 25~Hz
-\cite{contreras2021}. La Figura~\ref{fig:psd} muestra una PSD típica, en la que se observan el pico
-del ritmo alfa y la interferencia de la red eléctrica.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.8\textwidth]{02-marco-referencial/psd_welch.pdf}
-\caption{Densidad espectral de potencia estimada con el método de Welch para una señal de EEG
-sintética. Elaboración propia.}
-\label{fig:psd}
-\end{figure}
+\cite{contreras2021}.
 
 \subsection{Convolución y sistemas lineales}
 
@@ -98,17 +89,9 @@ Nyquist \cite{proakis2007}. En el trabajo preliminar se redujo la frecuencia de 
 lo que disminuye a la mitad el tamaño de cada época sin perder información en la banda de 0.1 a
 20~Hz.
 
-\subsection{Referencia y corrección de línea base}
+\subsection{Corrección de línea base}
 
-Además del filtrado en frecuencia, es común modificar la referencia de los canales después del
-registro. La referencia promedio común resta a cada canal $x_{ch}(n)$ el promedio de los $C$
-canales en cada instante,
-\begin{equation}
-x^{\text{CAR}}_{ch}(n) = x_{ch}(n) - \frac{1}{C}\sum_{c=1}^{C} x_{c}(n),
-\label{eq:car}
-\end{equation}
-con lo que se atenúan las componentes comunes a todos los electrodos, como las derivadas de la
-propia referencia \cite{luck2014}. De forma complementaria, la corrección de línea base resta a
+Además del filtrado en frecuencia, es común aplicar una corrección de línea base, que resta a
 cada época el valor promedio de un intervalo previo al estímulo, típicamente de 100 a 200~ms, para
 que las amplitudes de los componentes del ERP se midan respecto a un nivel común \cite{luck2014}.
 
@@ -119,17 +102,8 @@ que constituyen las muestras de entrada al clasificador. La longitud de la venta
 suficiente para contener la P300 completa. Contreras empleó ventanas de 1005~ms a partir del
 estímulo \cite{contreras2021}, mientras que en el trabajo preliminar se utilizaron ventanas de 78
 muestras, equivalentes a unos 650~ms a 120~Hz. Dado que el intervalo entre inicios de estímulos es
-de solo 175~ms, las épocas de intensificaciones consecutivas se traslapan, como se observa en la
-Figura~\ref{fig:epocas}, de modo que una época no objetivo puede contener parte de la P300
-provocada por una intensificación objetivo cercana.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=\textwidth]{02-marco-referencial/segmentacion_epocas.pdf}
-\caption{Segmentación de la señal continua en épocas de 0 a 650~ms a partir de cada
-intensificación. Señal sintética, elaboración propia.}
-\label{fig:epocas}
-\end{figure}
+de solo 175~ms, las épocas de intensificaciones consecutivas se traslapan, de modo que una época no
+objetivo puede contener parte de la P300 provocada por una intensificación objetivo cercana.
 
 \subsection{Normalización}
 
@@ -150,7 +124,6 @@ preliminar para evitar que los electrodos con mayor amplitud dominen el aprendiz
 \subsection{Remoción de artefactos}
 
 Cuando los artefactos se traslapan en frecuencia con la señal de interés, como ocurre con los
-parpadeos y la banda de la P300, el filtrado no basta para eliminarlos. La estrategia más simple
-es descartar las épocas cuya amplitud supere un umbral, aunque así se pierden datos. Otra opción es
-el análisis de componentes independientes (ICA), que separa la señal en fuentes independientes
-para identificar y eliminar las asociadas a movimientos oculares o musculares \cite{jung2000}.
+parpadeos y la banda de la P300, el filtrado no basta para eliminarlos. En estos casos, una
+estrategia común es descartar las épocas cuya amplitud supere un umbral, aunque así se pierden
+datos.

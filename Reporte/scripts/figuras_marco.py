@@ -98,9 +98,8 @@ def erp_plantilla(t, objetivo=True):
 def fig_erp():
     fs = 240
     t = np.arange(-0.1, 0.8, 1 / fs)
-    fig, axs = plt.subplots(1, 2, figsize=(6.4, 2.6))
+    fig, ax = plt.subplots(figsize=(4.6, 2.8))
 
-    ax = axs[0]
     ax.plot(t * 1000, erp_plantilla(t, True), color=GUINDA, lw=1.6, label="Estímulo objetivo (raro)")
     ax.plot(t * 1000, erp_plantilla(t, False), color=GRIS, lw=1.3, ls="--", label="Estímulo no objetivo")
     for nom, tt, xy in [("N100", 100, (40, -4.4)), ("P200", 180, (150, 5.0)),
@@ -112,26 +111,10 @@ def fig_erp():
     ax.axhline(0, color="k", lw=0.4)
     ax.set_xlabel("Tiempo desde el estímulo (ms)")
     ax.set_ylabel(r"Amplitud ($\mu$V)")
-    ax.set_title("(a) Componentes del ERP")
     ax.legend(frameon=False, loc="upper right", fontsize=7)
     ax.set_ylim(-5.5, 12)
-
-    ax = axs[1]
-    for n, col, lw in [(1, GRIS_CLARO, 0.7), (10, GRIS, 0.9), (60, GUINDA, 1.6)]:
-        bb, aa = signal.butter(4, [0.5, 20], btype="bandpass", fs=fs)
-        def ruido():
-            r = signal.filtfilt(bb, aa, rng.standard_normal(t.size))
-            return 8 * r / np.std(r)
-        ensayos = np.array([erp_plantilla(t) + ruido() for _ in range(n)])
-        ax.plot(t * 1000, ensayos.mean(0), color=col, lw=lw, ls={1: ":", 10: "--", 60: "-"}[n], label=f"N = {n}")
-    ax.axvline(0, color="k", lw=0.6)
-    ax.axhline(0, color="k", lw=0.4)
-    ax.set_xlabel("Tiempo desde el estímulo (ms)")
-    ax.set_title("(b) Promediado de N ensayos")
-    ax.set_ylim(-14, 18)
-    ax.legend(frameon=False, loc="upper right", fontsize=7.5)
     fig.tight_layout()
-    guardar(fig, "erp_componentes_promediado.pdf")
+    guardar(fig, "erp_componentes.pdf")
 
 
 # ---------------------------------------------------------------------

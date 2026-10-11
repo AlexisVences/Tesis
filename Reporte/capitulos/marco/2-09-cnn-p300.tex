@@ -1,8 +1,8 @@
 % ---------------------------------------------------------------------
-% 2.9 Redes convolucionales y recurrentes para la detección de la P300
+% 2.9 Redes convolucionales para la detección de la P300
 % ---------------------------------------------------------------------
-\section[REDES CONVOLUCIONALES Y RECURRENTES PARA LA DETECCIÓN DE LA P300]{Redes convolucionales
-y recurrentes para la detección de la P300}
+\section[REDES CONVOLUCIONALES PARA LA DETECCIÓN DE LA P300]{Redes convolucionales para la
+detección de la P300}
 \label{sec:cnn}
 
 \subsection{Redes neuronales convolucionales}
@@ -103,17 +103,4 @@ SepConv1D \cite{alvarado2021} & Una capa convolucional 1D separable (4 filtros) 
 \end{tabularx}
 \par\smallskip{\footnotesize Elaboración propia con información de \cite{alvarado2021,contreras2021}.}
 \end{table}
-
-\subsection{Redes neuronales recurrentes}
-
-A diferencia de las redes convolucionales, las redes neuronales recurrentes (RNN) procesan una
-secuencia elemento por elemento y mantienen un estado oculto que resume la información de los
-pasos anteriores, lo que las hace adecuadas para modelar series de tiempo \cite{goodfellow2016}.
-Su principal limitación es el desvanecimiento del gradiente, que les impide aprender dependencias
-de largo plazo. Para resolverlo, Hochreiter y Schmidhuber propusieron las redes de memoria de
-corto y largo plazo (LSTM). Estas incorporan una celda de memoria y tres compuertas (de entrada, de
-olvido y de salida), que regulan qué información se agrega, se descarta o se entrega en cada paso
-\cite{hochreiter1997}. En el contexto de la P300 se han utilizado principalmente en arquitecturas
-híbridas, en las que una CNN extrae características de cada época y una capa recurrente modela su
-evolución temporal, enfoque que también fue explorado en el trabajo preliminar.
 

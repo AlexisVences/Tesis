@@ -52,7 +52,7 @@ etiquetada como objetivo o no objetivo.
 \textbf{Tipo} & \textbf{Descripción} & \textbf{Ejemplos} \\
 \midrule
 Supervisado & Aprende a partir de datos con etiquetas conocidas y ajusta sus parámetros según el error entre su salida y la etiqueta. & Clasificar cada época como P300 o no P300. \\
-No supervisado & Busca patrones en datos sin etiquetas, por ejemplo agrupándolos o reduciendo su dimensión. & Agrupamiento de datos y ICA para separar artefactos. \\
+No supervisado & Busca patrones en datos sin etiquetas, por ejemplo agrupándolos o reduciendo su dimensión. & Agrupamiento de datos. \\
 \bottomrule
 \end{tabularx}
 \par\smallskip{\footnotesize Elaboración propia con información de \cite{bishop2006,russell2010}.}
@@ -69,25 +69,10 @@ clasificación para el P300 Speller y encontraron que el análisis discriminante
 conjunto de máquinas de soporte vectorial (SVM) lineales entrenadas sobre distintas particiones de
 los datos \cite{rakotomamonjy2008}. En el ámbito de la ESCOM, Santos, Romero y Fernández utilizaron
 el discriminante lineal de Fisher con promediado sincronizado para controlar un brazo robótico
-virtual, alcanzando una precisión de 90.01\% con 20 sujetos \cite{santos2017}. La
-Tabla~\ref{tab:clasicos} resume estos métodos.
-
-\begin{table}[htbp]
-\centering
-\caption{Clasificadores clásicos utilizados en la detección de la P300}
-\label{tab:clasicos}
-\small
-\begin{tabularx}{\textwidth}{L{2.4cm}YYY}
-\toprule
-\textbf{Clasificador} & \textbf{Descripción} & \textbf{Ventajas} & \textbf{Desventajas} \\
-\midrule
-LDA / Fisher \cite{krusienski2006,santos2017} & Proyecta los datos sobre la dirección que maximiza la separación entre las medias de las clases respecto a su dispersión. & Simple, rápido y con pocos parámetros, con buen desempeño en P300. & Supone clases gaussianas con igual covarianza, y es sensible con muchas características. \\
-SWLDA \cite{krusienski2006} & LDA con selección de características por pasos (se agregan o eliminan según su significancia estadística). & Reduce la dimensión y el sobreajuste, y es de los mejores en la comparación de \cite{krusienski2006}. & Selección costosa con muchos canales. \\
-SVM lineal \cite{rakotomamonjy2008} & Busca el hiperplano que maximiza el margen entre clases. & Robusta en alta dimensión, y ganó la competencia BCI III. & Requiere ajustar el parámetro de regularización, con entrenamiento más lento. \\
-\bottomrule
-\end{tabularx}
-\par\smallskip{\footnotesize Elaboración propia.}
-\end{table}
+virtual, alcanzando una precisión de 90.01\% con 20 sujetos \cite{santos2017}. En el presente
+trabajo estos métodos se revisan únicamente como antecedente, ya que la detección de la P300 se
+realizará con modelos de aprendizaje profundo, que aprenden las características directamente a
+partir de la señal.
 
 \subsection{Sobreajuste y generalización}
 

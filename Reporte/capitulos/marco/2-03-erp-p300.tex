@@ -15,7 +15,8 @@ se registra como una serie de ondas positivas y negativas llamadas componentes. 
 nombra con la letra P o N según su polaridad, seguida de un número que indica su latencia
 aproximada en milisegundos o su posición en la secuencia \cite{luck2014}. La
 Tabla~\ref{tab:componentes} describe las componentes que aparecen con mayor frecuencia en
-paradigmas de estimulación visual.
+paradigmas de estimulación visual, y la Figura~\ref{fig:erp} muestra la forma de onda típica de un
+ERP ante un estímulo objetivo y ante uno no objetivo, en la que la P300 solo aparece en el primero.
 
 \begin{table}[htbp]
 \centering
@@ -35,6 +36,15 @@ P300 (P3) & 250--500 ms & Positiva & Actualización del contexto en la memoria d
 \par\smallskip{\footnotesize Elaboración propia con información de \cite{luck2014,kropotov2009,polich2007}.}
 \end{table}
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.75\textwidth]{02-marco-referencial/erp_componentes.pdf}
+\caption{Forma de onda ilustrativa de un ERP ante un estímulo objetivo y uno no objetivo, con las
+latencias de la Tabla~\ref{tab:componentes}. Elaboración propia con base en
+\cite{luck2014,polich2007}.}
+\label{fig:erp}
+\end{figure}
+
 \subsection{Promediado coherente}
 
 El principal problema para observar un ERP es que su amplitud, de unos cuantos microvolts, es
@@ -50,33 +60,19 @@ entre ensayos, el promedio de $N$ ensayos queda como
 \end{equation}
 donde la desviación estándar del ruido residual se reduce a $\sigma/\sqrt{N}$, de modo que la
 relación señal-ruido mejora en proporción a la raíz cuadrada del número de ensayos
-\cite{luck2014}. La Figura~\ref{fig:erp} ilustra ambas ideas. El panel (a) muestra la forma
-de onda típica ante un estímulo objetivo y ante uno no objetivo. El panel (b) muestra cómo la P300
-se vuelve visible conforme aumenta el número de ensayos promediados. Esta relación explica
-por qué el P300 Speller necesita repetir varias veces la intensificación de cada fila y columna, y
-por qué reducir dichas repeticiones, objetivo de este trabajo, compromete directamente la
-confiabilidad de la detección.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=\textwidth]{02-marco-referencial/erp_componentes_promediado.pdf}
-\caption{(a) Forma de onda ilustrativa de un ERP ante un estímulo objetivo y uno no objetivo.
-(b) Efecto del promediado de $N$ ensayos sobre la visibilidad de la componente P300. Señales
-sintéticas, elaboración propia.}
-\label{fig:erp}
-\end{figure}
+\cite{luck2014}. Esta relación explica por qué el P300 Speller necesita repetir varias veces la
+intensificación de cada fila y columna, y por qué reducir dichas repeticiones, objetivo de este
+trabajo, compromete directamente la confiabilidad de la detección.
 
 \subsection{La componente P300}
 
 La componente P300 fue descrita por primera vez en 1965 por Sutton et al., quienes observaron que
 los estímulos cuya ocurrencia era incierta para el sujeto evocaban una onda positiva de gran
 amplitud alrededor de 300~ms después de su presentación \cite{sutton1965}. Años más tarde, Squires,
-Squires y Hillyard distinguieron dos variantes de esta onda \cite{squires1975}. La P3a aparece
-antes, se registra en la región frontocentral y la provocan estímulos novedosos que captan la
-atención de forma involuntaria. La P3b se registra en la región parietal y aparece ante estímulos
-relevantes para la tarea que el sujeto está realizando. Es esta última la que se aprovecha en el
-P300 Speller, pues su aparición depende de que el usuario atienda deliberadamente al carácter que
-desea seleccionar \cite{polich2007}.
+Squires y Hillyard distinguieron dos variantes de esta onda \cite{squires1975}, de las cuales el
+P300 Speller aprovecha la P3b, que se registra en la región parietal y aparece ante estímulos
+relevantes para la tarea, pues su aparición depende de que el usuario atienda deliberadamente al
+carácter que desea seleccionar \cite{polich2007}.
 
 La explicación más aceptada sobre el origen de la P300 es la teoría de actualización del contexto,
 propuesta inicialmente por Donchin \cite{donchin1981} y posteriormente integrada por Polich
@@ -118,8 +114,7 @@ y 500~ms. La latencia es el tiempo que pasa desde el inicio del estímulo hasta 
 \cite{polich2007}. En los electrodos de la línea media, la amplitud aumenta de las regiones
 frontales hacia las parietales y alcanza su máximo en Pz \cite{picton1992}. La amplitud es mayor
 cuando el estímulo objetivo es menos probable y más relevante para la tarea. En cambio, disminuye
-con la fatiga, la habituación y los intervalos cortos entre estímulos. La latencia refleja el
-tiempo que se tarda en clasificar el estímulo y tiende a aumentar con la edad
+con la fatiga, la habituación y los intervalos cortos entre estímulos
 \cite{polich2007,picton1992}.
 
 \subsection{Paradigma del evento raro}
