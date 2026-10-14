@@ -40,19 +40,26 @@ resumen en la Tabla~\ref{tab:reglas}.
 \caption{Reglas de negocio del sistema}
 \label{tab:reglas}
 \small
-\begin{tabularx}{\textwidth}{L{1.4cm}L{3.6cm}Y}
-\toprule
+\begin{tabularx}{\textwidth}{|L{1.4cm}|L{3.6cm}|Y|}
+\hline
 \textbf{Clave} & \textbf{Nombre} & \textbf{Descripción} \\
-\midrule
+\hline
 RN-1 & Cuenta de usuario & Cada persona que utilice el sistema deberá contar con una cuenta propia y acceder a ella mediante un inicio de sesión. \\
+\hline
 RN-2 & Secuencia de estimulación & Una secuencia consiste en la intensificación aleatoria de cada fila y de cada columna de la matriz exactamente una vez. \\
+\hline
 RN-3 & Carácter seleccionado & El elemento seleccionado es el que se encuentra en la intersección de la fila y la columna con mayor puntaje acumulado a lo largo de las repeticiones. \\
+\hline
 RN-4 & Tipo de selección & Cada selección corresponde a un carácter, a una palabra sugerida o al comando de borrado. \\
+\hline
 RN-5 & Sincronización de épocas & Cada época de EEG deberá asociarse a una única intensificación, la que se presentó en el instante en que inicia dicha época. \\
+\hline
 RN-6 & Consentimiento y privacidad de las señales & Las señales EEG de una persona solo se registrarán con su consentimiento informado, se asociarán únicamente a su cuenta y solo podrán consultarlas ella y el operador. \\
+\hline
 RN-7 & Modelo por usuario & Cada usuario contará con un modelo de detección que el sistema entrena con los registros de su propia sesión de calibración, y el sistema solo utilizará el modelo asociado a la cuenta con la que se inició sesión. \\
+\hline
 RN-8 & Calibración previa & Un usuario solo podrá iniciar el deletreo cuando su cuenta cuente con un modelo de detección entrenado. \\
-\bottomrule
+\hline
 \end{tabularx}
 \par\smallskip{\footnotesize Elaboración propia.}
 \end{table}
@@ -86,6 +93,11 @@ paradigma P300 Speller y la predicción de palabras.
   \item \textbf{RF2:} El sistema deberá permitir al operador iniciar sesión con la cuenta existente de un usuario, de modo
   que cada usuario acceda únicamente a su propia información.
   \item \textbf{RF3:} El sistema deberá permitir al operador cerrar la sesión activa.
+\end{itemize}
+
+\paragraph{Adquisición de señales y calibración.}
+
+\begin{itemize}
   \item \textbf{RF4:} El sistema deberá permitir al operador establecer la conexión con el casco EEG y, a partir de ella, recibir de forma continua las
   señales de sus canales durante la calibración y el deletreo.
   \item \textbf{RF5:} El sistema deberá registrar el instante y el tipo de cada intensificación
@@ -100,18 +112,12 @@ paradigma P300 Speller y la predicción de palabras.
   \item \textbf{RF8:} El sistema deberá guardar los registros de cada sesión de calibración, junto
   con los caracteres objetivo y los eventos de estimulación, en la cuenta del usuario que los
   generó.
-  \item \textbf{RF9:} El sistema deberá entrenar de forma automática, al concluir la calibración,
-  el modelo de detección del usuario a partir de sus registros, empleando la arquitectura y la
-  configuración seleccionadas previamente, y guardarlo en su cuenta junto con el número de
-  repeticiones por selección y los tiempos de intensificación empleados en dicha calibración, y mostrar su avance al operador durante el proceso.
+  \item \textbf{RF9:} El sistema deberá entrenar de forma automática, al concluir la calibración, el modelo de detección del usuario a partir de sus registros, empleando la arquitectura y la configuración seleccionadas previamente, guardarlo en su cuenta y mostrar su avance al operador durante el proceso.
   \item \textbf{RF10:} El sistema deberá evaluar el modelo entrenado con una parte de los registros
   de calibración reservada para ese fin y, si su exactitud por carácter no alcanza el valor mínimo
   establecido, informarlo y proponer que se repita la calibración.
   \item \textbf{RF11:} El sistema deberá cargar, al iniciar sesión, el modelo de detección
-  entrenado para ese usuario, junto con el número de repeticiones por selección y los tiempos de
-  intensificación asociados a dicho modelo, de modo que el deletreo se realice con los mismos
-  parámetros empleados en su calibración, y permitir al operador iniciar el deletreo, impidiéndolo si la cuenta aún no
-  cuenta con un modelo.
+  entrenado para ese usuario y permitir al operador iniciar el deletreo, impidiéndolo si la cuenta aún no tiene un modelo.
 \end{itemize}
 
 \paragraph{Deletreo mediante el P300 Speller.}
@@ -162,19 +168,14 @@ paradigma P300 Speller y la predicción de palabras.
   \item \textbf{RNF5:} Si se pierde la conexión con el casco durante una sesión, el
   sistema deberá detener la estimulación, notificarlo al usuario y conservar el texto construido
   hasta ese momento.
-  \item \textbf{RNF6:} Las contraseñas de los usuarios deberán guardarse en el
-  almacenamiento local del sistema como un resumen criptográfico (\textit{hash}) y nunca en texto
-  plano, de modo que no puedan leerse aun cuando se acceda directamente a los archivos del equipo.
+  \item \textbf{RNF6:} Las contraseñas de los usuarios deberán almacenarse de forma que no puedan leerse directamente en los archivos del equipo.
   \item \textbf{RNF7:} La aplicación deberá permitir consultar los registros EEG de cada usuario únicamente a él y al operador, y estos deberán guardarse identificados solo con el identificador de
   la cuenta, sin nombre ni otros datos personales, de modo que no revelen la identidad del usuario
   si se consultan o copian fuera de la aplicación.
   \item \textbf{RNF8:} El sistema deberá tener una arquitectura modular que
   permita reemplazar el modelo de detección o el modelo de predicción de palabras sin modificar la
   interfaz.
-  \item \textbf{RNF9:} La adquisición de señales deberá encapsularse en un módulo
-  independiente, de modo que el casco pueda sustituirse por otro dispositivo de EEG modificando
-  únicamente dicho módulo, y la inferencia del modelo deberá poder ejecutarse por separado de la
-  interfaz para facilitar su traslado a otro equipo.
+  \item \textbf{RNF9:} La adquisición de señales deberá realizarse en un módulo independiente, de modo que el casco pueda sustituirse por otro dispositivo de EEG modificando únicamente dicho módulo.
 \end{itemize}
 
 %% =====================================================================
@@ -233,14 +234,16 @@ las señales, tal como se describe en la Tabla~\ref{tab:actores}.
 \caption{Actores del sistema}
 \label{tab:actores}
 \small
-\begin{tabularx}{\textwidth}{L{3.0cm}Y}
-\toprule
+\begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
+\hline
 \textbf{Actor} & \textbf{Descripción} \\
-\midrule
-Usuario & Es el actor principal del sistema y corresponde a la persona con compromiso motor severo. Tiene una cuenta propia y, una vez iniciada su sesión, interactúa con el sistema únicamente mediante su atención a la matriz del P300 Speller, con la que participa en la calibración, construye mensajes mediante la selección de caracteres o de palabras sugeridas. \\
-Operador & Persona encargada de preparar y supervisar el uso del sistema, que en el presente trabajo corresponde a quienes lo desarrollan. Crea la cuenta del usuario e inicia su sesión, coloca el casco EEG, establece la conexión y verifica la calidad de la señal, inicia la sesión de calibración, supervisa el entrenamiento automático del modelo de detección del usuario e inicia el deletreo cuando la cuenta cuenta con su modelo. \\
+\hline
+Usuario & Es el actor principal del sistema y corresponde a la persona con compromiso motor severo. Tiene una cuenta propia y, una vez iniciada su sesión, interactúa con el sistema únicamente mediante su atención a la matriz del P300 Speller, con la que participa en la calibración y construye mensajes mediante la selección de caracteres o de palabras sugeridas. \\
+\hline
+Operador & Persona encargada de preparar y supervisar el uso del sistema, que en el presente trabajo corresponde a quienes lo desarrollan. Crea la cuenta del usuario e inicia su sesión, coloca el casco EEG, establece la conexión y verifica la calidad de la señal, inicia la sesión de calibración, supervisa el entrenamiento automático del modelo de detección del usuario e inicia el deletreo cuando la cuenta ya tiene su modelo. \\
+\hline
 Casco EEG & Actor externo que corresponde al casco comercial de 14 canales, el cual entrega al sistema, en tiempo real, las señales electroencefalográficas del usuario, que se sincronizan con los estímulos presentados. \\
-\bottomrule
+\hline
 \end{tabularx}
 \par\smallskip{\footnotesize Elaboración propia.}
 \end{table}
@@ -254,17 +257,249 @@ aplicación al concluir la calibración, y dentro de ella el operador interviene
 \subsection{Casos de uso de gestión de sesiones}
 
 Este grupo comprende las funcionalidades que permiten a distintas personas utilizar la misma
-herramienta conservando cada una su propio espacio: crear una cuenta, iniciar sesión, cerrar la sesión activa.
+herramienta conservando cada una su propio espacio: crear una cuenta, iniciar sesión y cerrar la sesión activa.
 
-%% TODO: tablas de casos de uso (crear cuenta, iniciar sesión, cerrar sesión).
+
+\begin{table}[htbp]
+\centering
+\caption{Caso de uso crear cuenta de usuario}
+\label{tab:cu01}
+\small
+\begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
+\hline
+\textbf{Caso de uso} & \textbf{Crear cuenta de usuario} \\
+\hline
+Identificador & CU\_01 \\
+\hline
+Requisitos asociados & RF1 \\
+\hline
+Reglas de negocio & RN-1, RN-6 \\
+\hline
+Actores & Operador \\
+\hline
+Descripción & El operador registra la cuenta de una persona que utilizará el sistema, con un identificador y una contraseña, a la cual se asociarán en adelante sus registros EEG y su modelo de detección. \\
+\hline
+Precondición & El operador cuenta con el consentimiento informado de la persona y ha iniciado la aplicación. \\
+\hline
+Pasos & 1. Mostrar el formulario de registro (identificador de la cuenta y contraseña). \newline 2. Validar que los datos estén completos y que el identificador no exista. \newline 3. Guardar la cuenta con su contraseña. \newline 4. Informar al operador que la cuenta fue creada y mostrar la pantalla de inicio de sesión. \\
+\hline
+Errores & 1. Datos incompletos o no válidos: se despliega un mensaje que indica el campo que debe corregirse. \newline 2. Cuenta duplicada: ya existe una cuenta con ese identificador y se solicita elegir otro. \newline 3. Fallo al guardar: no fue posible almacenar la cuenta y se informa al operador. \\
+\hline
+\end{tabularx}
+\par\smallskip{\footnotesize Elaboración propia.}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Caso de uso iniciar sesión}
+\label{tab:cu02}
+\small
+\begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
+\hline
+\textbf{Caso de uso} & \textbf{Iniciar sesión} \\
+\hline
+Identificador & CU\_02 \\
+\hline
+Requisitos asociados & RF2, RF11 \\
+\hline
+Reglas de negocio & RN-1 \\
+\hline
+Actores & Operador \\
+\hline
+Descripción & El operador inicia sesión con la cuenta de un usuario para que la información que se consulte y se genere quede asociada únicamente a ella. \\
+\hline
+Precondición & Existe una cuenta creada previamente. \\
+\hline
+Pasos & 1. Mostrar el formulario de inicio de sesión (identificador y contraseña). \newline 2. Validar que las credenciales coincidan con las de una cuenta existente. \newline 3. Abrir la sesión, cargar el modelo de detección de la cuenta, en caso de que lo tenga, y mostrar la pantalla principal. \\
+\hline
+Errores & 1. Datos incorrectos: el identificador o la contraseña no coinciden y se permite un nuevo intento. \newline 2. Cuenta inexistente: no hay una cuenta con ese identificador y se informa al operador. \\
+\hline
+\end{tabularx}
+\par\smallskip{\footnotesize Elaboración propia.}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Caso de uso cerrar sesión}
+\label{tab:cu03}
+\small
+\begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
+\hline
+\textbf{Caso de uso} & \textbf{Cerrar sesión} \\
+\hline
+Identificador & CU\_03 \\
+\hline
+Requisitos asociados & RF3 \\
+\hline
+Reglas de negocio & RN-1 \\
+\hline
+Actores & Operador \\
+\hline
+Descripción & El operador cierra la sesión activa para que otra cuenta pueda utilizar el sistema sin acceso a la información de la anterior. \\
+\hline
+Precondición & Hay una sesión activa. \\
+\hline
+Pasos & 1. Solicitar la confirmación del cierre de sesión. \newline 2. Si el operador confirma, detener la conexión con el casco EEG en caso de que esté activa. \newline 3. Cerrar la sesión y regresar a la pantalla de inicio de sesión. \\
+\hline
+Errores & No se identifican errores propios de este caso de uso. \\
+\hline
+\end{tabularx}
+\par\smallskip{\footnotesize Elaboración propia.}
+\end{table}
+
 
 \subsection{Casos de uso de adquisición y calibración}
 
 Este grupo comprende la conexión con el casco EEG, la verificación de la calidad de la señal y la
 sesión de calibración, en la que se presentan al usuario caracteres objetivo conocidos y se
-registran sus señales, así como el entrenamiento y la validación automáticos del modelo de esa cuenta, y su carga al iniciar el deletreo.
+registran sus señales, así como el entrenamiento y la validación automáticos del modelo de esa cuenta, y el inicio del deletreo.
 
-%% TODO: tablas de casos de uso (conectar el casco, verificar la señal, realizar la calibración, entrenar y validar el modelo, cargar el modelo e iniciar el deletreo).
+
+\begin{table}[htbp]
+\centering
+\caption{Caso de uso conectar el casco EEG}
+\label{tab:cu04}
+\small
+\begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
+\hline
+\textbf{Caso de uso} & \textbf{Conectar el casco EEG} \\
+\hline
+Identificador & CU\_04 \\
+\hline
+Requisitos asociados & RF4 \\
+\hline
+Reglas de negocio & RN-1 \\
+\hline
+Actores & Operador, Casco EEG \\
+\hline
+Descripción & El operador establece la conexión entre la aplicación y el casco, de modo que el sistema reciba de forma continua las señales de sus canales. \\
+\hline
+Precondición & Hay una sesión activa y el casco está encendido y colocado sobre el usuario. \\
+\hline
+Pasos & 1. Buscar los dispositivos disponibles y mostrarlos al operador. \newline 2. Seleccionar el casco que se utilizará. \newline 3. Establecer la conexión y comenzar a recibir las señales de cada canal. \newline 4. Informar que la conexión fue exitosa y habilitar la verificación de la señal. \\
+\hline
+Errores & 1. Casco no encontrado o conexión fallida: se despliega un mensaje de error y se permite reintentar. \newline 2. Pérdida de la conexión durante la recepción: el sistema detiene la estimulación, lo notifica y conserva el texto construido hasta ese momento. \\
+\hline
+\end{tabularx}
+\par\smallskip{\footnotesize Elaboración propia.}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Caso de uso verificar la calidad de la señal}
+\label{tab:cu05}
+\small
+\begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
+\hline
+\textbf{Caso de uso} & \textbf{Verificar la calidad de la señal} \\
+\hline
+Identificador & CU\_05 \\
+\hline
+Requisitos asociados & RF6 \\
+\hline
+Reglas de negocio & RN-1 \\
+\hline
+Actores & Operador, Casco EEG \\
+\hline
+Descripción & El operador revisa el estado de la señal de cada canal del casco antes de iniciar una calibración o una sesión de deletreo, y ajusta los electrodos cuando es necesario. \\
+\hline
+Precondición & La conexión con el casco está establecida. \\
+\hline
+Pasos & 1. Mostrar en tiempo real el estado de la señal de cada canal. \newline 2. Resaltar los canales cuya calidad sea insuficiente. \newline 3. Permitir al operador ajustar los electrodos y revisar de nuevo el estado. \newline 4. Registrar que la señal fue aceptada y habilitar la calibración o el deletreo. \\
+\hline
+Errores & 1. Canales con señal deficiente: se informa cuáles son y no se da por aceptada la verificación hasta que se corrijan. \\
+\hline
+\end{tabularx}
+\par\smallskip{\footnotesize Elaboración propia.}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Caso de uso realizar la calibración}
+\label{tab:cu06}
+\small
+\begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
+\hline
+\textbf{Caso de uso} & \textbf{Realizar la calibración} \\
+\hline
+Identificador & CU\_06 \\
+\hline
+Requisitos asociados & RF5, RF7, RF8 \\
+\hline
+Reglas de negocio & RN-2, RN-5, RN-6 \\
+\hline
+Actores & Operador, Usuario, Casco EEG \\
+\hline
+Descripción & El operador inicia una sesión de calibración en la que el usuario fija su atención en caracteres indicados por el sistema, mientras se registran sus señales y los eventos de estimulación para entrenar su modelo. \\
+\hline
+Precondición & La conexión con el casco está establecida y la señal fue verificada. \\
+\hline
+Pasos & 1. Iniciar el modo de calibración a solicitud del operador. \newline 2. Mostrar la matriz e indicar al usuario el carácter objetivo. \newline 3. Presentar las secuencias de estimulación, registrando el instante y el tipo de cada intensificación junto con las señales recibidas. \newline 4. Repetir los pasos 2 y 3 con cada carácter objetivo de la calibración. \newline 5. Guardar en la cuenta del usuario los registros, los caracteres objetivo y los eventos de estimulación. \\
+\hline
+Errores & 1. Pérdida de la conexión con el casco: se detiene la calibración y se informa al operador. \newline 2. Fallo al guardar los registros: se notifica y se propone repetir la calibración. \\
+\hline
+\end{tabularx}
+\par\smallskip{\footnotesize Elaboración propia.}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Caso de uso entrenar y validar el modelo}
+\label{tab:cu07}
+\small
+\begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
+\hline
+\textbf{Caso de uso} & \textbf{Entrenar y validar el modelo} \\
+\hline
+Identificador & CU\_07 \\
+\hline
+Requisitos asociados & RF9, RF10 \\
+\hline
+Reglas de negocio & RN-7, RN-8 \\
+\hline
+Actores & Operador \\
+\hline
+Descripción & Al concluir la calibración, el sistema entrena el modelo de detección del usuario con sus registros y lo evalúa con una parte reservada de ellos, mientras el operador supervisa el avance. \\
+\hline
+Precondición & La calibración concluyó y sus registros están guardados en la cuenta. \\
+\hline
+Pasos & 1. Preprocesar los registros de calibración. \newline 2. Separar una parte de los registros para la validación. \newline 3. Entrenar el modelo con el resto, mostrando su avance al operador. \newline 4. Evaluar la exactitud por carácter con la parte reservada. \newline 5. Si la exactitud alcanza el valor mínimo establecido, guardar el modelo en la cuenta e informar que el deletreo está habilitado. \\
+\hline
+Errores & 1. Exactitud insuficiente: se informa el resultado y se propone repetir la calibración. \newline 2. Fallo al guardar el modelo: se notifica y no se habilita el deletreo. \\
+\hline
+\end{tabularx}
+\par\smallskip{\footnotesize Elaboración propia.}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Caso de uso iniciar el deletreo}
+\label{tab:cu08}
+\small
+\begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
+\hline
+\textbf{Caso de uso} & \textbf{Iniciar el deletreo} \\
+\hline
+Identificador & CU\_08 \\
+\hline
+Requisitos asociados & RF11 \\
+\hline
+Reglas de negocio & RN-7, RN-8 \\
+\hline
+Actores & Operador \\
+\hline
+Descripción & El operador inicia una sesión de deletreo para que el sistema, con el modelo de la cuenta, presente la matriz de selección. \\
+\hline
+Precondición & La cuenta tiene un modelo entrenado, la conexión con el casco está establecida y la señal fue verificada. \\
+\hline
+Pasos & 1. Verificar que la cuenta tenga el modelo de detección cargado al iniciar sesión. \newline 2. Mostrar la matriz de selección y comenzar la estimulación. \\
+\hline
+Errores & 1. Cuenta sin modelo: se impide iniciar el deletreo y se propone realizar la calibración. \newline 2. Modelo no válido o dañado: se informa al operador y se propone repetir la calibración. \\
+\hline
+\end{tabularx}
+\par\smallskip{\footnotesize Elaboración propia.}
+\end{table}
+
 
 \subsection{Casos de uso del deletreo}
 
@@ -287,7 +522,14 @@ los caracteres.
 Los diagramas de casos de uso muestran de forma gráfica qué funcionalidades utiliza cada actor y
 cómo se relacionan entre sí, y complementan las tablas descriptivas de las secciones anteriores.
 
-%% TODO: diagrama(s) de casos de uso.
+La Figura~\ref{fig:cu-general} presenta los casos de uso del sistema y su relación con los tres actores. El operador interviene en la gestión de cuentas, la conexión del casco, la verificación de la señal, la calibración, el entrenamiento del modelo y el inicio del deletreo, el casco EEG participa en su conexión, en la verificación de la señal y en la calibración, donde entrega las señales registradas, y el usuario en la calibración y en todos los casos de uso del deletreo y de la predicción de palabras. Entre los casos de uso se establecen tres relaciones: la calibración incluye el entrenamiento y la validación del modelo, que se ejecutan de forma automática cuando esta concluye, el borrado del último elemento extiende la actualización del texto, pues solo ocurre cuando el usuario lo selecciona, y de igual forma la selección de una sugerencia extiende a su generación. Los demás casos de uso se encadenan mediante las precondiciones indicadas en sus tablas, por ejemplo la verificación de la señal solo puede realizarse una vez conectado el casco.
+
+\begin{figure}[htbp]
+\centering
+\IfFileExists{imagenes/04-analisis-diseno/cu-general.png}{\includegraphics[height=0.72\textheight]{04-analisis-diseno/cu-general.png}}{\fbox{\parbox[c][6cm][c]{0.8\textwidth}{\centering Figura pendiente}}}
+\caption{Diagrama de casos de uso del sistema. Elaboración propia.}
+\label{fig:cu-general}
+\end{figure}
 
 %% =====================================================================
 %% 4.5 ARQUITECTURA DE SOFTWARE
@@ -348,8 +590,67 @@ de las sesiones de calibración y el modelo de aprendizaje profundo entrenado pa
 almacena y cómo se relacionan los datos entre sí, mientras que la elección de la tecnología con la
 que se implementará se discute en el Capítulo~5.
 
-%% TODO: modelo de datos (usuarios) y estructura de carpetas/archivos
-%% (registros de calibración por usuario, modelo por usuario, corpus del predictor).
+Las cuentas de usuario y la ubicación de los archivos que se generan para cada una se guardan en una
+base de datos local, cuyo modelo relacional se muestra en la Figura~\ref{fig:modelo-relacional}. Consta
+de tres tablas: Usuario, con el identificador y la contraseña de cada cuenta, RegistroCalibracion, con
+un renglón por cada sesión de calibración, su fecha y la ubicación del archivo que contiene las
+señales, los caracteres objetivo y los eventos de estimulación, y Modelo, con la ubicación del modelo
+entrenado de la cuenta. Las dos últimas se relacionan con Usuario mediante su identificador, de modo
+que un usuario puede tener varios registros de calibración y un solo modelo, el cual se reemplaza al
+repetir la calibración. Las señales y el modelo no se guardan dentro de la base de datos debido a su
+tamaño, por lo que ahí solo se registra dónde se encuentran.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  ent/.style={draw, inner sep=0pt, font=\footnotesize, anchor=center},
+  rel/.style={thick},
+  card/.style={font=\footnotesize, fill=white, inner sep=1pt}]
+  \node[ent] (cal) at (0,0) {\begin{tabular}{@{\hspace{3pt}}l@{\hspace{3pt}}}
+    \textbf{RegistroCalibracion}\\ \hline
+    id\_registro (PK)\\ id\_usuario (FK)\\ fecha\\ ruta\_archivo\\
+  \end{tabular}};
+  \node[ent] (usr) at (5.2,0) {\begin{tabular}{@{\hspace{3pt}}l@{\hspace{3pt}}}
+    \textbf{Usuario}\\ \hline
+    id\_usuario (PK)\\ contraseña\\
+  \end{tabular}};
+  \node[ent] (mod) at (9.6,0) {\begin{tabular}{@{\hspace{3pt}}l@{\hspace{3pt}}}
+    \textbf{Modelo}\\ \hline
+    id\_modelo (PK)\\ id\_usuario (FK)\\ ruta\_archivo\\
+  \end{tabular}};
+  \draw[rel] (usr.west) -- (cal.east);
+  \draw[rel] (usr.east) -- (mod.west);
+  \node[card] at ($(usr.west)!0.2!(cal.east)$) {1};
+  \node[card] at ($(usr.west)!0.8!(cal.east)$) {N};
+  \node[card] at ($(usr.east)!0.2!(mod.west)$) {1};
+  \node[card] at ($(usr.east)!0.8!(mod.west)$) {1};
+\end{tikzpicture}
+\caption{Modelo relacional de la base de datos del sistema. Elaboración propia.}
+\label{fig:modelo-relacional}
+\end{figure}
+
+Los archivos a los que hace referencia la base de datos se organizan en carpetas, como se muestra en
+la Figura~\ref{fig:carpetas}. Cada usuario cuenta con su propia carpeta, dentro de la cual se separan
+los registros de calibración y el modelo.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[font=\small, every node/.style={anchor=west}]
+  \node at (0,0) {\textbf{sistema}/};
+  \node at (0.8,-0.8) {base de datos local \footnotesize\textit{(usuarios, registros y modelos)}};
+  \node at (0.8,-1.6) {usuarios/};
+  \node at (1.6,-2.4) {identificador\_usuario/};
+  \node at (2.4,-3.2) {calibracion/ \footnotesize\textit{un archivo por sesión de calibración}};
+  \node at (2.4,-4.0) {modelo/ \footnotesize\textit{modelo entrenado del usuario}};
+  \draw (0.25,-0.25) -- (0.25,-1.6);
+  \foreach \y in {-0.8,-1.6} \draw (0.25,\y) -- (0.7,\y);
+  \draw (1.05,-1.85) -- (1.05,-2.4) -- (1.5,-2.4);
+  \draw (1.85,-2.65) -- (1.85,-4.0);
+  \foreach \y in {-3.2,-4.0} \draw (1.85,\y) -- (2.3,\y);
+\end{tikzpicture}
+\caption{Estructura de carpetas del sistema. Elaboración propia.}
+\label{fig:carpetas}
+\end{figure}
 
 %% =====================================================================
 %% 4.9 DIAGRAMAS DE FLUJO
@@ -370,26 +671,28 @@ sistema, de modo que el modelo recibe en ambos casos datos con el mismo formato,
 del casco EEG. Los valores
 específicos de cada parámetro se definirán durante el diseño experimental.
 
-%% TODO: diagrama de flujo del preprocesamiento.
+El flujo, que se muestra en la Figura~\ref{fig:flujo-preprocesamiento}, comienza con la recepción del registro, que puede provenir de una base de datos pública o del casco, y aplica en orden el filtro pasa banda, el remuestreo, la segmentación en épocas y la normalización de cada canal. Cuando los datos se emplean para entrenar, a cada época se le asigna además la etiqueta de objetivo o no objetivo según la fila o columna que se intensificó, mientras que durante el deletreo las épocas se entregan directamente al modelo, ya que se desconoce cuál es el carácter que el usuario desea seleccionar.
+
+\begin{figure}[htbp]
+\centering
+\IfFileExists{imagenes/04-analisis-diseno/flujo-preprocesamiento.png}{\includegraphics[height=0.7\textheight]{04-analisis-diseno/flujo-preprocesamiento.png}}{\fbox{\parbox[c][6cm][c]{0.8\textwidth}{\centering Figura pendiente}}}
+\caption{Diagrama de flujo del preprocesamiento de las señales EEG. Elaboración propia.}
+\label{fig:flujo-preprocesamiento}
+\end{figure}
 
 \subsection{Entrenamiento y evaluación del modelo de detección}
 \label{sec:flujo-entrenamiento}
 
-El entrenamiento y la evaluación del modelo de detección de la componente P300 constan de dos
-etapas. La primera, de exploración, se realiza antes y fuera de la aplicación, por parte del
-operador, siguiendo las fases de la metodología CRISP-ML descritas en el
-Capítulo~\ref{cap:propuesta}. En ella se preparan los datos de las bases públicas, se entrenan las
-arquitecturas candidatas y se evalúa su desempeño con las métricas de clasificación revisadas en la
-Sección~\ref{sec:metricas}, bajo esquemas de validación intrasujeto e intersujeto, así como el
-efecto de reducir el número de canales y de repeticiones, con el fin de seleccionar la arquitectura
-y la configuración del modelo. La segunda etapa se realiza dentro de la aplicación al concluir la
-calibración de cada usuario. Sus registros se preprocesan con el mismo flujo de la sección
-anterior, se separa una parte de ellos para la validación y con el resto se entrena la arquitectura
-seleccionada. Si la exactitud por carácter obtenida en la validación alcanza el valor mínimo
-establecido, el modelo se guarda en la cuenta del usuario y se habilita el deletreo, y en caso
-contrario se propone repetir la calibración.
+El entrenamiento y la evaluación del modelo de detección de la componente P300 que se representan en esta sección son los que realiza la aplicación para cada usuario al concluir su calibración. La arquitectura y la configuración del modelo se definen antes, durante su desarrollo con las bases de datos públicas y siguiendo las fases de la metodología CRISP-ML descritas en el Capítulo~\ref{cap:propuesta}, por lo que aquí se toman como un dato de entrada. Los registros de calibración del usuario se preprocesan con el mismo flujo de la sección anterior, se separa una parte de ellos para la validación y con el resto se entrena la arquitectura seleccionada. Si la exactitud por carácter obtenida en la validación alcanza el valor mínimo establecido, el modelo se guarda en la cuenta del usuario y se habilita el deletreo, y en caso contrario se propone repetir la calibración.
 
-%% TODO: diagrama de flujo del entrenamiento y evaluación del modelo.
+El flujo se muestra en la Figura~\ref{fig:flujo-entrenamiento-fig}. El resultado de la validación decide el camino a seguir, pues si la exactitud por carácter no alcanza el valor mínimo no se guarda ningún modelo en la cuenta y la calibración debe repetirse antes de iniciar el deletreo.
+
+\begin{figure}[htbp]
+\centering
+\IfFileExists{imagenes/04-analisis-diseno/flujo-entrenamiento.png}{\includegraphics[height=0.72\textheight]{04-analisis-diseno/flujo-entrenamiento.png}}{\fbox{\parbox[c][6cm][c]{0.8\textwidth}{\centering Figura pendiente}}}
+\caption{Diagrama de flujo del entrenamiento y evaluación del modelo de detección. Elaboración propia.}
+\label{fig:flujo-entrenamiento-fig}
+\end{figure}
 
 \subsection{Decodificación del carácter seleccionado}
 
@@ -412,7 +715,14 @@ registradas y la actualización del texto, a lo que se suman la conexión con el
 calibración, y el diagrama de estados permite describir cada una de
 estas situaciones junto con los eventos que provocan la transición de una a otra.
 
-%% TODO: diagrama de estados de la sesión de deletreo.
+En la Figura~\ref{fig:estados} se identifican ocho estados principales. La sesión inicia sin usuario autenticado y, al iniciar sesión, pasa a una sesión activa desde la cual se llega directamente al estado de modelo listo si la cuenta ya tiene uno, o bien al de casco conectado cuando es necesario calibrar. A partir de este último se verifica la señal y se calibra, y al concluir la calibración se entrena el modelo, de modo que una validación aprobada conduce al estado de modelo listo y una no aprobada regresa al de casco conectado para repetir el proceso. El estado de deletreo contiene a su vez un ciclo de estimulación, clasificación y actualización del texto que se repite por cada selección hasta que el operador detiene el deletreo o cierra la sesión.
+
+\begin{figure}[htbp]
+\centering
+\IfFileExists{imagenes/04-analisis-diseno/estados.png}{\includegraphics[width=0.9\textwidth]{04-analisis-diseno/estados.png}}{\fbox{\parbox[c][6cm][c]{0.8\textwidth}{\centering Figura pendiente}}}
+\caption{Diagrama de estados de la sesión del sistema. Elaboración propia.}
+\label{fig:estados}
+\end{figure}
 
 %% =====================================================================
 %% 4.11 DIAGRAMAS DE SECUENCIA
@@ -424,7 +734,29 @@ intercambian mensajes a lo largo del tiempo para llevar a cabo una tarea especí
 uno por cada caso de uso principal descrito en la sección anterior, de modo que cada funcionalidad
 quede asociada con los componentes de la arquitectura que participan en ella.
 
-%% TODO: diagramas de secuencia (uno por caso de uso).
+\subsection{Inicio de sesión}
+
+El diagrama de la Figura~\ref{fig:sec-login} parte de que el operador ingresa el identificador y la contraseña en la interfaz, la cual los envía al control de sesión para que consulte la cuenta en la capa de datos. Si las credenciales son válidas se busca además el modelo del usuario, de modo que la sesión se inicia con el modelo cargado cuando existe y sin él cuando la cuenta aún no se ha calibrado, mientras que si son incorrectas la interfaz muestra un mensaje de error.
+
+\begin{figure}[htbp]
+\centering
+\IfFileExists{imagenes/04-analisis-diseno/secuencia-inicio-sesion.png}{\includegraphics[width=\textwidth]{04-analisis-diseno/secuencia-inicio-sesion.png}}{\fbox{\parbox[c][6cm][c]{0.8\textwidth}{\centering Figura pendiente}}}
+\caption{Diagrama de secuencia del inicio de sesión. Elaboración propia.}
+\label{fig:sec-login}
+\end{figure}
+
+\subsection{Calibración}
+
+En la calibración, representada en la Figura~\ref{fig:sec-calibracion}, el control de sesión pide al módulo de estimulación que presente las secuencias de los caracteres de entrenamiento y, mientras tanto, el módulo de adquisición registra las señales del casco junto con la marca de cada estímulo. El registro se guarda en la cuenta del usuario y se preprocesa, con lo cual se entrena y valida el modelo, y finalmente se guarda en la cuenta si la validación fue aprobada y se habilita el deletreo, o se propone repetir la calibración en caso contrario.
+
+\begin{figure}[htbp]
+\centering
+\IfFileExists{imagenes/04-analisis-diseno/secuencia-calibracion.png}{\includegraphics[width=\textwidth]{04-analisis-diseno/secuencia-calibracion.png}}{\fbox{\parbox[c][6cm][c]{0.8\textwidth}{\centering Figura pendiente}}}
+\caption{Diagrama de secuencia de la calibración. Elaboración propia.}
+\label{fig:sec-calibracion}
+\end{figure}
+
+%% TODO: diagramas de secuencia de la selección de un carácter y de una sugerencia.
 
 %% =====================================================================
 %% 4.12 DISEÑO DEL MÓDULO DE PREDICCIÓN DE PALABRAS
@@ -454,4 +786,34 @@ calibración y avance del entrenamiento,
 así como la pantalla principal del
 deletreo con la matriz, el texto construido y las sugerencias de palabras.
 
-%% TODO: figuras de los mockups (registro e inicio de sesión, conexión y calibración, pantalla principal).
+La Figura~\ref{fig:mock-registro} muestra la pantalla de creación de cuenta, en la que el operador captura el identificador y la contraseña, y la Figura~\ref{fig:mock-login} la de inicio de sesión, que además permite ir al registro.
+
+\begin{figure}[htbp]
+\centering
+\IfFileExists{imagenes/04-analisis-diseno/mockup-registro.png}{\includegraphics[width=0.7\textwidth]{04-analisis-diseno/mockup-registro.png}}{\fbox{\parbox[c][6cm][c]{0.8\textwidth}{\centering Figura pendiente}}}
+\caption{Pantalla de creación de cuenta. Elaboración propia.}
+\label{fig:mock-registro}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\IfFileExists{imagenes/04-analisis-diseno/mockup-login.png}{\includegraphics[width=0.7\textwidth]{04-analisis-diseno/mockup-login.png}}{\fbox{\parbox[c][6cm][c]{0.8\textwidth}{\centering Figura pendiente}}}
+\caption{Pantalla de inicio de sesión. Elaboración propia.}
+\label{fig:mock-login}
+\end{figure}
+
+Una vez iniciada la sesión, la pantalla de la Figura~\ref{fig:mock-conexion} permite conectar el casco y revisar la calidad de la señal de cada canal mediante un código de colores, y mantiene deshabilitado el inicio del deletreo mientras el usuario no cuente con un modelo. La calibración y el entrenamiento se muestran en la Figura~\ref{fig:mock-calibracion}, donde se muestra la palabra de calibración con el carácter objetivo resaltado, una barra con el avance de la calibración y, al concluir, el progreso del entrenamiento del modelo.
+
+\begin{figure}[htbp]
+\centering
+\IfFileExists{imagenes/04-analisis-diseno/mockup-conexion.png}{\includegraphics[width=0.7\textwidth]{04-analisis-diseno/mockup-conexion.png}}{\fbox{\parbox[c][6cm][c]{0.8\textwidth}{\centering Figura pendiente}}}
+\caption{Pantalla de conexión del casco y verificación de la señal. Elaboración propia.}
+\label{fig:mock-conexion}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\IfFileExists{imagenes/04-analisis-diseno/mockup-calibracion.png}{\includegraphics[width=0.7\textwidth]{04-analisis-diseno/mockup-calibracion.png}}{\fbox{\parbox[c][6cm][c]{0.8\textwidth}{\centering Figura pendiente}}}
+\caption{Pantalla de calibración y avance del entrenamiento. Elaboración propia.}
+\label{fig:mock-calibracion}
+\end{figure}
+
+%% TODO: figura del mockup de la pantalla principal del deletreo.
