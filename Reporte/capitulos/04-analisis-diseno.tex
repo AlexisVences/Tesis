@@ -35,7 +35,7 @@ una persona, conservando cada una su modelo de detección y sus registros de man
 resumen en la Tabla~\ref{tab:reglas}.
 
 %% NOTA: reglas PROPUESTAS a partir de lo ya descrito en el Capítulo 3. Revisar, quitar o agregar.
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \caption{Reglas de negocio del sistema}
 \label{tab:reglas}
@@ -187,7 +187,8 @@ El catálogo de mensajes reúne los avisos que el sistema presenta durante su op
 según su propósito para que la interfaz mantenga un lenguaje uniforme en todas sus pantallas. Dado
 que el usuario final interactúa principalmente mediante la selección de elementos con la
 componente P300, los textos deberán ser breves y de lectura inmediata, e indicar en cada caso qué
-ocurrió y, cuando proceda, qué debe hacerse a continuación.
+ocurrió y, cuando proceda, qué debe hacerse a continuación. Cada mensaje se identifica con una
+clave, a la que se hace referencia en los casos de uso de la Sección~\ref{sec:casos-uso}.
 
 \subsection{Mensajes de error}
 
@@ -196,27 +197,107 @@ proporcionados no son válidos, como al registrar una cuenta o iniciar sesión, 
 necesario no está disponible, como el modelo de detección o la conexión con el casco EEG, o
 porque el modelo entrenado no alcanza la exactitud mínima establecida.
 
-%% TODO: tabla de mensajes de error (MSJE) con causa y contenido.
+La Tabla~\ref{tab:msje} reúne los mensajes de error del sistema.
+
+\begin{table}[H]
+\centering
+\caption{Mensajes de error}
+\label{tab:msje}
+\small
+\begin{tabularx}{\textwidth}{|L{1.5cm}|L{5.4cm}|Y|}
+\hline
+\textbf{Clave} & \textbf{Causa} & \textbf{Contenido} \\
+\hline
+MSJE1 & Datos incompletos o no válidos al crear una cuenta o iniciar sesión (CU\_01, CU\_02). & Completa o corrige el campo indicado. \\
+\hline
+MSJE2 & El identificador elegido ya pertenece a otra cuenta (CU\_01). & Ya existe una cuenta con ese identificador. Elige otro. \\
+\hline
+MSJE3 & El identificador o la contraseña no coinciden con los de una cuenta (CU\_02). & El identificador o la contraseña son incorrectos. \\
+\hline
+MSJE4 & No existe una cuenta con el identificador capturado (CU\_02). & No existe una cuenta con ese identificador. \\
+\hline
+MSJE5 & No fue posible guardar una cuenta, un registro de calibración o un modelo (CU\_01, CU\_06, CU\_07). & No fue posible guardar la información. Intenta de nuevo. \\
+\hline
+MSJE6 & Se perdió la conexión con el casco durante la calibración o el deletreo (CU\_04, CU\_06, CU\_09). & Se perdió la conexión con el casco. La sesión se detuvo y el texto se conservó. \\
+\hline
+MSJE7 & Uno o más canales presentan una señal deficiente (CU\_05). & La señal de los canales marcados es deficiente. Ajusta sus electrodos. \\
+\hline
+MSJE8 & El modelo entrenado no alcanzó la exactitud mínima establecida (CU\_07). & El modelo no alcanzó la exactitud mínima. Repite la calibración. \\
+\hline
+MSJE9 & Se intentó iniciar el deletreo con una cuenta sin modelo (CU\_08). & Esta cuenta aún no tiene un modelo. Realiza la calibración. \\
+\hline
+MSJE10 & El modelo de la cuenta no pudo cargarse o falló durante la clasificación (CU\_08, CU\_10). & No fue posible usar el modelo de detección. Repite la calibración. \\
+\hline
+\end{tabularx}
+\par\smallskip{\footnotesize Elaboración propia.}
+\end{table}
+
 
 \subsection{Mensajes de confirmación}
 
 Los mensajes de confirmación se presentan antes de ejecutar acciones que descartan o modifican
-información, como cerrar la sesión activa o borrar el texto construido, y piden al usuario validar
-que realmente desea continuar.
+información, como cerrar la sesión activa, detener una calibración o un deletreo en curso o repetir
+la calibración de una cuenta que ya tiene un modelo, y piden al operador validar que realmente desea
+continuar. Se dirigen al operador y no al usuario, pues este último solo interactúa mediante la
+matriz de selección, y el borrado del último elemento no solicita confirmación para no agregar
+selecciones adicionales al deletreo. La Tabla~\ref{tab:msjc} presenta estos mensajes.
 
-%% TODO: tabla de mensajes de confirmación (MSJC) con causa y contenido.
+\begin{table}[H]
+\centering
+\caption{Mensajes de confirmación}
+\label{tab:msjc}
+\small
+\begin{tabularx}{\textwidth}{|L{1.5cm}|L{5.4cm}|Y|}
+\hline
+\textbf{Clave} & \textbf{Causa} & \textbf{Contenido} \\
+\hline
+MSJC1 & El operador solicita cerrar la sesión activa (CU\_03). & ¿Deseas cerrar la sesión de este usuario? \\
+\hline
+MSJC2 & El operador solicita detener una calibración en curso (CU\_06). & ¿Deseas detener la calibración? Los registros de esta sesión no se guardarán. \\
+\hline
+MSJC3 & El operador inicia la calibración de una cuenta que ya tiene un modelo (CU\_06). & Esta cuenta ya tiene un modelo y se reemplazará al terminar la calibración. ¿Deseas continuar? \\
+\hline
+MSJC4 & El operador solicita detener el deletreo (CU\_09). & ¿Deseas detener el deletreo? \\
+\hline
+\end{tabularx}
+\par\smallskip{\footnotesize Elaboración propia.}
+\end{table}
+
 
 \subsection{Mensajes informativos}
 
 Los mensajes informativos notifican que una operación se realizó con éxito, por ejemplo la creación
 de una cuenta, el inicio de una sesión o el guardado del modelo entrenado.
 
-%% TODO: tabla de mensajes informativos (MSJI) con causa y contenido.
+La Tabla~\ref{tab:msji} presenta los mensajes informativos.
+
+\begin{table}[H]
+\centering
+\caption{Mensajes informativos}
+\label{tab:msji}
+\small
+\begin{tabularx}{\textwidth}{|L{1.5cm}|L{5.4cm}|Y|}
+\hline
+\textbf{Clave} & \textbf{Causa} & \textbf{Contenido} \\
+\hline
+MSJI1 & La cuenta se creó correctamente (CU\_01). & La cuenta se creó correctamente. \\
+\hline
+MSJI2 & Concluyó la calibración e inició el entrenamiento (CU\_06, CU\_07). & La calibración terminó. Se está entrenando el modelo. \\
+\hline
+MSJI3 & El modelo aprobó la validación y se guardó en la cuenta (CU\_07). & El modelo se guardó. El deletreo está habilitado. \\
+\hline
+MSJI4 & Se seleccionó el comando de borrado con el texto vacío (CU\_12). & No hay elementos para borrar. \\
+\hline
+\end{tabularx}
+\par\smallskip{\footnotesize Elaboración propia.}
+\end{table}
+
 
 %% =====================================================================
 %% 4.4 CASOS DE USO
 %% =====================================================================
 \section[CASOS DE USO]{Casos de uso}
+\label{sec:casos-uso}
 
 Los casos de uso representan las distintas funcionalidades del sistema y se definen a partir de los
 requerimientos funcionales, de manera que cada uno describe una acción específica, junto con sus
@@ -229,7 +310,7 @@ las señales, tal como se describe en la Tabla~\ref{tab:actores}.
 
 \subsection{Actores}
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \caption{Actores del sistema}
 \label{tab:actores}
@@ -260,7 +341,7 @@ Este grupo comprende las funcionalidades que permiten a distintas personas utili
 herramienta conservando cada una su propio espacio: crear una cuenta, iniciar sesión y cerrar la sesión activa.
 
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \caption{Caso de uso crear cuenta de usuario}
 \label{tab:cu01}
@@ -289,7 +370,7 @@ Errores & 1. Datos incompletos o no válidos: se despliega un mensaje que indica
 \par\smallskip{\footnotesize Elaboración propia.}
 \end{table}
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \caption{Caso de uso iniciar sesión}
 \label{tab:cu02}
@@ -318,7 +399,7 @@ Errores & 1. Datos incorrectos: el identificador o la contraseña no coinciden y
 \par\smallskip{\footnotesize Elaboración propia.}
 \end{table}
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \caption{Caso de uso cerrar sesión}
 \label{tab:cu03}
@@ -355,7 +436,7 @@ sesión de calibración, en la que se presentan al usuario caracteres objetivo c
 registran sus señales, así como el entrenamiento y la validación automáticos del modelo de esa cuenta, y el inicio del deletreo.
 
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \caption{Caso de uso conectar el casco EEG}
 \label{tab:cu04}
@@ -384,7 +465,7 @@ Errores & 1. Casco no encontrado o conexión fallida: se despliega un mensaje de
 \par\smallskip{\footnotesize Elaboración propia.}
 \end{table}
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \caption{Caso de uso verificar la calidad de la señal}
 \label{tab:cu05}
@@ -413,7 +494,7 @@ Errores & 1. Canales con señal deficiente: se informa cuáles son y no se da po
 \par\smallskip{\footnotesize Elaboración propia.}
 \end{table}
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \caption{Caso de uso realizar la calibración}
 \label{tab:cu06}
@@ -442,7 +523,7 @@ Errores & 1. Pérdida de la conexión con el casco: se detiene la calibración y
 \par\smallskip{\footnotesize Elaboración propia.}
 \end{table}
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \caption{Caso de uso entrenar y validar el modelo}
 \label{tab:cu07}
@@ -471,7 +552,7 @@ Errores & 1. Exactitud insuficiente: se informa el resultado y se propone repeti
 \par\smallskip{\footnotesize Elaboración propia.}
 \end{table}
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \caption{Caso de uso iniciar el deletreo}
 \label{tab:cu08}
@@ -507,7 +588,124 @@ Este grupo corresponde al núcleo del sistema e incluye la presentación de los 
 matriz, la clasificación de las épocas y la decodificación del carácter seleccionado, la
 actualización del texto construido y el borrado del último elemento escrito.
 
-%% TODO: tablas de casos de uso del deletreo.
+Las Tablas~\ref{tab:cu09} a \ref{tab:cu12} describen estos casos de uso, que se ejecutan en ese orden por cada selección mientras el deletreo permanece activo.
+
+\begin{table}[H]
+\centering
+\caption{Caso de uso presentar los estímulos}
+\label{tab:cu09}
+\small
+\begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
+\hline
+\textbf{Caso de uso} & \textbf{Presentar los estímulos} \\
+\hline
+Identificador & CU\_09 \\
+\hline
+Requisitos asociados & RF5, RF12, RF13 \\
+\hline
+Reglas de negocio & RN-2, RN-5 \\
+\hline
+Actores & Usuario \\
+\hline
+Descripción & El sistema presenta la matriz de selección e intensifica de forma aleatoria sus filas y columnas mientras el usuario fija su atención en el elemento que desea seleccionar, y registra el instante y el tipo de cada intensificación. \\
+\hline
+Precondición & El deletreo se inició (CU\_08) y la conexión con el casco está activa. \\
+\hline
+Pasos & 1. Mostrar la matriz de selección con los caracteres, el espacio, el comando de borrado y las sugerencias vigentes. \newline 2. Generar un orden aleatorio en el que cada fila y cada columna se intensifiquen una sola vez. \newline 3. Intensificar cada fila o columna con la duración y el intervalo asociados al modelo del usuario, registrando el instante y el tipo de cada intensificación. \newline 4. Repetir los pasos 2 y 3 hasta completar el número de repeticiones asociado al modelo. \newline 5. Entregar las señales y los eventos registrados a la decodificación del carácter. \\
+\hline
+Errores & 1. Pérdida de la conexión con el casco: se detiene la estimulación, se despliega el mensaje MSJE6 y se conserva el texto construido. \\
+\hline
+\end{tabularx}
+\par\smallskip{\footnotesize Elaboración propia.}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Caso de uso decodificar el carácter}
+\label{tab:cu10}
+\small
+\begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
+\hline
+\textbf{Caso de uso} & \textbf{Decodificar el carácter} \\
+\hline
+Identificador & CU\_10 \\
+\hline
+Requisitos asociados & RF14, RF15, RF16 \\
+\hline
+Reglas de negocio & RN-3, RN-5, RN-7 \\
+\hline
+Actores & Usuario \\
+\hline
+Descripción & A partir de las señales registradas durante la presentación de los estímulos, el sistema obtiene las épocas, las clasifica con el modelo del usuario y determina el elemento seleccionado. \\
+\hline
+Precondición & Se completaron las repeticiones de una selección (CU\_09) y el modelo del usuario está cargado. \\
+\hline
+Pasos & 1. Segmentar las señales en épocas a partir de cada intensificación y preprocesarlas. \newline 2. Clasificar cada época con el modelo del usuario y obtener su puntaje. \newline 3. Acumular los puntajes de cada fila y cada columna a lo largo de las repeticiones. \newline 4. Elegir la fila y la columna con el mayor puntaje acumulado. \newline 5. Entregar el elemento ubicado en su intersección a la actualización del texto. \\
+\hline
+Errores & 1. Épocas incompletas por una interrupción de la señal: se descarta la selección y se repite la presentación de los estímulos. \newline 2. Fallo del modelo de detección: se detiene el deletreo y se despliega el mensaje MSJE10. \\
+\hline
+\end{tabularx}
+\par\smallskip{\footnotesize Elaboración propia.}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Caso de uso actualizar el texto}
+\label{tab:cu11}
+\small
+\begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
+\hline
+\textbf{Caso de uso} & \textbf{Actualizar el texto} \\
+\hline
+Identificador & CU\_11 \\
+\hline
+Requisitos asociados & RF17 \\
+\hline
+Reglas de negocio & RN-4 \\
+\hline
+Actores & Usuario \\
+\hline
+Descripción & El sistema incorpora al texto construido el elemento seleccionado según su tipo y muestra el resultado al usuario. \\
+\hline
+Precondición & Se decodificó un elemento de la matriz (CU\_10). \\
+\hline
+Pasos & 1. Identificar el tipo del elemento seleccionado. \newline 2. Si es un carácter o el espacio, agregarlo al final del texto. \newline 3. Si es el comando de borrado, continuar con el caso de uso CU\_12. \newline 4. Si es una sugerencia, continuar con el caso de uso CU\_14. \newline 5. Mostrar el texto actualizado y solicitar nuevas sugerencias (CU\_13). \\
+\hline
+Errores & No se identifican errores propios de este caso de uso. \\
+\hline
+\end{tabularx}
+\par\smallskip{\footnotesize Elaboración propia.}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Caso de uso borrar el último elemento}
+\label{tab:cu12}
+\small
+\begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
+\hline
+\textbf{Caso de uso} & \textbf{Borrar el último elemento} \\
+\hline
+Identificador & CU\_12 \\
+\hline
+Requisitos asociados & RF18 \\
+\hline
+Reglas de negocio & RN-4 \\
+\hline
+Actores & Usuario \\
+\hline
+Descripción & Cuando el usuario selecciona el comando de borrado, el sistema elimina el último carácter o la última palabra incorporados al texto. \\
+\hline
+Precondición & El elemento decodificado corresponde al comando de borrado (CU\_11). \\
+\hline
+Pasos & 1. Consultar el último elemento incorporado al texto. \newline 2. Si fue una palabra sugerida, eliminar la palabra completa junto con el espacio que la sigue. \newline 3. Si fue un carácter o un espacio, eliminar solo ese carácter. \newline 4. Mostrar el texto actualizado y solicitar nuevas sugerencias (CU\_13). \\
+\hline
+Errores & 1. Texto vacío: no hay elementos que borrar, el texto no se modifica y se despliega el mensaje MSJI4. \\
+\hline
+\end{tabularx}
+\par\smallskip{\footnotesize Elaboración propia.}
+\end{table}
+
 
 \subsection{Casos de uso de predicción de palabras}
 
@@ -515,7 +713,66 @@ Este grupo abarca la generación de sugerencias a partir de los caracteres escri
 mediante el mismo mecanismo de estimulación y detección de la componente P300 que se emplea para
 los caracteres.
 
-%% TODO: tablas de casos de uso de predicción de palabras.
+Las Tablas~\ref{tab:cu13} y \ref{tab:cu14} describen estos casos de uso.
+
+\begin{table}[H]
+\centering
+\caption{Caso de uso generar sugerencias}
+\label{tab:cu13}
+\small
+\begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
+\hline
+\textbf{Caso de uso} & \textbf{Generar sugerencias} \\
+\hline
+Identificador & CU\_13 \\
+\hline
+Requisitos asociados & RF19 \\
+\hline
+Reglas de negocio & RN-4 \\
+\hline
+Actores & Usuario \\
+\hline
+Descripción & Cada vez que cambia el texto, el sistema estima las palabras más probables a partir de lo escrito y las presenta en los elementos de sugerencia de la matriz. \\
+\hline
+Precondición & Se inició el deletreo o se actualizó el texto construido (CU\_11). \\
+\hline
+Pasos & 1. Obtener el texto construido hasta el momento. \newline 2. Si el texto está vacío o termina en espacio, tomar las palabras anteriores como contexto para predecir la siguiente palabra. \newline 3. En otro caso, tomar la palabra en curso como prefijo y las palabras anteriores como contexto. \newline 4. Consultar el modelo de lenguaje y ordenar las palabras candidatas por probabilidad. \newline 5. Asignar las siete más probables a los elementos de sugerencia y mostrarlas en la matriz. \\
+\hline
+Errores & 1. Sin palabras candidatas: los elementos de sugerencia se muestran vacíos y el deletreo continúa por caracteres. \\
+\hline
+\end{tabularx}
+\par\smallskip{\footnotesize Elaboración propia.}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Caso de uso seleccionar una sugerencia}
+\label{tab:cu14}
+\small
+\begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
+\hline
+\textbf{Caso de uso} & \textbf{Seleccionar una sugerencia} \\
+\hline
+Identificador & CU\_14 \\
+\hline
+Requisitos asociados & RF20 \\
+\hline
+Reglas de negocio & RN-3, RN-4 \\
+\hline
+Actores & Usuario \\
+\hline
+Descripción & El usuario elige una de las palabras sugeridas mediante el mismo mecanismo de estimulación y detección que emplea para los caracteres, y el sistema completa con ella la palabra en curso. \\
+\hline
+Precondición & Hay sugerencias presentes en la matriz (CU\_13) y el elemento decodificado corresponde a una de ellas. \\
+\hline
+Pasos & 1. Identificar la palabra contenida en el elemento seleccionado. \newline 2. Reemplazar la palabra en curso por la palabra sugerida y agregar un espacio. \newline 3. Mostrar el texto actualizado. \newline 4. Solicitar las sugerencias de la siguiente palabra (CU\_13). \\
+\hline
+Errores & 1. Elemento de sugerencia vacío: la selección se ignora y el texto no se modifica. \\
+\hline
+\end{tabularx}
+\par\smallskip{\footnotesize Elaboración propia.}
+\end{table}
+
 
 \subsection{Diagramas de casos de uso}
 
@@ -524,7 +781,7 @@ cómo se relacionan entre sí, y complementan las tablas descriptivas de las sec
 
 La Figura~\ref{fig:cu-general} presenta los casos de uso del sistema y su relación con los tres actores. El operador interviene en la gestión de cuentas, la conexión del casco, la verificación de la señal, la calibración, el entrenamiento del modelo y el inicio del deletreo, el casco EEG participa en su conexión, en la verificación de la señal y en la calibración, donde entrega las señales registradas, y el usuario en la calibración y en todos los casos de uso del deletreo y de la predicción de palabras. Entre los casos de uso se establecen tres relaciones: la calibración incluye el entrenamiento y la validación del modelo, que se ejecutan de forma automática cuando esta concluye, el borrado del último elemento extiende la actualización del texto, pues solo ocurre cuando el usuario lo selecciona, y de igual forma la selección de una sugerencia extiende a su generación. Los demás casos de uso se encadenan mediante las precondiciones indicadas en sus tablas, por ejemplo la verificación de la señal solo puede realizarse una vez conectado el casco.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \IfFileExists{imagenes/04-analisis-diseno/cu-general.png}{\includegraphics[height=0.72\textheight]{04-analisis-diseno/cu-general.png}}{\fbox{\parbox[c][6cm][c]{0.8\textwidth}{\centering Figura pendiente}}}
 \caption{Diagrama de casos de uso del sistema. Elaboración propia.}
@@ -545,12 +802,28 @@ P300 Speller, el área del texto, las sugerencias y las pantallas de registro, i
 capa de lógica, que agrupa el control de la sesión de deletreo y de calibración, la adquisición de las señales, la
 generación de estímulos, el
 preprocesamiento, el entrenamiento y la validación del modelo de cada usuario, la detección de la
-componente P300, la decodificación del carácter y la
-predicción de palabras, y por último la capa de datos, responsable de las cuentas de usuario, los registros EEG de calibración y el modelo entrenado de cada usuario. Esta separación responde al requerimiento de
+componente P300, la decodificación del carácter, la construcción del texto y la
+predicción de palabras, y por último la capa de datos, responsable de las cuentas de usuario, los registros EEG de calibración, el modelo entrenado de cada usuario y el modelo de lenguaje del predictor. Esta separación responde al requerimiento de
 modularidad, ya que permite sustituir el modelo de detección o el de predicción de palabras sin
 modificar la interfaz.
 
-%% TODO: diagrama de arquitectura de software (capas y componentes).
+La Figura~\ref{fig:arq-software} muestra esta organización. Las ventanas de la capa de
+presentación solo se comunican con el control de sesión, que coordina a los ocho componentes de la
+capa de lógica y decide en qué orden intervienen según la tarea en curso, ya sea la calibración o el
+deletreo. Ningún componente de la lógica accede directamente a los archivos, sino que lo hace por
+medio del componente de acceso a datos, el cual administra la base de datos local con las cuentas y
+la ubicación de los archivos, así como los archivos de registros de calibración, de modelos de
+detección y del modelo de lenguaje. El casco EEG se encuentra fuera del sistema y únicamente se
+comunica con el componente de adquisición, lo que permite sustituirlo por otro dispositivo
+modificando solo ese componente, como lo pide el RNF9.
+
+\begin{figure}[H]
+\centering
+\IfFileExists{imagenes/04-analisis-diseno/arquitectura-software.png}{\includegraphics[width=\textwidth]{04-analisis-diseno/arquitectura-software.png}}{\fbox{\parbox[c][6cm][c]{0.8\textwidth}{\centering Figura pendiente}}}
+\caption{Arquitectura de software del sistema. Elaboración propia.}
+\label{fig:arq-software}
+\end{figure}
+
 
 %% =====================================================================
 %% 4.6 DIAGRAMA DE CLASES
@@ -565,7 +838,30 @@ generación de estímulos, el preprocesamiento, el entrenamiento del modelo, el 
 la componente P300 y el decodificador del carácter, para el predictor de palabras y para el acceso
 a los datos de usuarios.
 
-%% TODO: diagrama de clases.
+La Figura~\ref{fig:clases} presenta el diagrama. La clase abstracta Ventana agrupa lo común a
+las cuatro ventanas de la interfaz, que delegan cualquier operación en ControlSesion. Esta última
+conserva al usuario de la sesión, su modelo de detección y el estado actual, y se relaciona con las
+clases que realizan cada etapa. AdquisicionEEG entrega las señales del casco y guarda los eventos de
+estimulación que genera Estimulacion, la cual intensifica las filas y columnas de una
+MatrizSeleccion compuesta por 36 objetos ElementoMatriz. Preprocesador obtiene las épocas y
+Entrenador crea el ModeloDeteccion de cada usuario. La arquitectura y los hiperparámetros con los que
+se entrena el modelo son los mismos para todos los usuarios, pues se seleccionan previamente
+mediante la metodología CRISP-ML, mientras que los pesos de la red son lo único que se obtiene de la
+calibración de cada usuario. Por ello ModeloDeteccion guarda estos tres elementos junto con el
+número de repeticiones y los tiempos de intensificación, de modo que al cargarlo se recupera todo lo
+necesario para el deletreo. Decodificador, por su parte, acumula los puntajes que asigna dicho modelo
+para devolver el elemento seleccionado. Finalmente,
+ConstructorTexto mantiene el texto y el historial de selecciones que permite borrar el último
+elemento, PredictorPalabras genera las siete sugerencias y AccesoDatos administra las cuentas, los
+registros de calibración y los modelos guardados.
+
+\begin{figure}[H]
+\centering
+\IfFileExists{imagenes/04-analisis-diseno/clases.png}{\includegraphics[width=\textwidth]{04-analisis-diseno/clases.png}}{\fbox{\parbox[c][6cm][c]{0.8\textwidth}{\centering Figura pendiente}}}
+\caption{Diagrama de clases del sistema. Elaboración propia.}
+\label{fig:clases}
+\end{figure}
+
 
 %% =====================================================================
 %% 4.7 DIAGRAMA DE OBJETOS
@@ -577,7 +873,23 @@ dichas clases en un momento determinado de la ejecución, lo que permite visuali
 colaboran los componentes mientras se realiza una tarea, y en este caso se ilustrará el instante en
 que un usuario con su sesión abierta selecciona un carácter.
 
-%% TODO: diagrama de objetos.
+En la Figura~\ref{fig:objetos} el usuario usuario\_01 escribe la palabra HOLA y acaba de
+seleccionar la letra L. Después de cinco repeticiones, el decodificador tiene el mayor puntaje
+acumulado en la fila 2 y en la columna 6, cuya intersección corresponde al elemento L, que se agrega
+al texto, el cual pasa de HO a HOL. A continuación, el control de sesión solicita al predictor las
+siete sugerencias que se mostrarán en la siguiente selección. El objeto del modelo contiene los
+pesos obtenidos en la calibración de usuario\_01 junto con la arquitectura y los hiperparámetros
+comunes a todos los usuarios. Los valores del número de repeticiones, de la arquitectura, de los
+hiperparámetros y de los tiempos de intensificación son ilustrativos, pues se definirán con los
+resultados de la metodología CRISP-ML.
+
+\begin{figure}[H]
+\centering
+\IfFileExists{imagenes/04-analisis-diseno/objetos.png}{\includegraphics[width=\textwidth]{04-analisis-diseno/objetos.png}}{\fbox{\parbox[c][6cm][c]{0.8\textwidth}{\centering Figura pendiente}}}
+\caption{Diagrama de objetos durante la selección de un carácter. Elaboración propia.}
+\label{fig:objetos}
+\end{figure}
+
 
 %% =====================================================================
 %% 4.8 MODELO DE DATOS Y ESTRUCTURA DE ALMACENAMIENTO
@@ -600,7 +912,7 @@ que un usuario puede tener varios registros de calibración y un solo modelo, el
 repetir la calibración. Las señales y el modelo no se guardan dentro de la base de datos debido a su
 tamaño, por lo que ahí solo se registra dónde se encuentran.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \begin{tikzpicture}[
   ent/.style={draw, inner sep=0pt, font=\footnotesize, anchor=center},
@@ -633,7 +945,7 @@ Los archivos a los que hace referencia la base de datos se organizan en carpetas
 la Figura~\ref{fig:carpetas}. Cada usuario cuenta con su propia carpeta, dentro de la cual se separan
 los registros de calibración y el modelo.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \begin{tikzpicture}[font=\small, every node/.style={anchor=west}]
   \node at (0,0) {\textbf{sistema}/};
@@ -673,7 +985,7 @@ específicos de cada parámetro se definirán durante el diseño experimental.
 
 El flujo, que se muestra en la Figura~\ref{fig:flujo-preprocesamiento}, comienza con la recepción del registro, que puede provenir de una base de datos pública o del casco, y aplica en orden el filtro pasa banda, el remuestreo, la segmentación en épocas y la normalización de cada canal. Cuando los datos se emplean para entrenar, a cada época se le asigna además la etiqueta de objetivo o no objetivo según la fila o columna que se intensificó, mientras que durante el deletreo las épocas se entregan directamente al modelo, ya que se desconoce cuál es el carácter que el usuario desea seleccionar.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \IfFileExists{imagenes/04-analisis-diseno/flujo-preprocesamiento.png}{\includegraphics[height=0.7\textheight]{04-analisis-diseno/flujo-preprocesamiento.png}}{\fbox{\parbox[c][6cm][c]{0.8\textwidth}{\centering Figura pendiente}}}
 \caption{Diagrama de flujo del preprocesamiento de las señales EEG. Elaboración propia.}
@@ -687,7 +999,7 @@ El entrenamiento y la evaluación del modelo de detección de la componente P300
 
 El flujo se muestra en la Figura~\ref{fig:flujo-entrenamiento-fig}. El resultado de la validación decide el camino a seguir, pues si la exactitud por carácter no alcanza el valor mínimo no se guarda ningún modelo en la cuenta y la calibración debe repetirse antes de iniciar el deletreo.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \IfFileExists{imagenes/04-analisis-diseno/flujo-entrenamiento.png}{\includegraphics[height=0.72\textheight]{04-analisis-diseno/flujo-entrenamiento.png}}{\fbox{\parbox[c][6cm][c]{0.8\textwidth}{\centering Figura pendiente}}}
 \caption{Diagrama de flujo del entrenamiento y evaluación del modelo de detección. Elaboración propia.}
@@ -702,7 +1014,21 @@ por columna, de acuerdo con la Ecuación~\eqref{eq:decodificacion}, hasta que se
 de repeticiones y se elige el elemento ubicado en la intersección de la fila y la columna con el
 puntaje más alto.
 
-%% TODO: diagrama de flujo de la decodificación del carácter.
+El flujo de la Figura~\ref{fig:flujo-decodificacion} parte del número de repeticiones $J$
+asociado al modelo del usuario. Antes de cada selección se reinician los puntajes de las seis filas
+y las seis columnas, y en cada repetición se intensifican todas en orden aleatorio, se obtienen y
+clasifican las épocas y cada puntaje se suma al de la fila o columna que se intensificó. Al
+completar las $J$ repeticiones se eligen la fila y la columna con el mayor puntaje acumulado, y el
+elemento de su intersección, que puede ser un carácter, el espacio, el comando de borrado o una
+sugerencia, se entrega a la actualización del texto.
+
+\begin{figure}[H]
+\centering
+\IfFileExists{imagenes/04-analisis-diseno/flujo-decodificacion.png}{\includegraphics[height=0.72\textheight]{04-analisis-diseno/flujo-decodificacion.png}}{\fbox{\parbox[c][6cm][c]{0.8\textwidth}{\centering Figura pendiente}}}
+\caption{Diagrama de flujo de la decodificación del carácter seleccionado. Elaboración propia.}
+\label{fig:flujo-decodificacion}
+\end{figure}
+
 
 %% =====================================================================
 %% 4.10 DIAGRAMA DE ESTADOS
@@ -717,7 +1043,7 @@ estas situaciones junto con los eventos que provocan la transición de una a otr
 
 En la Figura~\ref{fig:estados} se identifican ocho estados principales. La sesión inicia sin usuario autenticado y, al iniciar sesión, pasa a una sesión activa desde la cual se llega directamente al estado de modelo listo si la cuenta ya tiene uno, o bien al de casco conectado cuando es necesario calibrar. A partir de este último se verifica la señal y se calibra, y al concluir la calibración se entrena el modelo, de modo que una validación aprobada conduce al estado de modelo listo y una no aprobada regresa al de casco conectado para repetir el proceso. El estado de deletreo contiene a su vez un ciclo de estimulación, clasificación y actualización del texto que se repite por cada selección hasta que el operador detiene el deletreo o cierra la sesión.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \IfFileExists{imagenes/04-analisis-diseno/estados.png}{\includegraphics[width=0.9\textwidth]{04-analisis-diseno/estados.png}}{\fbox{\parbox[c][6cm][c]{0.8\textwidth}{\centering Figura pendiente}}}
 \caption{Diagrama de estados de la sesión del sistema. Elaboración propia.}
@@ -738,7 +1064,7 @@ quede asociada con los componentes de la arquitectura que participan en ella.
 
 El diagrama de la Figura~\ref{fig:sec-login} parte de que el operador ingresa el identificador y la contraseña en la interfaz, la cual los envía al control de sesión para que consulte la cuenta en la capa de datos. Si las credenciales son válidas se busca además el modelo del usuario, de modo que la sesión se inicia con el modelo cargado cuando existe y sin él cuando la cuenta aún no se ha calibrado, mientras que si son incorrectas la interfaz muestra un mensaje de error.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \IfFileExists{imagenes/04-analisis-diseno/secuencia-inicio-sesion.png}{\includegraphics[width=\textwidth]{04-analisis-diseno/secuencia-inicio-sesion.png}}{\fbox{\parbox[c][6cm][c]{0.8\textwidth}{\centering Figura pendiente}}}
 \caption{Diagrama de secuencia del inicio de sesión. Elaboración propia.}
@@ -749,14 +1075,46 @@ El diagrama de la Figura~\ref{fig:sec-login} parte de que el operador ingresa el
 
 En la calibración, representada en la Figura~\ref{fig:sec-calibracion}, el control de sesión pide al módulo de estimulación que presente las secuencias de los caracteres de entrenamiento y, mientras tanto, el módulo de adquisición registra las señales del casco junto con la marca de cada estímulo. El registro se guarda en la cuenta del usuario y se preprocesa, con lo cual se entrena y valida el modelo, y finalmente se guarda en la cuenta si la validación fue aprobada y se habilita el deletreo, o se propone repetir la calibración en caso contrario.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \IfFileExists{imagenes/04-analisis-diseno/secuencia-calibracion.png}{\includegraphics[width=\textwidth]{04-analisis-diseno/secuencia-calibracion.png}}{\fbox{\parbox[c][6cm][c]{0.8\textwidth}{\centering Figura pendiente}}}
 \caption{Diagrama de secuencia de la calibración. Elaboración propia.}
 \label{fig:sec-calibracion}
 \end{figure}
 
-%% TODO: diagramas de secuencia de la selección de un carácter y de una sugerencia.
+\subsection{Selección de un carácter}
+
+La Figura~\ref{fig:sec-caracter} muestra la selección de un carácter. Mientras el usuario fija su
+atención en el carácter, el control de sesión reinicia los puntajes del decodificador y, por cada
+repetición, pide al módulo de estimulación que intensifique las filas y columnas, cuyas marcas
+registra el módulo de adquisición junto con la señal. Al terminar cada repetición, las épocas se
+preprocesan, el módulo de detección les asigna un puntaje y el decodificador lo acumula. Después de
+la última repetición, el decodificador devuelve el carácter de la intersección. La actualización
+del texto y la generación de sugerencias que siguen se indican mediante una referencia, ya que se
+detallan en el diagrama de la selección de una sugerencia.
+
+\begin{figure}[H]
+\centering
+\IfFileExists{imagenes/04-analisis-diseno/secuencia-caracter.png}{\includegraphics[width=\textwidth]{04-analisis-diseno/secuencia-caracter.png}}{\fbox{\parbox[c][6cm][c]{0.8\textwidth}{\centering Figura pendiente}}}
+\caption{Diagrama de secuencia de la selección de un carácter. Elaboración propia.}
+\label{fig:sec-caracter}
+\end{figure}
+
+\subsection{Selección de una sugerencia}
+
+La selección de una sugerencia, representada en la Figura~\ref{fig:sec-sugerencia}, comparte con la
+de un carácter la presentación de los estímulos y la decodificación, por lo que estas se indican
+mediante una referencia. Si el elemento decodificado contiene una palabra, esta reemplaza a la
+palabra en curso, se agrega un espacio y se solicitan las sugerencias de la siguiente palabra. Si el
+elemento está vacío, la selección se ignora y el texto no cambia.
+
+\begin{figure}[H]
+\centering
+\IfFileExists{imagenes/04-analisis-diseno/secuencia-sugerencia.png}{\includegraphics[width=\textwidth]{04-analisis-diseno/secuencia-sugerencia.png}}{\fbox{\parbox[c][6cm][c]{0.8\textwidth}{\centering Figura pendiente}}}
+\caption{Diagrama de secuencia de la selección de una sugerencia. Elaboración propia.}
+\label{fig:sec-sugerencia}
+\end{figure}
+
 
 %% =====================================================================
 %% 4.12 DISEÑO DEL MÓDULO DE PREDICCIÓN DE PALABRAS
@@ -770,7 +1128,53 @@ sección se define la información que intercambia el módulo con el resto del s
 que se presentan y seleccionan las sugerencias, dejando para el Capítulo~5 la elección del modelo
 de lenguaje concreto entre los enfoques revisados en la Sección~\ref{sec:lenguaje}.
 
-%% TODO: entradas y salidas del módulo, número de sugerencias y diagrama de flujo.
+El módulo se implementa en la clase PredictorPalabras, cuya única operación pública recibe el
+texto construido y devuelve las sugerencias, como se resume en la Tabla~\ref{tab:prediccion-es}. De
+esta forma el resto del sistema no depende del modelo de lenguaje que se elija, el cual puede
+sustituirse sin modificar la interfaz, como lo pide el RNF8.
+
+\begin{table}[H]
+\centering
+\caption{Entradas y salidas del módulo de predicción de palabras}
+\label{tab:prediccion-es}
+\small
+\begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
+\hline
+\textbf{Elemento} & \textbf{Descripción} \\
+\hline
+Entrada & Texto construido hasta el momento, del cual se obtienen la palabra en curso, que funciona como prefijo, y las palabras anteriores, que funcionan como contexto. \\
+\hline
+Salida & Lista de hasta siete palabras ordenadas de mayor a menor probabilidad. La lista puede estar vacía si ninguna palabra es compatible con el prefijo. \\
+\hline
+Operación & sugerir(texto), de la clase PredictorPalabras. \\
+\hline
+Momento de uso & Al iniciar el deletreo y después de cada selección que modifique el texto. \\
+\hline
+\end{tabularx}
+\par\smallskip{\footnotesize Elaboración propia.}
+\end{table}
+
+El número de sugerencias se deriva de la matriz de selección. De sus 36 elementos, 27 corresponden a
+las letras del alfabeto en español, uno al espacio y uno al comando de borrado, por lo que los siete
+restantes se destinan a las sugerencias, conforme al RF12. Estos ocupan el último elemento de la
+quinta fila y la sexta fila completa, y cada sugerencia se intensifica junto con la fila y la
+columna a las que pertenece, de modo que su selección no requiere un mecanismo distinto al de los
+caracteres. Cuando el usuario la elige, la palabra sugerida reemplaza a la palabra en curso y se
+agrega un espacio, lo que permite escribir una palabra completa con una sola selección.
+
+La Figura~\ref{fig:flujo-prediccion} muestra el flujo del módulo. Si el texto está vacío o termina
+en espacio, el módulo predice la siguiente palabra a partir del contexto, y en caso contrario busca
+las palabras que completan la palabra en curso. Las candidatas se ordenan por probabilidad y las
+siete más probables se asignan a los elementos de sugerencia, que quedan vacíos cuando no hay
+candidatas.
+
+\begin{figure}[H]
+\centering
+\IfFileExists{imagenes/04-analisis-diseno/flujo-prediccion.png}{\includegraphics[height=0.68\textheight]{04-analisis-diseno/flujo-prediccion.png}}{\fbox{\parbox[c][6cm][c]{0.8\textwidth}{\centering Figura pendiente}}}
+\caption{Diagrama de flujo del módulo de predicción de palabras. Elaboración propia.}
+\label{fig:flujo-prediccion}
+\end{figure}
+
 
 %% =====================================================================
 %% 4.13 MOCKUPS
@@ -788,13 +1192,13 @@ deletreo con la matriz, el texto construido y las sugerencias de palabras.
 
 La Figura~\ref{fig:mock-registro} muestra la pantalla de creación de cuenta, en la que el operador captura el identificador y la contraseña, y la Figura~\ref{fig:mock-login} la de inicio de sesión, que además permite ir al registro.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \IfFileExists{imagenes/04-analisis-diseno/mockup-registro.png}{\includegraphics[width=0.7\textwidth]{04-analisis-diseno/mockup-registro.png}}{\fbox{\parbox[c][6cm][c]{0.8\textwidth}{\centering Figura pendiente}}}
 \caption{Pantalla de creación de cuenta. Elaboración propia.}
 \label{fig:mock-registro}
 \end{figure}
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \IfFileExists{imagenes/04-analisis-diseno/mockup-login.png}{\includegraphics[width=0.7\textwidth]{04-analisis-diseno/mockup-login.png}}{\fbox{\parbox[c][6cm][c]{0.8\textwidth}{\centering Figura pendiente}}}
 \caption{Pantalla de inicio de sesión. Elaboración propia.}
@@ -803,17 +1207,31 @@ La Figura~\ref{fig:mock-registro} muestra la pantalla de creación de cuenta, en
 
 Una vez iniciada la sesión, la pantalla de la Figura~\ref{fig:mock-conexion} permite conectar el casco y revisar la calidad de la señal de cada canal mediante un código de colores, y mantiene deshabilitado el inicio del deletreo mientras el usuario no cuente con un modelo. La calibración y el entrenamiento se muestran en la Figura~\ref{fig:mock-calibracion}, donde se muestra la palabra de calibración con el carácter objetivo resaltado, una barra con el avance de la calibración y, al concluir, el progreso del entrenamiento del modelo.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \IfFileExists{imagenes/04-analisis-diseno/mockup-conexion.png}{\includegraphics[width=0.7\textwidth]{04-analisis-diseno/mockup-conexion.png}}{\fbox{\parbox[c][6cm][c]{0.8\textwidth}{\centering Figura pendiente}}}
 \caption{Pantalla de conexión del casco y verificación de la señal. Elaboración propia.}
 \label{fig:mock-conexion}
 \end{figure}
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \IfFileExists{imagenes/04-analisis-diseno/mockup-calibracion.png}{\includegraphics[width=0.7\textwidth]{04-analisis-diseno/mockup-calibracion.png}}{\fbox{\parbox[c][6cm][c]{0.8\textwidth}{\centering Figura pendiente}}}
 \caption{Pantalla de calibración y avance del entrenamiento. Elaboración propia.}
 \label{fig:mock-calibracion}
 \end{figure}
 
-%% TODO: figura del mockup de la pantalla principal del deletreo.
+Por último, la Figura~\ref{fig:mock-deletreo} muestra la pantalla principal del deletreo. En
+la parte superior se encuentra el texto construido y, debajo, la matriz de selección con las 27
+letras, el espacio, el comando de borrado y las siete palabras sugeridas, que se distinguen con otro
+color. En el instante representado se intensifica la segunda fila, y en la esquina superior derecha
+de la matriz se indica la repetición en curso. Los botones para detener el deletreo y cerrar la
+sesión están destinados al operador, pues el usuario realiza todas sus selecciones mediante la
+atención a la matriz.
+
+\begin{figure}[H]
+\centering
+\IfFileExists{imagenes/04-analisis-diseno/mockup-deletreo.png}{\includegraphics[width=0.7\textwidth]{04-analisis-diseno/mockup-deletreo.png}}{\fbox{\parbox[c][6cm][c]{0.8\textwidth}{\centering Figura pendiente}}}
+\caption{Pantalla principal del deletreo. Elaboración propia.}
+\label{fig:mock-deletreo}
+\end{figure}
+
