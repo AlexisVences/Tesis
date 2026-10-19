@@ -109,45 +109,12 @@ desbalance no se considera durante el entrenamiento, un clasificador puede alcan
 aparente cercana al 83\% simplemente prediciendo siempre la clase negativa, razón por la cual las
 métricas de evaluación de la Sección~\ref{sec:metricas} deben elegirse con cuidado.
 
-\subsection{Variantes del paradigma}
-
-El paradigma de filas y columnas presenta algunos problemas conocidos. Los errores de adyacencia
-ocurren cuando el sistema elige un carácter vecino al objetivo, porque las filas o columnas cercanas
-también atraen parte de la atención del usuario. El problema del doble destello aparece cuando la
-misma fila o columna objetivo se ilumina dos veces seguidas. En ese caso, la segunda P300 se atenúa
-o se mezcla con la primera \cite{townsend2010}. Para mitigarlos se han propuesto distintas variantes, entre las que
-destacan el paradigma de tablero de ajedrez de Townsend et
-al., que intensifica grupos de caracteres no contiguos \cite{townsend2010}, y el uso de rostros
-conocidos superpuestos a los caracteres, con el que Kaufmann et al. obtuvieron ERP de mayor
-amplitud y redujeron el número de secuencias necesarias para una selección correcta
-\cite{kaufmann2011}.
-
 \subsection{Bases de datos públicas}
 
 Gran parte de la investigación sobre detección de la P300 se apoya en bases de datos públicas, lo
-que permite comparar métodos bajo las mismas condiciones sin tener que adquirir señales propias.
-Las más utilizadas provienen de la segunda y tercera competencias internacionales de BCI, ambas
-registradas con 64 canales a 240~Hz con el paradigma de filas y columnas
-\cite{blankertz2004,blankertz2006}, mientras que la base de datos de la Escuela Politécnica Federal
-de Lausana (EPFL) incluye registros de personas con discapacidad motora con un paradigma de seis
-imágenes \cite{hoffmann2008}. La Tabla~\ref{tab:datasets} resume sus características. En el
-presente trabajo se emplea, en la fase exploratoria, la base de datos II de la competencia BCI III, que contiene registros de
-dos sujetos con 85 caracteres de entrenamiento y 100 de prueba cada uno, y más adelante se complementa con señales propias de voluntarios
+que permite comparar métodos bajo las mismas condiciones. Una de las más utilizadas es la base de
+datos II de la tercera competencia internacional de BCI, registrada con 64 canales a 240~Hz con el
+paradigma de filas y columnas, que contiene registros de dos sujetos con 85 caracteres de
+entrenamiento y 100 de prueba cada uno \cite{blankertz2006}. En el presente trabajo se emplea en la
+fase exploratoria y más adelante se complementa con señales propias de voluntarios
 (Capítulo~\ref{cap:propuesta}).
-
-\begin{table}[htbp]
-\centering
-\caption{Bases de datos públicas del paradigma P300}
-\label{tab:datasets}
-\small
-\begin{tabularx}{\textwidth}{L{3.3cm}L{1.4cm}L{1.4cm}L{1.4cm}Y}
-\toprule
-\textbf{Base de datos} & \textbf{Sujetos} & \textbf{Canales} & \textbf{Frec. (Hz)} & \textbf{Paradigma} \\
-\midrule
-BCI Competition II, conjunto IIb \cite{blankertz2004} & 1 & 64 & 240 & Matriz $6\times6$, filas y columnas, 15 repeticiones. \\
-BCI Competition III, conjunto II \cite{blankertz2006} & 2 & 64 & 240 & Matriz $6\times6$, filas y columnas, 15 repeticiones, con 85 caracteres de entrenamiento y 100 de prueba por sujeto. \\
-EPFL \cite{hoffmann2008} & 8 & 32 & 2048 & Seis imágenes intensificadas de una en una, e incluye sujetos con discapacidad motora. \\
-\bottomrule
-\end{tabularx}
-\par\smallskip{\footnotesize Elaboración propia.}
-\end{table}

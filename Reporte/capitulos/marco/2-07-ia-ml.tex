@@ -1,78 +1,15 @@
 % ---------------------------------------------------------------------
 % 2.7 Inteligencia artificial y aprendizaje automático
 % ---------------------------------------------------------------------
-\section[INTELIGENCIA ARTIFICIAL Y APRENDIZAJE AUTOMÁTICO]{Inteligencia Artificial y aprendizaje
-automático}
+\section[APRENDIZAJE AUTOMÁTICO]{Aprendizaje automático}
 
-La inteligencia artificial (IA) es la rama de las ciencias de la computación que estudia el
-diseño de agentes capaces de percibir su entorno y actuar de manera que maximicen la probabilidad
-de alcanzar sus objetivos, automatizando actividades que se asocian con el pensamiento humano, como
-la resolución de problemas y el aprendizaje \cite{russell2010}. No existe un método universal para
-todas las áreas de aplicación de la IA, y dentro de la gran variedad de enfoques disponibles el
-aprendizaje automático se ha convertido en una de sus ramas más importantes \cite{ertel2017}. A su
-vez, el aprendizaje profundo es un subconjunto del aprendizaje automático basado en redes
-neuronales con múltiples capas de procesamiento, relación que se ilustra en la
-Figura~\ref{fig:ia}.
-
-\begin{figure}[htbp]
-\centering
-\begin{tikzpicture}[font=\small]
-  \draw[fill=white, rounded corners=18pt] (-5.2,-2.1) rectangle (5.2,2.1);
-  \node[anchor=north west, align=left] at (-5.0,2.0) {\textbf{Inteligencia artificial}\\ \footnotesize Búsqueda, lógica,\\ \footnotesize planeación,\\ \footnotesize sistemas expertos};
-  \draw[fill=gray!12, rounded corners=14pt] (-1.1,-1.85) rectangle (4.95,1.25);
-  \node[anchor=north west, align=left] at (-0.9,1.15) {\textbf{Aprendizaje automático}\\ \footnotesize SVM, LDA, árboles de decisión};
-  \draw[fill=gray!24, rounded corners=10pt] (0.6,-1.65) rectangle (4.75,0.05);
-  \node[align=center] at (2.67,-0.8) {\textbf{Aprendizaje profundo}\\ \footnotesize CNN, RNN, EEGNet};
-\end{tikzpicture}
-\caption{Relación entre la inteligencia artificial, el aprendizaje automático y el aprendizaje
-profundo. Elaboración propia con base en \cite{goodfellow2016}.}
-\label{fig:ia}
-\end{figure}
-
-\subsection{Aprendizaje automático}
-
-En 1959, Arthur Samuel describió el aprendizaje automático como el campo de estudio que da a las
-computadoras la capacidad de aprender sin ser programadas de forma explícita, a partir de su
-experiencia con un programa que aprendía a jugar damas mejor que su propio creador
-\cite{samuel1959}. En términos más formales, se trata de un conjunto de métodos que construyen
-modelos a partir de los datos mediante el descubrimiento de patrones estadísticamente
-significativos, para después aplicarlos a datos nuevos de la misma naturaleza \cite{bishop2006}.
-Según la información disponible durante el entrenamiento, el aprendizaje puede ser supervisado o
-no supervisado, como se resume en la Tabla~\ref{tab:tipos-ml}. La detección de la
-P300 corresponde a un problema de clasificación binaria supervisada, pues cada época está
-etiquetada como objetivo o no objetivo.
-
-\begin{table}[htbp]
-\centering
-\caption{Tipos de aprendizaje automático}
-\label{tab:tipos-ml}
-\small
-\begin{tabularx}{\textwidth}{L{2.6cm}YY}
-\toprule
-\textbf{Tipo} & \textbf{Descripción} & \textbf{Ejemplos} \\
-\midrule
-Supervisado & Aprende a partir de datos con etiquetas conocidas y ajusta sus parámetros según el error entre su salida y la etiqueta. & Clasificar cada época como P300 o no P300. \\
-No supervisado & Busca patrones en datos sin etiquetas, por ejemplo agrupándolos o reduciendo su dimensión. & Agrupamiento de datos. \\
-\bottomrule
-\end{tabularx}
-\par\smallskip{\footnotesize Elaboración propia con información de \cite{bishop2006,russell2010}.}
-\end{table}
-
-\subsection{Clasificadores clásicos para la detección de la P300}
-
-Antes del auge del aprendizaje profundo, la detección de la P300 se realizaba extrayendo
-características de manera manual, generalmente las amplitudes de la señal submuestreada en cada
-canal, y clasificándolas con modelos lineales. Krusienski et al. compararon cinco técnicas de
-clasificación para el P300 Speller y encontraron que el análisis discriminante lineal por pasos
-(SWLDA) y el discriminante lineal de Fisher ofrecían el mejor desempeño global
-\cite{krusienski2006}, mientras que Rakotomamonjy y Guigue ganaron la competencia BCI III con un
-conjunto de máquinas de soporte vectorial (SVM) lineales entrenadas sobre distintas particiones de
-los datos \cite{rakotomamonjy2008}. En el ámbito de la ESCOM, Santos, Romero y Fernández utilizaron
-el discriminante lineal de Fisher con promediado sincronizado para controlar un brazo robótico
-virtual, alcanzando una precisión de 90.01\% con 20 sujetos \cite{santos2017}. En el presente
-trabajo estos métodos se revisan únicamente como antecedente, ya que la detección de la P300 se
-realizará con modelos de aprendizaje profundo, que aprenden las características directamente a
-partir de la señal.
+El aprendizaje automático es una rama de la inteligencia artificial que reúne métodos para
+construir modelos a partir de los datos mediante el descubrimiento de patrones, para después
+aplicarlos a datos nuevos de la misma naturaleza \cite{bishop2006}. Cuando los datos de
+entrenamiento tienen etiquetas conocidas, el aprendizaje es supervisado, y es el caso de la
+detección de la P300, que corresponde a un problema de clasificación binaria en el que cada época
+está etiquetada como objetivo o no objetivo. El aprendizaje profundo, a su vez, es el subconjunto
+del aprendizaje automático basado en redes neuronales con múltiples capas \cite{goodfellow2016}.
 
 \subsection{Sobreajuste y generalización}
 

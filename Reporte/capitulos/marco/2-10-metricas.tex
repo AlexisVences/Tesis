@@ -48,8 +48,7 @@ en la Sección~\ref{sec:speller}, en un conjunto con una proporción de 1 a 5 en
 resultar engañosa, por lo que conviene complementarla con la sensibilidad, que indica qué
 proporción de las épocas con P300 fueron detectadas, la precisión, que indica qué proporción de las
 detecciones fueron correctas, y el F1-score, que es la media armónica de ambas
-\cite{fawcett2006}. La exactitud balanceada, que promedia la sensibilidad y la especificidad, es
-otra alternativa que no se ve afectada por el desbalance.
+\cite{fawcett2006}.
 
 \begin{table}[htbp]
 \centering
@@ -63,10 +62,7 @@ otra alternativa que no se ve afectada por el desbalance.
 Exactitud (\textit{accuracy}) & Proporción de predicciones correctas sobre el total. & $\dfrac{TP+TN}{TP+TN+FP+FN}$ \\[10pt]
 Precisión (\textit{precision}) & Proporción de épocas clasificadas como P300 que realmente lo son. & $\dfrac{TP}{TP+FP}$ \\[10pt]
 Sensibilidad (\textit{recall}, TPR) & Proporción de épocas con P300 que fueron detectadas. & $\dfrac{TP}{TP+FN}$ \\[10pt]
-Especificidad (TNR) & Proporción de épocas sin P300 clasificadas correctamente. & $\dfrac{TN}{TN+FP}$ \\[10pt]
-Tasa de falsos positivos (FPR) & Proporción de épocas sin P300 clasificadas como positivas. & $\dfrac{FP}{FP+TN} = 1-\text{TNR}$ \\[10pt]
-F1-score & Media armónica entre precisión y sensibilidad. & $2\cdot\dfrac{\text{Precisión}\cdot\text{Sensibilidad}}{\text{Precisión}+\text{Sensibilidad}}$ \\[10pt]
-Exactitud balanceada & Promedio de la sensibilidad y la especificidad. & $\dfrac{\text{TPR}+\text{TNR}}{2}$ \\
+F1-score & Media armónica entre precisión y sensibilidad. & $2\cdot\dfrac{\text{Precisión}\cdot\text{Sensibilidad}}{\text{Precisión}+\text{Sensibilidad}}$ \\
 \bottomrule
 \end{tabularx}
 \par\smallskip{\footnotesize Elaboración propia con información de \cite{fawcett2006}.}
@@ -77,8 +73,8 @@ Exactitud balanceada & Promedio de la sensibilidad y la especificidad. & $\dfrac
 Los clasificadores de la P300 suelen producir un puntaje continuo, y la etiqueta final depende del
 umbral que se elija: al disminuirlo se detectan más épocas con P300, pero también aumentan los
 falsos positivos. La curva ROC (\textit{Receiver Operating Characteristic}) representa este
-compromiso. Para ello, grafica la sensibilidad contra la tasa de falsos positivos en todos los
-umbrales posibles. El área bajo esta curva (AUC) resume el desempeño en un solo número. Este valor
+compromiso. Para ello, grafica la sensibilidad contra la proporción de épocas sin P300
+clasificadas como positivas en todos los umbrales posibles. El área bajo esta curva (AUC) resume el desempeño en un solo número. Este valor
 indica la probabilidad de que el clasificador dé un puntaje mayor a una época positiva que a una
 negativa, ambas elegidas al azar \cite{fawcett2006}. Un AUC de 0.5 corresponde a un clasificador
 aleatorio, en el que los puntajes de ambas clases se superponen. Un AUC de 1 indica una separación

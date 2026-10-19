@@ -32,41 +32,12 @@ como frecuencia de Nyquist, se reflejan sobre las frecuencias bajas en un fenóm
 de la P300, que se concentra por debajo de 20~Hz, y lo mismo ocurre con los 128 y 256~Hz que ofrecen los
 cascos comerciales de bajo costo.
 
-\subsection{Transformada de Fourier y densidad espectral de potencia}
-
-La transformada discreta de Fourier (DFT) permite representar una señal como una suma de
-componentes sinusoidales de distintas frecuencias, y en la práctica se calcula con el algoritmo de
-la transformada rápida de Fourier (FFT) \cite{proakis2007}. A partir de ella se estima la densidad
-espectral de potencia (PSD), que describe cómo se distribuye la potencia de la señal en función de
-la frecuencia. En el caso del EEG suele emplearse el método de Welch, que divide la señal en
-segmentos traslapados, calcula el espectro de cada uno y los promedia para obtener una estimación
-más estable \cite{oppenheim2010}. Contreras utilizó este análisis para identificar que la
-información útil para detectar la P300 en sus registros se encontraba entre 1 y 25~Hz
-\cite{contreras2021}.
-
-\subsection{Convolución y sistemas lineales}
-
-Un sistema lineal e invariante en el tiempo queda completamente descrito por su respuesta al
-impulso $h(n)$, y su salida ante cualquier entrada $x(n)$ se obtiene mediante la operación de
-convolución \cite{proakis2007}:
-\begin{equation}
-y(n) = (x * h)(n) = \sum_{k=-\infty}^{\infty} x(k)\, h(n-k).
-\label{eq:convolucion}
-\end{equation}
-Esta operación es la base de los filtros digitales que se describen a continuación y, como se
-verá en la Sección~\ref{sec:cnn}, también de las capas de las redes neuronales convolucionales,
-en las que los coeficientes de $h(n)$ ya no se diseñan manualmente sino que se aprenden a partir
-de los datos \cite{goodfellow2016}.
-
 \subsection{Filtros digitales}
 
-Los filtros digitales se clasifican en dos grandes familias. Los filtros de respuesta finita al
-impulso (FIR) calculan la salida solo a partir de las muestras de entrada y siempre son estables.
-Los filtros de respuesta infinita al impulso (IIR) también usan salidas anteriores, lo que les
-permite lograr una buena selectividad con un orden mucho menor \cite{proakis2007,oppenheim2010}.
-Entre los filtros IIR, el de Butterworth es uno de los más utilizados en EEG porque su respuesta
-en magnitud es máximamente plana en la banda de paso \cite{oppenheim2010}. De acuerdo con la banda
-que dejan pasar, los filtros pueden ser pasa bajas, pasa altas, pasa banda o rechaza banda. El
+Un filtro digital modifica el contenido en frecuencia de una señal y, de acuerdo con la banda que
+deja pasar, puede ser pasa bajas, pasa altas, pasa banda o rechaza banda \cite{proakis2007}. En
+EEG uno de los más utilizados es el filtro de Butterworth, cuya respuesta en magnitud es plana en la
+banda de paso \cite{oppenheim2010}. El
 filtro \textit{notch} es un tipo de filtro rechaza banda que elimina una sola frecuencia, como la
 de la red eléctrica. La Figura~\ref{fig:filtros} muestra la respuesta en frecuencia de un filtro
 pasa banda entre 0.1 y 20~Hz, como el aplicado en el trabajo preliminar, y de un filtro
@@ -88,12 +59,6 @@ aplicar un filtro antialiasing que elimine el contenido por encima de la nueva f
 Nyquist \cite{proakis2007}. En el trabajo preliminar se redujo la frecuencia de 240~Hz a 120~Hz,
 lo que disminuye a la mitad el tamaño de cada época sin perder información en la banda de 0.1 a
 20~Hz.
-
-\subsection{Corrección de línea base}
-
-Además del filtrado en frecuencia, es común aplicar una corrección de línea base, que resta a
-cada época el valor promedio de un intervalo previo al estímulo, típicamente de 100 a 200~ms, para
-que las amplitudes de los componentes del ERP se midan respecto a un nivel común \cite{luck2014}.
 
 \subsection{Segmentación en épocas}
 

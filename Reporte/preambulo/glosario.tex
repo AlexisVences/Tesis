@@ -1,0 +1,88 @@
+% =====================================================================
+%  Glosario de términos
+% =====================================================================
+\chapter*{GLOSARIO DE TÉRMINOS}
+\addcontentsline{toc}{chapter}{GLOSARIO DE TÉRMINOS}
+
+\begin{description}
+  \item[Ahorro de selecciones.] Porcentaje de selecciones que se evitan al escribir un texto con
+  ayuda de la predicción de palabras, respecto a escribirlo carácter por carácter.
+
+  \item[Artefacto.] Componente del registro de EEG que no proviene de la actividad cerebral, como
+  los parpadeos, la actividad muscular o la interferencia de la red eléctrica.
+
+  \item[AUC (área bajo la curva ROC).] Métrica que indica la probabilidad de que un clasificador
+  asigne un puntaje mayor a una época con P300 que a una sin ella. Un valor de 0.5 corresponde a un
+  clasificador aleatorio y un valor de 1 a una separación perfecta.
+
+  \item[BCI (interfaz cerebro-computadora).] Sistema de comunicación en el que los mensajes o
+  comandos del usuario se obtienen de su actividad cerebral, sin pasar por los nervios periféricos
+  ni por los músculos.
+
+  \item[Calibración.] Sesión en la que el usuario fija su atención en caracteres indicados por el
+  sistema mientras se registran sus señales, con las que se entrena su propio modelo de detección.
+
+  \item[CNN (red neuronal convolucional).] Red neuronal que aplica filtros de pesos aprendibles
+  sobre la entrada para extraer características, adecuada para datos como imágenes o series de
+  tiempo.
+
+  \item[EEG (electroencefalograma).] Registro de la actividad eléctrica del cerebro tomado por medio
+  de electrodos colocados en la superficie de la cabeza.
+
+  \item[EEGNet.] Red neuronal convolucional compacta diseñada para clasificar señales de EEG en
+  distintos paradigmas de BCI, entre ellos la P300.
+
+  \item[ELA (esclerosis lateral amiotrófica).] Enfermedad neurológica que en sus etapas avanzadas
+  puede provocar la pérdida casi total del control muscular voluntario, incluido el del habla.
+
+  \item[Época.] Segmento de la señal de EEG que inicia en el instante de una intensificación y que
+  constituye la muestra de entrada al clasificador.
+
+  \item[ERP (potencial relacionado con eventos).] Del inglés \textit{Event-Related Potential}.
+  Variación del voltaje del EEG que aparece ligada en el tiempo a un evento específico, como un
+  estímulo sensorial, una respuesta motora o una operación cognitiva. Se registra como una serie de
+  ondas positivas y negativas llamadas componentes, que se nombran con la letra P o N según su
+  polaridad, seguida de su latencia aproximada en milisegundos. Debido a que su amplitud es mucho
+  menor que la de la actividad de fondo del EEG, para observarlo se suelen promediar varias
+  repeticiones del mismo estímulo. La P300 es la componente de este tipo que aprovecha el presente
+  trabajo.
+
+  \item[Exactitud por carácter.] Proporción de caracteres que el sistema selecciona correctamente
+  respecto al total de caracteres que el usuario intentó escribir.
+
+  \item[Hiperparámetro.] Valor que define la configuración de un modelo o de su entrenamiento, como
+  el número de filtros o la tasa de aprendizaje, y que no se aprende a partir de los datos.
+
+  \item[Intensificación.] Iluminación momentánea de una fila o de una columna de la matriz del P300
+  Speller.
+
+  \item[ISI (intervalo entre estímulos).] Tiempo que la matriz permanece sin iluminar entre el fin
+  de una intensificación y el inicio de la siguiente.
+
+  \item[ITR (tasa de transferencia de información).] Cantidad de información que el usuario
+  transmite por unidad de tiempo, expresada en bits por minuto, que combina la exactitud y la
+  velocidad de las selecciones.
+
+  \item[Modelo de lenguaje.] Modelo que asigna una probabilidad a cada secuencia de palabras, lo que
+  permite estimar cuáles son las palabras más probables dado lo que se ha escrito.
+
+  \item[P300.] Componente positiva de los ERP que aparece alrededor de 300~ms después de un estímulo
+  poco frecuente y relevante para la persona.
+
+  \item[P300 Speller.] Sistema de deletreo en el que las filas y columnas de una matriz de
+  caracteres se iluminan en orden aleatorio, y el carácter que el usuario desea se identifica a
+  partir de la P300 que provoca su fila y su columna.
+
+  \item[Paradigma del evento raro (\textit{oddball}).] Procedimiento en el que se presenta una
+  secuencia de estímulos de dos categorías, una de ellas poco frecuente, y se pide a la persona
+  atender solo a los estímulos de esa categoría, que son los que provocan la P300.
+
+  \item[Repetición.] Secuencia en la que cada fila y cada columna de la matriz se intensifican una
+  vez.
+
+  \item[Sistema internacional 10-20.] Estándar que define la posición de los electrodos de EEG sobre
+  la cabeza a partir de distancias del 10\% y del 20\% entre puntos de referencia anatómicos.
+
+  \item[Sobreajuste.] Situación en la que un modelo memoriza los datos de entrenamiento y pierde la
+  capacidad de desempeñarse correctamente con datos nuevos.
+\end{description}

@@ -23,21 +23,15 @@ beneficio de estos sistemas suele medirse mediante el ahorro de selecciones,
 donde $S_{\text{sin}}$ y $S_{\text{con}}$ son el número de selecciones necesarias para escribir un
 mismo texto sin y con predicción, respectivamente.
 
-\subsection{Modelos de lenguaje probabilísticos}
+\subsection{Modelos de lenguaje}
 
 Un modelo de lenguaje asigna una probabilidad a cada secuencia de palabras, lo que permite estimar
 cuál es la palabra, o el carácter, más probable dado lo que se ha escrito. Los modelos más simples
 son los de $n$-gramas, que suponen que cada palabra depende únicamente de las $n-1$ palabras
 anteriores. Sus probabilidades se estiman contando cuántas veces aparece cada secuencia en un
-corpus de texto \cite{jurafsky2025}.
-
-\subsection{Modelos de lenguaje neuronales}
-
-Los modelos de $n$-gramas están limitados a un contexto corto y fijo, por lo que fueron
-reemplazados progresivamente por modelos neuronales, primero basados en redes recurrentes
-\cite{jurafsky2025} y después en la arquitectura Transformer \cite{vaswani2017}, sobre la cual se
-construyen los modelos de lenguaje de gran escala (LLM), entrenados con enormes cantidades de texto
-\cite{brown2020}.
+corpus de texto \cite{jurafsky2025}. Debido a que están limitados a un contexto corto y fijo,
+han sido reemplazados progresivamente por modelos neuronales, entre ellos los modelos de lenguaje
+de gran escala (LLM), entrenados con enormes cantidades de texto \cite{brown2020}.
 
 \subsection{Integración del lenguaje en el P300 Speller}
 
@@ -48,21 +42,5 @@ integrando un modelo de lenguaje en el proceso de clasificación dinámica, y re
 tanto en la exactitud como en la tasa de transferencia de información \cite{speier2012}. Más
 recientemente, Hong et al. propusieron ChatBCI, un P300 Speller que utiliza un LLM para predecir
 palabras según el contexto de la frase, logrando una reducción del tiempo promedio de escritura de
-62.14\% \cite{hong2026}. La Tabla~\ref{tab:lenguaje} compara estos enfoques.
+62.14\% \cite{hong2026}.
 
-\begin{table}[htbp]
-\centering
-\caption{Trabajos que integran modelos de lenguaje en el P300 Speller}
-\label{tab:lenguaje}
-\small
-\begin{tabularx}{\textwidth}{L{3.0cm}L{3.2cm}YY}
-\toprule
-\textbf{Trabajo} & \textbf{Modelo de lenguaje} & \textbf{Forma de integración} & \textbf{Resultado} \\
-\midrule
-Ryan et al., 2011 \cite{ryan2011} & Predicción de palabras por diccionario & Región adicional con palabras sugeridas en la interfaz. & Menor tiempo para completar frases, con exactitud ligeramente menor. \\
-Speier et al., 2012 \cite{speier2012} & Modelo probabilístico de lenguaje natural & Probabilidad previa combinada con la clasificación dinámica. & Mejor exactitud y tasa de transferencia. \\
-Hong et al., 2026 \cite{hong2026} & LLM & Predicción contextual de palabras. & Reducción del tiempo promedio de 62.14\%. \\
-\bottomrule
-\end{tabularx}
-\par\smallskip{\footnotesize Elaboración propia.}
-\end{table}

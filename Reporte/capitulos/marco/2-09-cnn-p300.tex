@@ -12,16 +12,9 @@ forma de cuadrícula, como las imágenes o las series de tiempo, en los que los 
 están muy relacionados. Su nombre se debe a que usan la operación de convolución en al menos una de
 sus capas \cite{goodfellow2016}. En una capa
 convolucional, un filtro o \textit{kernel} de pesos aprendibles se desplaza sobre la entrada y en
-cada posición calcula la suma ponderada de los valores que cubre, de forma análoga a la
-Ecuación~\eqref{eq:convolucion}. El resultado se denomina mapa de características. Como el mismo
-filtro se aplica en todas las posiciones, el número de parámetros es mucho menor que en una capa
-totalmente conectada \cite{aggarwal2018}. Además, estas capas tienen tres parámetros
-importantes \cite{goodfellow2016}:
-\begin{itemize}
-  \item \textbf{Paso (\textit{stride}):} controla cuánto se desplaza el filtro en cada posición.
-  \item \textbf{Relleno (\textit{padding}):} agrega ceros en los bordes para conservar la longitud de la salida.
-  \item \textbf{Agrupamiento (\textit{pooling}):} reduce la resolución de los mapas conservando el valor máximo o promedio de cada región.
-\end{itemize}
+cada posición calcula la suma ponderada de los valores que cubre. El resultado se denomina mapa
+de características. Como el mismo filtro se aplica en todas las posiciones, el número de parámetros
+es mucho menor que en una capa totalmente conectada \cite{aggarwal2018}.
 
 En el caso del EEG, cada época puede verse como una matriz de $C$ canales por $T$ muestras, lo que
 permite separar el procesamiento en dos dimensiones con significado fisiológico distinto: las

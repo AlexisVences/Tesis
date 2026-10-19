@@ -16,54 +16,17 @@ de activación $\varphi$ no lineal \cite{delbrio2002}:
 y = \varphi\!\left(\sum_{i=1}^{n} w_i x_i + b\right) = \varphi\!\left(\mathbf{w}^{\top}\mathbf{x} + b\right).
 \label{eq:neurona}
 \end{equation}
-La Figura~\ref{fig:neurona} muestra la correspondencia entre este modelo y la neurona biológica:
-las entradas desempeñan el papel de las dendritas, la suma ponderada
-el del soma y la salida el del axón. Al organizar muchas de estas unidades en capas, de forma que
+Al organizar muchas de estas unidades en capas, de forma que
 la salida de una capa sea la entrada de la siguiente, se obtiene el perceptrón multicapa. Las capas
 intermedias se llaman ocultas, y el número de capas se conoce como profundidad de la red. De ahí
 proviene el término aprendizaje profundo \cite{goodfellow2016}.
-
-\begin{figure}[htbp]
-\centering
-\begin{tikzpicture}[
-  ent/.style={circle, draw, minimum size=0.75cm, font=\small},
-  flecha/.style={-{Stealth[length=2mm]}, thick}]
-  \node[ent] (x1) at (0,1.6) {$x_1$};
-  \node[ent] (x2) at (0,0.5) {$x_2$};
-  \node at (0,-0.35) {$\vdots$};
-  \node[ent] (xn) at (0,-1.2) {$x_n$};
-  \node[ent] (b) at (1.9,2.1) {$1$};
-  \node[circle, draw, thick, minimum size=1.2cm, fill=white] (sum) at (3.6,0.3) {$\Sigma$};
-  \node[rectangle, draw, thick, minimum size=1.0cm, fill=gray!24] (act) at (5.6,0.3) {$\varphi(\cdot)$};
-  \node (y) at (7.4,0.3) {$y$};
-  \draw[flecha] (x1) -- node[above, font=\footnotesize, sloped] {$w_1$} (sum);
-  \draw[flecha] (x2) -- node[above, font=\footnotesize, sloped] {$w_2$} (sum);
-  \draw[flecha] (xn) -- node[below, font=\footnotesize, sloped] {$w_n$} (sum);
-  \draw[flecha] (b) -- node[above right, font=\footnotesize] {$b$} (sum);
-  \draw[flecha] (sum) -- node[above, font=\footnotesize] {$z$} (act);
-  \draw[flecha] (act) -- (y);
-  \node[font=\footnotesize, align=center, text=gray] at (0,-2.2) {Entradas\\(dendritas)};
-  \node[font=\footnotesize, align=center, text=gray] at (3.6,-1.25) {Suma ponderada\\(soma)};
-  \node[font=\footnotesize, align=center, text=gray] at (5.6,-1.25) {Activación};
-  \node[font=\footnotesize, align=center, text=gray] at (7.4,-0.5) {Salida\\(axón)};
-\end{tikzpicture}
-\caption{Modelo de la neurona artificial y su analogía con la neurona biológica. Elaboración
-propia con base en \cite{aggarwal2018}.}
-\label{fig:neurona}
-\end{figure}
 
 \subsection{Funciones de activación}
 
 Sin la función de activación, una red de cualquier profundidad sería equivalente a una sola
 transformación lineal, por lo que esta es la que permite a la red representar relaciones no
-lineales \cite{goodfellow2016}. Las funciones sigmoide y tangente hiperbólica fueron las más
-utilizadas en las primeras redes. Todavía se emplean en la capa de salida de los clasificadores
-binarios y en arquitecturas para P300 como la de Cecotti y Gräser o SepConv1D
-\cite{cecotti2011,alvarado2021}. Sin embargo, ambas se saturan con valores grandes de entrada, lo
-que hace que sus gradientes se acerquen a cero y dificulta el entrenamiento de redes profundas. La función ReLU resolvió en gran medida este problema y hoy es la opción por defecto en
-las capas ocultas \cite{goodfellow2016}, mientras que la ELU, utilizada en EEGNet, permite valores
-negativos suaves que acercan la media de las activaciones a cero \cite{lawhern2018}. La
-Tabla~\ref{tab:activaciones} presenta su definición y la Figura~\ref{fig:activaciones} su forma.
+lineales \cite{goodfellow2016}. La Tabla~\ref{tab:activaciones} presenta las funciones más
+utilizadas y su uso en las arquitecturas para la detección de la P300.
 
 \begin{table}[htbp]
 \centering
@@ -83,14 +46,6 @@ Softmax & $\dfrac{e^{z_k}}{\sum_{j} e^{z_j}}$ & $(0,1)$, suma 1 & Salida de clas
 \end{tabularx}
 \par\smallskip{\footnotesize Elaboración propia con información de \cite{goodfellow2016,aggarwal2018}.}
 \end{table}
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=\textwidth]{02-marco-referencial/funciones_activacion.pdf}
-\caption{Gráfica de las funciones de activación sigmoide, tangente hiperbólica, ReLU y ELU.
-Elaboración propia.}
-\label{fig:activaciones}
-\end{figure}
 
 \subsection{Función de pérdida}
 
@@ -115,14 +70,9 @@ en la dirección opuesta al gradiente de la función de pérdida,
 \label{eq:gradiente}
 \end{equation}
 donde $\eta$ es la tasa de aprendizaje. Si es muy pequeña, el entrenamiento resulta lento, y si es
-muy grande, los pesos oscilan alrededor del mínimo sin alcanzarlo \cite{goodfellow2016}. En redes de varias capas, este gradiente se calcula con el algoritmo de retropropagación,
-popularizado por Rumelhart, Hinton y Williams. Este algoritmo propaga el error desde la capa de
-salida hacia las capas anteriores aplicando la regla de la cadena \cite{rumelhart1986}. En la
-práctica, el gradiente se estima sobre pequeños subconjuntos de datos llamados lotes. Además, en
-lugar de una tasa fija se usan optimizadores adaptativos como Adam, que ajusta la tasa de
-aprendizaje de cada parámetro según el comportamiento de sus gradientes \cite{kingma2015}. Adam fue
-el optimizador utilizado en la comparación de arquitecturas para P300 de Alvarado-González et al.
-\cite{alvarado2021}.
+muy grande, los pesos oscilan alrededor del mínimo sin alcanzarlo \cite{goodfellow2016}. En redes de
+varias capas, este gradiente se calcula con el algoritmo de retropropagación, que propaga el error
+desde la capa de salida hacia las capas anteriores \cite{rumelhart1986}.
 
 \subsection{Regularización}
 
@@ -132,22 +82,6 @@ sobreajuste. Entre las más utilizadas se encuentran el \textit{dropout}, que de
 aleatoriamente una fracción de las neuronas en cada iteración de entrenamiento
 \cite{srivastava2014}, la normalización por lotes, que normaliza las activaciones de cada capa y
 estabiliza el entrenamiento \cite{ioffe2015}, y la parada temprana, que detiene el entrenamiento
-cuando la pérdida de validación deja de mejorar \cite{goodfellow2016}. La Tabla~\ref{tab:regularizacion}
-resume estas técnicas junto con su uso en arquitecturas para la detección de la P300.
+cuando la pérdida de validación deja de mejorar \cite{goodfellow2016}. Las dos primeras forman
+parte de arquitecturas para la detección de la P300 como EEGNet \cite{lawhern2018}.
 
-\begin{table}[htbp]
-\centering
-\caption{Técnicas de regularización y estabilización del entrenamiento}
-\label{tab:regularizacion}
-\small
-\begin{tabularx}{\textwidth}{L{3.2cm}YY}
-\toprule
-\textbf{Técnica} & \textbf{Funcionamiento} & \textbf{Uso en P300} \\
-\midrule
-\textit{Dropout} \cite{srivastava2014} & Anula aleatoriamente una fracción $p$ de las activaciones durante el entrenamiento. & EEGNet y BN3 \cite{lawhern2018,liu2018}. \\
-Normalización por lotes \cite{ioffe2015} & Normaliza la media y varianza de las activaciones de cada lote y las reescala con parámetros aprendidos. & BN3, EEGNet \cite{liu2018,lawhern2018}. \\
-Parada temprana & Detiene el entrenamiento cuando la pérdida de validación deja de mejorar durante cierto número de épocas. & 50 épocas de paciencia en \cite{alvarado2021}. \\
-\bottomrule
-\end{tabularx}
-\par\smallskip{\footnotesize Elaboración propia.}
-\end{table}
