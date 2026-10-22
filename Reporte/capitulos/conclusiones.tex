@@ -1,0 +1,44 @@
+% =====================================================================
+%  Conclusiones
+% =====================================================================
+\chapter[CONCLUSIONES]{Conclusiones}
+\label{cap:conclusiones}
+
+Durante el Trabajo Terminal I se estableció el marco referencial del proyecto donde se revisaron los
+fundamentos del EEG, la componente P300 y el paradigma P300 Speller, además de las técnicas de
+preprocesamiento para usar estas señales, junto a las arquitecturas de aprendizaje profundo y las
+métricas con las que se evalúan estos sistemas. Por otro lado el estado del arte mostró que la
+mayoría de los sistemas P300 Speller basados en EEG alcanzan una alta exactitud en entornos
+controlados, pero bajo tres condiciones que dificultan su uso fuera del laboratorio. La primera es
+el registro con muchos canales, que en la base de datos de la competencia BCI III llega a 64. La
+segunda es el alto costo de los equipos necesarios para registrarlos, y la tercera es el tiempo
+elevado que toma comunicarse con ellos. Estas son las áreas de oportunidad que el presente trabajo
+busca atender con un casco comercial de 14 canales.
+
+A partir de lo anterior se desarrolló una propuesta con dos partes. La primera es un modelo de
+aprendizaje profundo para detectar la componente P300 y la segunda es el sistema de comunicación
+asistida que integra ese modelo junto con un módulo de predicción de palabras para agilizar la
+construcción de palabras. Para cada parte se planteó una metodología, CRISP-ML para el modelo e
+incremental para el sistema. Ambas empatan en el último incremento, cuando la arquitectura
+seleccionada se incorpora a la aplicación para entrenar el modelo de cada usuario al terminar su
+calibración.
+
+Como parte de la fase exploratoria se hicieron pruebas con la base de datos de la competencia BCI
+III. En ellas se compararon una red convolucional clásica para la P300 \cite{cecotti2011}, EEGNet
+\cite{lawhern2018} y una arquitectura híbrida CNN-LSTM. Con los 64 canales, la red convolucional
+clásica obtuvo una exactitud por carácter de 96\% en el sujeto A y de 95\% en el sujeto B, y EEGNet
+llegó a 98\% en el sujeto B. Con el registro reducido a 14 canales el desempeño bajó, pero EEGNet
+mantuvo una exactitud por carácter de 72\% y 76\% en los sujetos A y B, por encima del 70\% fijado
+como mínimo para aceptar el modelo de un usuario.
+
+En el Trabajo Terminal II quedan por construir los tres incrementos del sistema. El primero es el
+módulo de predicción de palabras, cuya técnica aún esta por definirse. Le siguen la interfaz con la
+matriz del P300 Speller y, al final, la calibración junto con la integración del modelo de
+detección. En paralelo se completarán las fases de CRISP-ML, con el entrenamiento de las
+arquitecturas candidatas, y el ajuste de sus hiperparámetros. También se registrarán las señales
+propias de voluntarios, con las que se probará el sistema completo entre abril y mayo.
+
+Queda pendiente verificar si el hardware seleccionado es compatible con un microordenador NVIDIA
+Jetson, en el que se analizaría la ejecución de la inferencia del modelo. Si el casco no puede
+comunicarse con esta tarjeta, la Jetson no se usará y el sistema se implementará únicamente en la
+computadora con Windows, sin que esto afecte el resto del alcance.
