@@ -23,8 +23,9 @@ artefactos de movimiento \cite{niedermeyer2005}. En este sentido, el trabajo de 
 electrodos secos de un sistema de bajo costo con cuatro canales, mientras que las bases de datos
 públicas del paradigma P300, como la empleada en la fase exploratoria de este trabajo, fueron
 adquiridas con equipos de grado de investigación de 64 canales \cite{blankertz2006}. Para las
-sesiones de registro propias se contempla un casco comercial de 14 canales, intermedio entre ambos
-extremos.
+sesiones de registro propias se utilizará el casco Emotiv EPOC X, de 14 canales, que se encuentra
+entre ambos extremos. Sus electrodos son almohadillas de fieltro humedecidas con solución salina y
+la señal se entrega a 128 o 256~Hz \cite{emotivepocx}.
 
 \subsection{Sistema internacional 10-20}
 
@@ -68,17 +69,15 @@ para mitigarlos, algunas de las cuales se retoman en la Sección~\ref{sec:pds}.
 \caption{Artefactos comunes en el registro de EEG}
 \label{tab:artefactos}
 \small
-\begin{tabularx}{\textwidth}{L{2.8cm}L{2.3cm}L{2.4cm}Y}
-\toprule
-\textbf{Artefacto} & \textbf{Origen} & \textbf{Banda afectada} & \textbf{Mitigación} \\
-\midrule
-Parpadeo y movimiento ocular (EOG) & Fisiológico & $<$4 Hz & Filtrado pasa altas y rechazo de épocas por umbral de amplitud. \\
-Actividad muscular (EMG) & Fisiológico & $>$20 Hz & Filtrado pasa bajas e instrucciones al sujeto. \\
-Actividad cardiaca (ECG) & Fisiológico & 1--2 Hz y armónicos & Referencia adecuada. \\
-Sudoración y deriva de línea base & Fisiológico / electrodo & $<$0.5 Hz & Filtrado pasa altas, corrección de línea base. \\
-Interferencia de la red eléctrica & Técnico & 60 Hz (México) & Filtro notch, blindaje, buena impedancia. \\
-Movimiento o mal contacto del electrodo & Técnico & Banda ancha & Rechazo de épocas por umbral de amplitud. \\
-\bottomrule
+\begin{tabularx}{\textwidth}{|L{2.8cm}|L{2.3cm}|L{2.4cm}|Y|}
+\hline
+\textbf{Artefacto} & \textbf{Origen} & \textbf{Banda afectada} & \textbf{Mitigación} \\ \hline
+Parpadeo y movimiento ocular (EOG) & Fisiológico & $<$4 Hz & Filtrado pasa altas y rechazo de épocas por umbral de amplitud. \\ \hline
+Actividad muscular (EMG) & Fisiológico & $>$20 Hz & Filtrado pasa bajas e instrucciones al sujeto. \\ \hline
+Actividad cardiaca (ECG) & Fisiológico & 1--2 Hz y armónicos & Referencia adecuada. \\ \hline
+Sudoración y deriva de línea base & Fisiológico / electrodo & $<$0.5 Hz & Filtrado pasa altas, corrección de línea base. \\ \hline
+Interferencia de la red eléctrica & Técnico & 60 Hz (México) & Filtro notch, blindaje, buena impedancia. \\ \hline
+Movimiento o mal contacto del electrodo & Técnico & Banda ancha & Rechazo de épocas por umbral de amplitud. \\ \hline
 \end{tabularx}
 \par\smallskip{\footnotesize Elaboración propia con información de \cite{sanei2007,niedermeyer2005}.}
 \end{table}

@@ -5,13 +5,11 @@
 Biomédicas}
 \label{sec:pds}
 
-El preprocesamiento de las señales EEG constituye una etapa determinante para el desempeño de
-los modelos de clasificación, dado que estas señales presentan una relación señal-ruido baja y
-son susceptibles a artefactos de origen fisiológico y ambiental. Para atender esta problemática
-se emplean técnicas de filtrado pasa banda, orientadas a delimitar el rango de frecuencias
-asociado a la componente P300, así como la segmentación de la señal continua en ventanas
-temporales alrededor de cada estímulo y la normalización de las mismas, cuyos fundamentos se
-describen a lo largo de esta sección.
+El preprocesamiento de las señales EEG pesa mucho en el desempeño de los modelos de
+clasificación, ya que estas señales tienen una relación señal-ruido baja y son susceptibles a
+artefactos fisiológicos y ambientales. Para tratarlas se usa un filtrado pasa banda que delimita el
+rango de frecuencias de la componente P300, la segmentación de la señal continua en ventanas
+alrededor de cada estímulo y la normalización de esas ventanas.
 
 \subsection{Muestreo y teorema de Nyquist}
 
@@ -40,7 +38,7 @@ EEG uno de los más utilizados es el filtro de Butterworth, cuya respuesta en ma
 banda de paso \cite{oppenheim2010}. El
 filtro \textit{notch} es un tipo de filtro rechaza banda que elimina una sola frecuencia, como la
 de la red eléctrica. La Figura~\ref{fig:filtros} muestra la respuesta en frecuencia de un filtro
-pasa banda entre 0.1 y 20~Hz, como el aplicado en el trabajo preliminar, y de un filtro
+pasa banda entre 0.1 y 20~Hz, como el aplicado en la fase exploratoria de este trabajo, y de un filtro
 \textit{notch} en 60~Hz.
 
 \begin{figure}[htbp]
@@ -56,7 +54,7 @@ pasa banda entre 0.1 y 20~Hz, como el aplicado en el trabajo preliminar, y de un
 El remuestreo permite reducir la frecuencia de muestreo después de filtrar la señal. En la
 decimación por un factor $M$ se conserva una de cada $M$ muestras. Antes de hacerlo, se debe
 aplicar un filtro antialiasing que elimine el contenido por encima de la nueva frecuencia de
-Nyquist \cite{proakis2007}. En el trabajo preliminar se redujo la frecuencia de 240~Hz a 120~Hz,
+Nyquist \cite{proakis2007}. En la fase exploratoria se redujo la frecuencia de 240~Hz a 120~Hz,
 lo que disminuye a la mitad el tamaño de cada época sin perder información en la banda de 0.1 a
 20~Hz.
 
@@ -65,10 +63,10 @@ lo que disminuye a la mitad el tamaño de cada época sin perder información en
 La segmentación consiste en dividir la señal continua en ventanas sincronizadas con cada estímulo,
 que constituyen las muestras de entrada al clasificador. La longitud de la ventana debe ser
 suficiente para contener la P300 completa. Contreras empleó ventanas de 1005~ms a partir del
-estímulo \cite{contreras2021}, mientras que en el trabajo preliminar se utilizaron ventanas de 78
-muestras, equivalentes a unos 650~ms a 120~Hz. Dado que el intervalo entre inicios de estímulos es
-de solo 175~ms, las épocas de intensificaciones consecutivas se traslapan, de modo que una época no
-objetivo puede contener parte de la P300 provocada por una intensificación objetivo cercana.
+estímulo \cite{contreras2021}, mientras que en la fase exploratoria de este trabajo se utilizaron ventanas de 78
+muestras, equivalentes a unos 650~ms a 120~Hz. Como el intervalo entre inicios de estímulos es
+de solo 175~ms, las épocas de intensificaciones consecutivas se traslapan y una época no objetivo
+puede llegar a contener parte de la P300 de una intensificación objetivo cercana.
 
 \subsection{Normalización}
 
@@ -82,9 +80,9 @@ z(n) = \frac{x(n)-\mu}{\sigma}, \qquad
 x'(n) = \frac{x(n)-\min(x)}{\max(x)-\min(x)}.
 \label{eq:normalizacion}
 \end{equation}
-La primera es menos sensible a valores atípicos, lo cual resulta conveniente en presencia de
-artefactos de gran amplitud, y fue la empleada de manera independiente por canal en el trabajo
-preliminar para evitar que los electrodos con mayor amplitud dominen el aprendizaje de la red.
+La primera es menos sensible a valores atípicos, algo útil cuando hay artefactos de gran amplitud.
+En la fase exploratoria se aplicó de manera independiente a cada canal, para que los electrodos con
+mayor amplitud no dominaran el aprendizaje de la red.
 
 \subsection{Remoción de artefactos}
 

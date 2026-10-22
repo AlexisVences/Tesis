@@ -23,8 +23,8 @@ proviene el término aprendizaje profundo \cite{goodfellow2016}.
 
 \subsection{Funciones de activación}
 
-Sin la función de activación, una red de cualquier profundidad sería equivalente a una sola
-transformación lineal, por lo que esta es la que permite a la red representar relaciones no
+Sin la función de activación, una red de cualquier profundidad equivaldría a una sola
+transformación lineal, y es gracias a ella que la red puede representar relaciones no
 lineales \cite{goodfellow2016}. La Tabla~\ref{tab:activaciones} presenta las funciones más
 utilizadas y su uso en las arquitecturas para la detección de la P300.
 
@@ -33,16 +33,15 @@ utilizadas y su uso en las arquitecturas para la detección de la P300.
 \caption{Funciones de activación más utilizadas}
 \label{tab:activaciones}
 \small
-\begin{tabularx}{\textwidth}{L{2.6cm}L{4.3cm}L{1.6cm}Y}
-\toprule
-\textbf{Función} & \textbf{Definición} & \textbf{Rango} & \textbf{Uso típico} \\
-\midrule
-Sigmoide & $\sigma(z) = \dfrac{1}{1+e^{-z}}$ & $(0,1)$ & Salida de clasificación binaria (probabilidad de P300). \\[8pt]
-Tangente hiperbólica & $\tanh(z) = \dfrac{e^{z}-e^{-z}}{e^{z}+e^{-z}}$ & $(-1,1)$ & Capas ocultas en \cite{cecotti2011,alvarado2021}. \\[8pt]
-ReLU & $\max(0,z)$ & $[0,\infty)$ & Capas ocultas de redes profundas. \\[4pt]
-ELU & $z$ si $z>0$, y $\alpha(e^{z}-1)$ si $z\le0$ & $(-\alpha,\infty)$ & Capas ocultas de EEGNet \cite{lawhern2018}. \\[4pt]
-Softmax & $\dfrac{e^{z_k}}{\sum_{j} e^{z_j}}$ & $(0,1)$, suma 1 & Salida de clasificación multiclase. \\
-\bottomrule
+\renewcommand{\arraystretch}{1.8}
+\begin{tabularx}{\textwidth}{|L{2.6cm}|L{4.3cm}|L{1.6cm}|Y|}
+\hline
+\textbf{Función} & \textbf{Definición} & \textbf{Rango} & \textbf{Uso típico} \\ \hline
+Sigmoide & $\sigma(z) = \dfrac{1}{1+e^{-z}}$ & $(0,1)$ & Salida de clasificación binaria (probabilidad de P300). \\[8pt] \hline
+Tangente hiperbólica & $\tanh(z) = \dfrac{e^{z}-e^{-z}}{e^{z}+e^{-z}}$ & $(-1,1)$ & Capas ocultas en \cite{cecotti2011,alvarado2021}. \\[8pt] \hline
+ReLU & $\max(0,z)$ & $[0,\infty)$ & Capas ocultas de redes profundas. \\[4pt] \hline
+ELU & $z$ si $z>0$, y $\alpha(e^{z}-1)$ si $z\le0$ & $(-\alpha,\infty)$ & Capas ocultas de EEGNet \cite{lawhern2018}. \\[4pt] \hline
+Softmax & $\dfrac{e^{z_k}}{\sum_{j} e^{z_j}}$ & $(0,1)$, suma 1 & Salida de clasificación multiclase. \\ \hline
 \end{tabularx}
 \par\smallskip{\footnotesize Elaboración propia con información de \cite{goodfellow2016,aggarwal2018}.}
 \end{table}

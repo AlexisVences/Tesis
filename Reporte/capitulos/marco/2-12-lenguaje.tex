@@ -9,9 +9,9 @@ palabras}
 
 Aun con una detección perfecta de la P300, escribir carácter por carácter en un P300 Speller es un
 proceso lento, pues cada selección requiere varios segundos. La predicción de palabras, ampliamente
-utilizada en los sistemas de comunicación aumentativa, reduce el número de selecciones necesarias
-al ofrecer al usuario una lista de palabras probables a partir de los caracteres que ya ha escrito,
-de modo que puede completar una palabra con una sola selección adicional. Ryan et al. integraron
+utilizada en los sistemas de comunicación aumentativa, reduce el número de selecciones porque le
+ofrece al usuario una lista de palabras probables a partir de lo que ya escribió, y con una sola
+selección más puede completar la palabra. Ryan et al. integraron
 este mecanismo en un P300 Speller agregando a la matriz una región con las palabras sugeridas, y
 encontraron que los participantes completaban las frases en menos tiempo que con el deletreador
 convencional, aunque con una exactitud por selección ligeramente menor \cite{ryan2011}. El
@@ -25,8 +25,8 @@ mismo texto sin y con predicción, respectivamente.
 
 \subsection{Modelos de lenguaje}
 
-Un modelo de lenguaje asigna una probabilidad a cada secuencia de palabras, lo que permite estimar
-cuál es la palabra, o el carácter, más probable dado lo que se ha escrito. Los modelos más simples
+Un modelo de lenguaje asigna una probabilidad a cada secuencia de palabras, y con ella se puede
+estimar cuál es la palabra, o el carácter, más probable dado lo que se ha escrito. Los modelos más simples
 son los de $n$-gramas, que suponen que cada palabra depende únicamente de las $n-1$ palabras
 anteriores. Sus probabilidades se estiman contando cuántas veces aparece cada secuencia en un
 corpus de texto \cite{jurafsky2025}. Debido a que están limitados a un contexto corto y fijo,

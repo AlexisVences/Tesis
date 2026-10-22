@@ -29,7 +29,9 @@ modelo de cada usuario se entrenará además con señales propias registradas en
 calibración con un casco comercial de 14 canales, lo que evita depender de equipo especializado de
 64 canales. Esta calibración formará parte del registro del usuario en el sistema, que al
 concluirla entrenará de forma automática su modelo con la arquitectura y la configuración
-seleccionadas a partir de las bases de datos públicas.
+seleccionadas a partir de las bases de datos públicas. Para que esa configuración sea válida con el
+casco, de la base de datos pública solo se usarán los 14 canales que coinciden con los del casco, y
+las señales de ambas fuentes se remuestrearán a una misma frecuencia.
 
 \section[ARQUITECTURA DEL SISTEMA]{Arquitectura del sistema}
 
@@ -115,10 +117,47 @@ Una vez que el carácter se agrega al texto, el módulo de predicción de palabr
 palabras más probables a partir de los caracteres escritos, siguiendo alguno de los enfoques de
 modelado del lenguaje revisados en la Sección~\ref{sec:lenguaje}, y las presenta en la interfaz
 como opciones adicionales que el usuario puede seleccionar mediante el mismo mecanismo de
-atención. De esta forma, cada selección puede corresponder a un carácter o a una palabra completa,
-y el número de repeticiones empleado en cada una de ellas será uno de los parámetros a optimizar,
-pues determina directamente la tasa de transferencia de información del sistema, tal como se
-describió en la Sección~\ref{sec:metricas}.
+atención. Así, cada selección puede corresponder a un carácter o a una palabra completa. El
+número de repeticiones por selección será uno de los parámetros a optimizar, porque determina
+directamente la tasa de transferencia de información del sistema (Sección~\ref{sec:metricas}),
+y una vez elegido será el mismo para todo el sistema.
+
+\section[ALCANCE DEL SISTEMA]{Alcance del sistema}
+\label{sec:alcance}
+
+En esta sección se delimita lo que el sistema incluirá y lo que quedará fuera del presente Trabajo
+Terminal.
+
+\begin{enumerate}
+  \item \textbf{Datos:}
+  \begin{itemize}
+    \item La base de datos II de la competencia BCI III se usará en la fase exploratoria para
+    comparar arquitecturas, definir el preprocesamiento y evaluar la reducción de canales y
+    repeticiones.
+    \item Las señales propias se registrarán con el casco Emotiv EPOC X de 14 canales.
+    \item Las pruebas con señales propias se realizarán con voluntarios.
+  \end{itemize}
+  \item \textbf{Modelo de detección de la componente P300:}
+  \begin{itemize}
+    \item El modelo se entrenará de forma individual para cada usuario a partir de su sesión de
+    calibración.
+    \item Un modelo solo se aceptará si alcanza una exactitud por carácter de al menos 70\%.
+  \end{itemize}
+  \item \textbf{Predicción de palabras:}
+  \begin{itemize}
+    \item La técnica de predicción se seleccionará durante el Trabajo Terminal II.
+  \end{itemize}
+  \item \textbf{Desarrollo e integración:}
+  \begin{itemize}
+    \item El sistema se desarrollará en Python con PyQt y se implementará en una computadora con
+    Windows.
+    \item Se analizará la viabilidad de ejecutar la inferencia del modelo en un microordenador
+    NVIDIA Jetson.
+    \item El usuario interactuará con el sistema solo mediante su atención a la matriz, y el
+    operador se encargará de preparar y supervisar cada sesión.
+    \item El sistema no guardará los mensajes que escriba el usuario.
+  \end{itemize}
+\end{enumerate}
 
 \section[METODOLOGÍA]{Metodología}
 \label{sec:metodologia}
@@ -213,8 +252,12 @@ servirá como base para el siguiente incremento. Los incrementos considerados so
   Las pruebas de este incremento consistirán en ejecutar el entrenamiento automático con los
   caracteres de entrenamiento de la base de datos II de la competencia BCI III, como si se tratara
   de una sesión de calibración, y en deletrear sus caracteres de prueba, midiendo la exactitud por
-  carácter y la tasa de transferencia de información. El resultado será la tercera versión, que
-  corresponde al sistema completo.
+  carácter y la tasa de transferencia de información. En estas pruebas se emplearán únicamente los
+  14 canales equivalentes a los del casco. Además, como la matriz de esa base de datos contiene
+  letras, dígitos y un guion bajo, y por lo tanto es distinta a la del sistema, el acierto se
+  evaluará comparando la fila y la columna decodificadas con las del carácter objetivo, sin depender
+  del símbolo que muestre la interfaz. El resultado será la tercera versión, que corresponde al
+  sistema completo.
 \end{enumerate}
 
 Los incrementos 1 y 2 se desarrollarán de manera simultánea durante febrero y marzo, lo cual es
@@ -317,8 +360,9 @@ se describen a continuación:
   arquitectura y la configuración con las que el sistema entrenará el modelo de cada usuario a
   partir de su sesión de calibración.
   \item \textbf{Evaluación.} Se analizará el desempeño del modelo mediante métricas de
-  clasificación como la exactitud, la sensibilidad, la precisión y el F1-score, además de la
-  construcción de la matriz de confusión, y se evaluará el impacto de la reducción de canales y
+  clasificación como la exactitud, la sensibilidad, la precisión, el F1-score y el área bajo la curva
+  ROC (AUC), además de la construcción de la matriz de confusión. A nivel del sistema se medirá la
+  exactitud por carácter, que es la que decide si el modelo de un usuario se acepta, y se evaluará el impacto de la reducción de canales y
   repeticiones en el rendimiento del sistema. Si los resultados no son satisfactorios, se regresará
   a la preparación de los datos o al modelado.
   \item \textbf{Integración del modelo.} La arquitectura seleccionada, junto con el procedimiento

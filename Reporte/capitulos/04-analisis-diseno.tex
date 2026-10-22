@@ -4,35 +4,32 @@
 \chapter[ANÁLISIS Y DISEÑO]{Análisis y diseño}
 \label{cap:analisis-diseno}
 
-El análisis consiste en identificar qué debe ocurrir dentro del sistema y cómo se relacionarán
-entre sí los distintos procesos que lo conforman, lo que permite entender el problema y documentar
-las relaciones entre los usuarios, el programa y los componentes que integran la lógica del
-sistema antes de escribir cualquier línea de código \cite{pressman2010}. En el caso del presente
-trabajo, esta etapa corresponde a las fases de definición de requerimientos y de diseño de la
-arquitectura del modelo incremental descrito en el Capítulo~\ref{cap:propuesta}, y se orienta a
-describir, mediante requerimientos y diagramas, el comportamiento esperado de la interfaz del P300
-Speller, de la adquisición y calibración con el casco EEG, del módulo de detección de la
-componente P300 y del módulo de predicción de palabras,
-combinando el lenguaje del usuario con el enfoque técnico de quien desarrolla el sistema.
+En este capítulo se presentan el análisis y el diseño del sistema, que corresponden a la etapa de
+análisis y diseño general del modelo incremental descrita en la Sección~\ref{sec:met-sistema}. De
+acuerdo con Pressman, el análisis define qué debe hacer el software, mientras que el diseño define
+cómo lo hará \cite{pressman2010}.
 
-Por otra parte, el diseño se encarga de traducir dicho análisis en decisiones concretas de
-implementación: a partir de los requerimientos y los diagramas generados se define cómo se
-organizará el código en módulos, cómo se intercambiará la información entre la interfaz, el
-modelo de aprendizaje profundo y el modelo de lenguaje, qué datos deberán almacenarse, así como la
-plataforma en la que se ejecutará cada componente y los recursos que requerirá \cite{pressman2010}.
+El análisis parte de las reglas de negocio del paradigma P300 Speller. A partir de ellas se obtienen
+los requerimientos funcionales y no funcionales, el catálogo de mensajes y los casos de uso, que
+describen lo que hacen el usuario, el operador y el casco EEG en cada parte del sistema, desde la
+creación de una cuenta hasta el deletreo.
+
+El diseño toma esos resultados y los traduce en la estructura del programa. Para ello se presentan
+la arquitectura de software, los diagramas de clases y de objetos, la estructura de almacenamiento,
+los diagramas de flujo de los procesos principales, el diagrama de estados, los diagramas de
+secuencia, el diseño del módulo de predicción de palabras y los mockups de la interfaz.
 
 %% =====================================================================
 %% 4.1 REGLAS DE NEGOCIO
 %% =====================================================================
 \section[REGLAS DE NEGOCIO]{Reglas de negocio}
 
-Las reglas de negocio son las condiciones y restricciones propias del dominio que el sistema debe
-respetar sin importar la forma en que se implemente, y de ellas se desprenden tanto los
-requerimientos como las validaciones que se describirán más adelante en los casos de uso. En este
-trabajo provienen principalmente del funcionamiento del paradigma P300 Speller descrito en la
-Sección~\ref{sec:speller} y de la necesidad de que la herramienta pueda ser utilizada por más de
-una persona, conservando cada una su modelo de detección y sus registros de manera independiente, y las reglas consideradas se
-resumen en la Tabla~\ref{tab:reglas}.
+Las reglas de negocio son las condiciones y restricciones del dominio que el sistema tiene que
+respetar sin importar cómo se implemente, y de ellas salen tanto los requerimientos como varias de
+las validaciones de los casos de uso. En este trabajo la mayoría viene del funcionamiento del
+paradigma P300 Speller descrito en la Sección~\ref{sec:speller}, y otras surgen de que la
+herramienta será utilizada por varias personas, cada una con su propio modelo de detección y sus
+propios registros. La Tabla~\ref{tab:reglas} las resume.
 
 %% NOTA: reglas PROPUESTAS a partir de lo ya descrito en el Capítulo 3. Revisar, quitar o agregar.
 \begin{table}[H]
@@ -70,15 +67,13 @@ RN-8 & Calibración previa & Un usuario solo podrá iniciar el deletreo cuando s
 \section[REQUERIMIENTOS]{Requerimientos}
 
 Los requerimientos funcionales establecen lo que el sistema debe hacer, es decir, los servicios que
-ofrece y la forma en que responde a cada entrada, mientras que los requerimientos no funcionales
-describen atributos de calidad con los que el sistema debe cumplir esos servicios, como su
-rendimiento, usabilidad, confiabilidad, seguridad o mantenibilidad, sin constituir por sí mismos una
-función del sistema \cite{pressman2010}. Cabe señalar que la exploración de arquitecturas con
-bases de datos públicas y la selección de la configuración del modelo se efectúan de manera previa
-por parte de quienes desarrollan el sistema, como se describe en la
-Sección~\ref{sec:flujo-entrenamiento}, por lo que no forman parte de lo que la aplicación ofrece a
-la persona que la utiliza. En cambio, el entrenamiento del modelo de cada usuario sí se realiza
-dentro de la aplicación, al concluir su calibración.
+ofrece y cómo responde a cada entrada. Los no funcionales, en cambio, describen atributos de calidad
+como el rendimiento, la usabilidad, la confiabilidad, la seguridad o la mantenibilidad, que no son
+por sí mismos una función del sistema \cite{pressman2010}. Hay que aclarar que la exploración de
+arquitecturas con bases de datos públicas y la selección de la configuración del modelo las hacen
+antes quienes desarrollan el sistema (Sección~\ref{sec:flujo-entrenamiento}) y no la aplicación.
+Dentro de la aplicación solo ocurre el entrenamiento del modelo de cada usuario, al terminar su
+calibración.
 
 \subsection{Requerimientos funcionales}
 
@@ -107,17 +102,18 @@ paradigma P300 Speller y la predicción de palabras.
   permitir al operador verificar su calidad antes de iniciar una calibración o una sesión de deletreo.
   \item \textbf{RF7:} El sistema deberá permitir al operador iniciar un modo de calibración en el que se indique al
   usuario el carácter en el que debe fijar su atención, se presenten las secuencias de
-  estimulación y se registren las señales correspondientes, el cual podrá repetirse por indicación del operador cuando sea
-  necesario actualizar el modelo del usuario. 
+  estimulación y se registren las señales correspondientes, el cual podrá detenerse antes de que concluya y repetirse por indicación del operador cuando sea
+  necesario actualizar el modelo del usuario.
   \item \textbf{RF8:} El sistema deberá guardar los registros de cada sesión de calibración, junto
   con los caracteres objetivo y los eventos de estimulación, en la cuenta del usuario que los
   generó.
   \item \textbf{RF9:} El sistema deberá entrenar de forma automática, al concluir la calibración, el modelo de detección del usuario a partir de sus registros, empleando la arquitectura y la configuración seleccionadas previamente, guardarlo en su cuenta y mostrar su avance al operador durante el proceso.
   \item \textbf{RF10:} El sistema deberá evaluar el modelo entrenado con una parte de los registros
-  de calibración reservada para ese fin y, si su exactitud por carácter no alcanza el valor mínimo
-  establecido, informarlo y proponer que se repita la calibración.
+  de calibración reservada para ese fin y, si su exactitud por carácter es menor al 70\%, valor que se
+  considera el mínimo necesario para comunicarse mediante una BCI \cite{kubler2001}, informarlo y
+  proponer que se repita la calibración.
   \item \textbf{RF11:} El sistema deberá cargar, al iniciar sesión, el modelo de detección
-  entrenado para ese usuario y permitir al operador iniciar el deletreo, impidiéndolo si la cuenta aún no tiene un modelo.
+  entrenado para ese usuario y permitir al operador iniciar y detener el deletreo, impidiendo iniciarlo si la cuenta aún no tiene un modelo.
 \end{itemize}
 
 \paragraph{Deletreo mediante el P300 Speller.}
@@ -156,9 +152,9 @@ paradigma P300 Speller y la predicción de palabras.
   elemento seleccionado deberá mostrarse en la interfaz en un tiempo no mayor a un segundo, y las
   sugerencias de palabras deberán actualizarse antes de que inicie la siguiente secuencia de
   estimulación.
-  \item \textbf{RNF2:} La matriz deberá presentarse con un tamaño de carácter y un
-  contraste que permitan al usuario fijar su atención en cualquier elemento sin esfuerzo visual
-  excesivo, y los elementos intensificados deberán distinguirse claramente de los que no lo están.
+  \item \textbf{RNF2:} La matriz deberá mostrar caracteres claros sobre fondo oscuro, con un
+  tamaño que permita leerlos sin dificultad a unos 60~cm de la pantalla, y al intensificarse los
+  elementos deberán cambiar a un color claro que contraste con los que no lo están.
   \item \textbf{RNF3:} Una vez iniciada la sesión de deletreo, todas las acciones de
   escritura, selección de sugerencias y borrado deberán poder realizarse únicamente mediante la
   atención a la matriz, sin requerir teclado ni ratón.
@@ -183,12 +179,11 @@ paradigma P300 Speller y la predicción de palabras.
 %% =====================================================================
 \section[CATÁLOGO DE MENSAJES]{Catálogo de mensajes}
 
-El catálogo de mensajes reúne los avisos que el sistema presenta durante su operación, clasificados
-según su propósito para que la interfaz mantenga un lenguaje uniforme en todas sus pantallas. Dado
-que el usuario final interactúa principalmente mediante la selección de elementos con la
-componente P300, los textos deberán ser breves y de lectura inmediata, e indicar en cada caso qué
-ocurrió y, cuando proceda, qué debe hacerse a continuación. Cada mensaje se identifica con una
-clave, a la que se hace referencia en los casos de uso de la Sección~\ref{sec:casos-uso}.
+El catálogo de mensajes reúne los avisos que el sistema muestra durante su operación, agrupados
+por su propósito para que todas las pantallas usen el mismo lenguaje. Como el usuario interactúa
+casi siempre seleccionando elementos con la componente P300, los textos tienen que ser cortos y
+decir qué pasó y, si aplica, qué hacer después. Cada mensaje tiene una clave con la que se le
+menciona en los casos de uso de la Sección~\ref{sec:casos-uso}.
 
 \subsection{Mensajes de error}
 
@@ -235,12 +230,12 @@ MSJE10 & El modelo de la cuenta no pudo cargarse o falló durante la clasificaci
 
 \subsection{Mensajes de confirmación}
 
-Los mensajes de confirmación se presentan antes de ejecutar acciones que descartan o modifican
-información, como cerrar la sesión activa, detener una calibración o un deletreo en curso o repetir
-la calibración de una cuenta que ya tiene un modelo, y piden al operador validar que realmente desea
-continuar. Se dirigen al operador y no al usuario, pues este último solo interactúa mediante la
-matriz de selección, y el borrado del último elemento no solicita confirmación para no agregar
-selecciones adicionales al deletreo. La Tabla~\ref{tab:msjc} presenta estos mensajes.
+Los mensajes de confirmación aparecen antes de acciones que descartan o modifican información,
+como cerrar la sesión activa, detener una calibración o un deletreo en curso o repetir la
+calibración de una cuenta que ya tiene modelo, y le piden al operador que confirme. Van dirigidos
+al operador y no al usuario, ya que este último solo interactúa con la matriz. El borrado del
+último elemento no pide confirmación porque eso obligaría al usuario a hacer una selección más. La
+Tabla~\ref{tab:msjc} presenta estos mensajes.
 
 \begin{table}[H]
 \centering
@@ -299,14 +294,12 @@ MSJI4 & Se seleccionó el comando de borrado con el texto vacío (CU\_12). & No 
 \section[CASOS DE USO]{Casos de uso}
 \label{sec:casos-uso}
 
-Los casos de uso representan las distintas funcionalidades del sistema y se definen a partir de los
-requerimientos funcionales, de manera que cada uno describe una acción específica, junto con sus
-precondiciones, pasos y posibles errores, que el sistema debe realizar para cumplir con las
-necesidades de quienes interactúan con él \cite{pressman2010}. Los actores, por su parte, son los
-roles que se asignan a las personas o a los sistemas externos que interactúan con dichas
-funcionalidades, y en el presente trabajo intervienen el usuario que construye mensajes a través
-del P300 Speller, el operador que prepara y supervisa las sesiones y el casco EEG que proporciona
-las señales, tal como se describe en la Tabla~\ref{tab:actores}.
+Los casos de uso representan las funcionalidades del sistema y se definen a partir de los
+requerimientos funcionales. Cada uno describe una acción específica con sus precondiciones, sus
+pasos y los errores que pueden presentarse \cite{pressman2010}. Los actores son los roles de las
+personas o sistemas externos que interactúan con esas funcionalidades, y en este trabajo son tres,
+el usuario que construye mensajes con el P300 Speller, el operador que prepara y supervisa las
+sesiones y el casco EEG que entrega las señales (Tabla~\ref{tab:actores}).
 
 \subsection{Actores}
 
@@ -323,17 +316,17 @@ Usuario & Es el actor principal del sistema y corresponde a la persona con compr
 \hline
 Operador & Persona encargada de preparar y supervisar el uso del sistema, que en el presente trabajo corresponde a quienes lo desarrollan. Crea la cuenta del usuario e inicia su sesión, coloca el casco EEG, establece la conexión y verifica la calidad de la señal, inicia la sesión de calibración, supervisa el entrenamiento automático del modelo de detección del usuario e inicia el deletreo cuando la cuenta ya tiene su modelo. \\
 \hline
-Casco EEG & Actor externo que corresponde al casco comercial de 14 canales, el cual entrega al sistema, en tiempo real, las señales electroencefalográficas del usuario, que se sincronizan con los estímulos presentados. \\
+Casco EEG & Actor externo que corresponde al casco Emotiv EPOC X de 14 canales, el cual entrega al sistema, en tiempo real, las señales electroencefalográficas del usuario, que se sincronizan con los estímulos presentados. \\
 \hline
 \end{tabularx}
 \par\smallskip{\footnotesize Elaboración propia.}
 \end{table}
 
-Cabe aclarar que, además de las funciones descritas, el operador explora arquitecturas y
-preprocesamiento con bases de datos públicas y selecciona la configuración del modelo de manera
-previa e independiente del uso de la aplicación, por lo que estas actividades no se modelan como
-casos de uso. El entrenamiento del modelo de cada usuario, en cambio, lo realiza la propia
-aplicación al concluir la calibración, y dentro de ella el operador interviene únicamente en la preparación de la sesión y en la supervisión de la calibración y del entrenamiento.
+Aparte de lo anterior, el operador explora arquitecturas y preprocesamiento con bases de datos
+públicas y elige la configuración del modelo antes de usar la aplicación y fuera de ella, así que
+esas actividades no aparecen como casos de uso. El entrenamiento del modelo de cada usuario sí lo
+hace la aplicación al concluir la calibración, y en esa parte el operador solo prepara la sesión y
+supervisa la calibración y el entrenamiento.
 
 \subsection{Casos de uso de gestión de sesiones}
 
@@ -449,7 +442,7 @@ Identificador & CU\_04 \\
 \hline
 Requisitos asociados & RF4 \\
 \hline
-Reglas de negocio & RN-1 \\
+Reglas de negocio & RN-6 \\
 \hline
 Actores & Operador, Casco EEG \\
 \hline
@@ -478,7 +471,7 @@ Identificador & CU\_05 \\
 \hline
 Requisitos asociados & RF6 \\
 \hline
-Reglas de negocio & RN-1 \\
+Reglas de negocio & Ninguna \\
 \hline
 Actores & Operador, Casco EEG \\
 \hline
@@ -515,7 +508,7 @@ Descripción & El operador inicia una sesión de calibración en la que el usuar
 \hline
 Precondición & La conexión con el casco está establecida y la señal fue verificada. \\
 \hline
-Pasos & 1. Iniciar el modo de calibración a solicitud del operador. \newline 2. Mostrar la matriz e indicar al usuario el carácter objetivo. \newline 3. Presentar las secuencias de estimulación, registrando el instante y el tipo de cada intensificación junto con las señales recibidas. \newline 4. Repetir los pasos 2 y 3 con cada carácter objetivo de la calibración. \newline 5. Guardar en la cuenta del usuario los registros, los caracteres objetivo y los eventos de estimulación. \\
+Pasos & 1. Iniciar el modo de calibración a solicitud del operador. \newline 2. Mostrar la matriz e indicar al usuario el carácter objetivo. \newline 3. Presentar las secuencias de estimulación, registrando el instante y el tipo de cada intensificación junto con las señales recibidas. \newline 4. Repetir los pasos 2 y 3 con cada uno de los 20 caracteres objetivo de la calibración. \newline 5. Guardar en la cuenta del usuario los registros, los caracteres objetivo y los eventos de estimulación. \\
 \hline
 Errores & 1. Pérdida de la conexión con el casco: se detiene la calibración y se informa al operador. \newline 2. Fallo al guardar los registros: se notifica y se propone repetir la calibración. \\
 \hline
@@ -544,7 +537,7 @@ Descripción & Al concluir la calibración, el sistema entrena el modelo de dete
 \hline
 Precondición & La calibración concluyó y sus registros están guardados en la cuenta. \\
 \hline
-Pasos & 1. Preprocesar los registros de calibración. \newline 2. Separar una parte de los registros para la validación. \newline 3. Entrenar el modelo con el resto, mostrando su avance al operador. \newline 4. Evaluar la exactitud por carácter con la parte reservada. \newline 5. Si la exactitud alcanza el valor mínimo establecido, guardar el modelo en la cuenta e informar que el deletreo está habilitado. \\
+Pasos & 1. Preprocesar los registros de calibración. \newline 2. Separar una parte de los registros para la validación. \newline 3. Entrenar el modelo con el resto, mostrando su avance al operador. \newline 4. Evaluar la exactitud por carácter y el AUC con la parte reservada. \newline 5. Si la exactitud alcanza al menos el 70\%, guardar el modelo en la cuenta e informar que el deletreo está habilitado. \\
 \hline
 Errores & 1. Exactitud insuficiente: se informa el resultado y se propone repetir la calibración. \newline 2. Fallo al guardar el modelo: se notifica y no se habilita el deletreo. \\
 \hline
@@ -611,7 +604,7 @@ Descripción & El sistema presenta la matriz de selección e intensifica de form
 \hline
 Precondición & El deletreo se inició (CU\_08) y la conexión con el casco está activa. \\
 \hline
-Pasos & 1. Mostrar la matriz de selección con los caracteres, el espacio, el comando de borrado y las sugerencias vigentes. \newline 2. Generar un orden aleatorio en el que cada fila y cada columna se intensifiquen una sola vez. \newline 3. Intensificar cada fila o columna con la duración y el intervalo asociados al modelo del usuario, registrando el instante y el tipo de cada intensificación. \newline 4. Repetir los pasos 2 y 3 hasta completar el número de repeticiones asociado al modelo. \newline 5. Entregar las señales y los eventos registrados a la decodificación del carácter. \\
+Pasos & 1. Mostrar la matriz de selección con los caracteres, el espacio, el comando de borrado y las sugerencias vigentes. \newline 2. Generar un orden aleatorio en el que cada fila y cada columna se intensifiquen una sola vez. \newline 3. Intensificar cada fila o columna con la duración y el intervalo definidos para el sistema, registrando el instante y el tipo de cada intensificación. \newline 4. Al terminar cada repetición, entregar sus señales y eventos a la decodificación del carácter. \newline 5. Repetir los pasos 2 a 4 hasta completar el número de repeticiones definido para el sistema. \\
 \hline
 Errores & 1. Pérdida de la conexión con el casco: se detiene la estimulación, se despliega el mensaje MSJE6 y se conserva el texto construido. \\
 \hline
@@ -638,9 +631,9 @@ Actores & Usuario \\
 \hline
 Descripción & A partir de las señales registradas durante la presentación de los estímulos, el sistema obtiene las épocas, las clasifica con el modelo del usuario y determina el elemento seleccionado. \\
 \hline
-Precondición & Se completaron las repeticiones de una selección (CU\_09) y el modelo del usuario está cargado. \\
+Precondición & Se completó una repetición de la selección (CU\_09) y el modelo del usuario está cargado. \\
 \hline
-Pasos & 1. Segmentar las señales en épocas a partir de cada intensificación y preprocesarlas. \newline 2. Clasificar cada época con el modelo del usuario y obtener su puntaje. \newline 3. Acumular los puntajes de cada fila y cada columna a lo largo de las repeticiones. \newline 4. Elegir la fila y la columna con el mayor puntaje acumulado. \newline 5. Entregar el elemento ubicado en su intersección a la actualización del texto. \\
+Pasos & 1. Segmentar las señales en épocas a partir de cada intensificación y preprocesarlas. \newline 2. Clasificar cada época con el modelo del usuario y obtener su puntaje. \newline 3. Acumular los puntajes de cada fila y cada columna a lo largo de las repeticiones. \newline 4. Si ya se completaron todas las repeticiones, elegir la fila y la columna con el mayor puntaje acumulado. \newline 5. Entregar el elemento ubicado en su intersección a la actualización del texto. \\
 \hline
 Errores & 1. Épocas incompletas por una interrupción de la señal: se descarta la selección y se repite la presentación de los estímulos. \newline 2. Fallo del modelo de detección: se detiene el deletreo y se despliega el mensaje MSJE10. \\
 \hline
@@ -736,7 +729,7 @@ Descripción & Cada vez que cambia el texto, el sistema estima las palabras más
 \hline
 Precondición & Se inició el deletreo o se actualizó el texto construido (CU\_11). \\
 \hline
-Pasos & 1. Obtener el texto construido hasta el momento. \newline 2. Si el texto está vacío o termina en espacio, tomar las palabras anteriores como contexto para predecir la siguiente palabra. \newline 3. En otro caso, tomar la palabra en curso como prefijo y las palabras anteriores como contexto. \newline 4. Consultar el modelo de lenguaje y ordenar las palabras candidatas por probabilidad. \newline 5. Asignar las siete más probables a los elementos de sugerencia y mostrarlas en la matriz. \\
+Pasos & 1. Obtener el texto construido hasta el momento. \newline 2. Si el texto está vacío o termina en espacio, tomar las palabras anteriores como contexto para predecir la siguiente palabra. \newline 3. En otro caso, tomar la palabra en curso como prefijo y las palabras anteriores como contexto. \newline 4. Consultar el modelo de lenguaje y ordenar las palabras candidatas por probabilidad. \newline 5. Asignar las más probables a los elementos de sugerencia y mostrarlas en la matriz. \\
 \hline
 Errores & 1. Sin palabras candidatas: los elementos de sugerencia se muestran vacíos y el deletreo continúa por caracteres. \\
 \hline
@@ -779,7 +772,18 @@ Errores & 1. Elemento de sugerencia vacío: la selección se ignora y el texto n
 Los diagramas de casos de uso muestran de forma gráfica qué funcionalidades utiliza cada actor y
 cómo se relacionan entre sí, y complementan las tablas descriptivas de las secciones anteriores.
 
-La Figura~\ref{fig:cu-general} presenta los casos de uso del sistema y su relación con los tres actores. El operador interviene en la gestión de cuentas, la conexión del casco, la verificación de la señal, la calibración, el entrenamiento del modelo y el inicio del deletreo, el casco EEG participa en su conexión, en la verificación de la señal y en la calibración, donde entrega las señales registradas, y el usuario en la calibración y en todos los casos de uso del deletreo y de la predicción de palabras. Entre los casos de uso se establecen tres relaciones: la calibración incluye el entrenamiento y la validación del modelo, que se ejecutan de forma automática cuando esta concluye, el borrado del último elemento extiende la actualización del texto, pues solo ocurre cuando el usuario lo selecciona, y de igual forma la selección de una sugerencia extiende a su generación. Los demás casos de uso se encadenan mediante las precondiciones indicadas en sus tablas, por ejemplo la verificación de la señal solo puede realizarse una vez conectado el casco.
+La Figura~\ref{fig:cu-general} presenta los casos de uso del sistema y su relación con los tres
+actores. El operador participa en la gestión de cuentas, la conexión del casco, la verificación de
+la señal, la calibración, el entrenamiento del modelo y el inicio del deletreo. El casco EEG aparece
+en su propia conexión, en la verificación de la señal y en la calibración, donde entrega las señales
+que se registran. El usuario participa en la calibración y en todos los casos de uso del deletreo y
+de la predicción de palabras.
+
+Entre los casos de uso hay tres relaciones. La calibración incluye el entrenamiento y la validación
+del modelo, que se ejecutan solos cuando termina. El borrado del último elemento extiende la
+actualización del texto porque solo ocurre si el usuario lo selecciona, y la selección de una
+sugerencia extiende a su generación. El resto se encadena por las precondiciones de sus tablas, por
+ejemplo la verificación de la señal no puede hacerse si el casco no está conectado.
 
 \begin{figure}[H]
 \centering
@@ -793,29 +797,28 @@ La Figura~\ref{fig:cu-general} presenta los casos de uso del sistema y su relaci
 %% =====================================================================
 \section[ARQUITECTURA DE SOFTWARE]{Arquitectura de software}
 
-La arquitectura presentada en la Figura~\ref{fig:arquitectura} del Capítulo~\ref{cap:propuesta}
-describe las etapas por las que transita la señal, desde su adquisición hasta la construcción del
-texto, mientras que la arquitectura de software describe cómo se organiza el código que realiza
-dichas etapas y de qué manera se comunican los componentes entre sí. Para ello se propone una
-división en tres capas: la capa de presentación, desarrollada con PyQt, que contiene la matriz del
-P300 Speller, el área del texto, las sugerencias y las pantallas de registro, inicio de sesión y calibración, luego la
-capa de lógica, que agrupa el control de la sesión de deletreo y de calibración, la adquisición de las señales, la
-generación de estímulos, el
-preprocesamiento, el entrenamiento y la validación del modelo de cada usuario, la detección de la
-componente P300, la decodificación del carácter, la construcción del texto y la
-predicción de palabras, y por último la capa de datos, responsable de las cuentas de usuario, los registros EEG de calibración, el modelo entrenado de cada usuario y el modelo de lenguaje del predictor. Esta separación responde al requerimiento de
-modularidad, ya que permite sustituir el modelo de detección o el de predicción de palabras sin
-modificar la interfaz.
+La arquitectura de la Figura~\ref{fig:arquitectura} del Capítulo~\ref{cap:propuesta} describe las
+etapas por las que pasa la señal, desde que se adquiere hasta que se construye el texto. La
+arquitectura de software describe otra cosa, cómo se organiza el código que realiza esas etapas y
+cómo se comunican sus componentes. Para ello se propone dividirla en tres capas. La de
+presentación, hecha con PyQt, contiene la matriz del P300 Speller, el área de texto, las
+sugerencias y las pantallas de registro, inicio de sesión y calibración. La capa de lógica agrupa
+el control de la sesión de deletreo y de calibración, la adquisición de las señales, la generación
+de estímulos, el preprocesamiento, el entrenamiento y la validación del modelo de cada usuario, la
+detección de la componente P300, la decodificación del carácter, la construcción del texto y la
+predicción de palabras. La capa de datos se encarga de las cuentas de usuario, los registros EEG de
+calibración, el modelo entrenado de cada usuario y el modelo de lenguaje del predictor. Esta
+división se eligió pensando en el RNF8, para poder cambiar el modelo de detección o el de predicción
+de palabras sin tocar la interfaz.
 
 La Figura~\ref{fig:arq-software} muestra esta organización. Las ventanas de la capa de
 presentación solo se comunican con el control de sesión, que coordina a los ocho componentes de la
-capa de lógica y decide en qué orden intervienen según la tarea en curso, ya sea la calibración o el
-deletreo. Ningún componente de la lógica accede directamente a los archivos, sino que lo hace por
-medio del componente de acceso a datos, el cual administra la base de datos local con las cuentas y
-la ubicación de los archivos, así como los archivos de registros de calibración, de modelos de
-detección y del modelo de lenguaje. El casco EEG se encuentra fuera del sistema y únicamente se
-comunica con el componente de adquisición, lo que permite sustituirlo por otro dispositivo
-modificando solo ese componente, como lo pide el RNF9.
+capa de lógica y decide en qué orden intervienen según se trate de la calibración o del deletreo.
+Ningún componente de la lógica toca directamente los archivos. Todo pasa por el componente de
+acceso a datos, que administra la base de datos local con las cuentas y la ubicación de los
+archivos, además de los archivos de registros de calibración, de modelos de detección y del modelo
+de lenguaje. El casco EEG queda fuera del sistema y solo se comunica con el componente de
+adquisición, que es el único que habría que modificar para usar otro dispositivo (RNF9).
 
 \begin{figure}[H]
 \centering
@@ -838,21 +841,18 @@ generación de estímulos, el preprocesamiento, el entrenamiento del modelo, el 
 la componente P300 y el decodificador del carácter, para el predictor de palabras y para el acceso
 a los datos de usuarios.
 
-La Figura~\ref{fig:clases} presenta el diagrama. La clase abstracta Ventana agrupa lo común a
-las cuatro ventanas de la interfaz, que delegan cualquier operación en ControlSesion. Esta última
-conserva al usuario de la sesión, su modelo de detección y el estado actual, y se relaciona con las
-clases que realizan cada etapa. AdquisicionEEG entrega las señales del casco y guarda los eventos de
-estimulación que genera Estimulacion, la cual intensifica las filas y columnas de una
-MatrizSeleccion compuesta por 36 objetos ElementoMatriz. Preprocesador obtiene las épocas y
-Entrenador crea el ModeloDeteccion de cada usuario. La arquitectura y los hiperparámetros con los que
-se entrena el modelo son los mismos para todos los usuarios, pues se seleccionan previamente
-mediante la metodología CRISP-ML, mientras que los pesos de la red son lo único que se obtiene de la
-calibración de cada usuario. Por ello ModeloDeteccion guarda estos tres elementos junto con el
-número de repeticiones y los tiempos de intensificación, de modo que al cargarlo se recupera todo lo
-necesario para el deletreo. Decodificador, por su parte, acumula los puntajes que asigna dicho modelo
-para devolver el elemento seleccionado. Finalmente,
-ConstructorTexto mantiene el texto y el historial de selecciones que permite borrar el último
-elemento, PredictorPalabras genera las siete sugerencias y AccesoDatos administra las cuentas, los
+La Figura~\ref{fig:clases} presenta el diagrama. La clase abstracta Ventana reúne lo que tienen en
+común las cuatro ventanas de la interfaz, y estas delegan cualquier operación en ControlSesion.
+Esta clase guarda al usuario de la sesión, su modelo de detección y el estado actual, y se relaciona
+con las clases que hacen cada etapa. AdquisicionEEG entrega las señales del casco y guarda los
+eventos de estimulación que genera Estimulacion, la cual intensifica las filas y columnas de una
+MatrizSeleccion formada por 36 objetos ElementoMatriz. Preprocesador obtiene las épocas y
+Entrenador crea el ModeloDeteccion de cada usuario. La arquitectura y los hiperparámetros con los
+que se entrena son iguales para todos los usuarios porque se eligen antes con la metodología
+CRISP-ML, y lo único que sale de la calibración de cada usuario son los pesos de la red.
+Decodificador acumula los puntajes que asigna ese modelo y devuelve el elemento seleccionado.
+ConstructorTexto mantiene el texto y el historial de selecciones que se usa para borrar el último
+elemento, PredictorPalabras genera las sugerencias y AccesoDatos administra las cuentas, los
 registros de calibración y los modelos guardados.
 
 \begin{figure}[H]
@@ -868,20 +868,18 @@ registros de calibración y los modelos guardados.
 %% =====================================================================
 \section[DIAGRAMA DE OBJETOS]{Diagrama de objetos}
 
-A diferencia del diagrama de clases, el diagrama de objetos representa instancias concretas de
-dichas clases en un momento determinado de la ejecución, lo que permite visualizar cómo
-colaboran los componentes mientras se realiza una tarea, y en este caso se ilustrará el instante en
-que un usuario con su sesión abierta selecciona un carácter.
+A diferencia del diagrama de clases, el diagrama de objetos muestra instancias concretas de esas
+clases en un momento de la ejecución. Aquí se ilustra el instante en que un usuario con la sesión
+abierta selecciona un carácter.
 
-En la Figura~\ref{fig:objetos} el usuario usuario\_01 escribe la palabra HOLA y acaba de
-seleccionar la letra L. Después de cinco repeticiones, el decodificador tiene el mayor puntaje
-acumulado en la fila 2 y en la columna 6, cuya intersección corresponde al elemento L, que se agrega
-al texto, el cual pasa de HO a HOL. A continuación, el control de sesión solicita al predictor las
-siete sugerencias que se mostrarán en la siguiente selección. El objeto del modelo contiene los
-pesos obtenidos en la calibración de usuario\_01 junto con la arquitectura y los hiperparámetros
-comunes a todos los usuarios. Los valores del número de repeticiones, de la arquitectura, de los
-hiperparámetros y de los tiempos de intensificación son ilustrativos, pues se definirán con los
-resultados de la metodología CRISP-ML.
+En la Figura~\ref{fig:objetos} el usuario usuario\_01 está escribiendo la palabra HOLA y acaba de
+seleccionar la L. Después de cinco repeticiones el decodificador tiene el mayor puntaje acumulado en
+la fila 2 y en la columna 6, cuya intersección es el elemento L, y el texto pasa de HO a HOL.
+Enseguida el control de sesión le pide al predictor las sugerencias para la siguiente selección. El
+objeto del modelo contiene los pesos que se obtuvieron en la calibración de usuario\_01 junto con
+la arquitectura y los hiperparámetros comunes a todos los usuarios. Los valores de repeticiones,
+arquitectura, hiperparámetros y tiempos de intensificación son solo ilustrativos, se definirán con
+los resultados de CRISP-ML.
 
 \begin{figure}[H]
 \centering
@@ -896,21 +894,21 @@ resultados de la metodología CRISP-ML.
 %% =====================================================================
 \section[ESTRUCTURA DE ALMACENAMIENTO]{Estructura de almacenamiento}
 
-Dado que la herramienta puede ser utilizada por más de una persona, cada una con su propia sesión,
-el sistema debe conservar de forma persistente las cuentas de usuario, además de los archivos que ya forman parte del flujo de trabajo, como los registros EEG
-de las sesiones de calibración y el modelo de aprendizaje profundo entrenado para cada usuario. En esta sección se define qué información se
-almacena y cómo se relacionan los datos entre sí, mientras que la elección de la tecnología con la
-que se implementará se discute en el Capítulo~5.
+Como la herramienta puede ser utilizada por varias personas, cada una con su propia sesión, el
+sistema tiene que guardar de forma persistente las cuentas de usuario, además de los archivos que
+ya forman parte del flujo de trabajo, como los registros EEG de las calibraciones y el modelo
+entrenado de cada usuario. En esta sección se define qué información se almacena y cómo se
+relaciona. La tecnología con la que se implementará se elegirá durante el Trabajo Terminal II.
 
-Las cuentas de usuario y la ubicación de los archivos que se generan para cada una se guardan en una
-base de datos local, cuyo modelo relacional se muestra en la Figura~\ref{fig:modelo-relacional}. Consta
-de tres tablas: Usuario, con el identificador y la contraseña de cada cuenta, RegistroCalibracion, con
-un renglón por cada sesión de calibración, su fecha y la ubicación del archivo que contiene las
-señales, los caracteres objetivo y los eventos de estimulación, y Modelo, con la ubicación del modelo
-entrenado de la cuenta. Las dos últimas se relacionan con Usuario mediante su identificador, de modo
-que un usuario puede tener varios registros de calibración y un solo modelo, el cual se reemplaza al
-repetir la calibración. Las señales y el modelo no se guardan dentro de la base de datos debido a su
-tamaño, por lo que ahí solo se registra dónde se encuentran.
+Las cuentas y la ubicación de los archivos de cada una se guardan en una base de datos local, cuyo
+modelo relacional se muestra en la Figura~\ref{fig:modelo-relacional}. Tiene tres tablas. Usuario
+guarda el identificador y la contraseña de cada cuenta. RegistroCalibracion tiene un renglón por
+cada sesión de calibración, con su fecha y la ubicación del archivo que contiene las señales, los
+caracteres objetivo y los eventos de estimulación. Modelo guarda la ubicación del modelo entrenado
+de la cuenta. Las dos últimas se relacionan con Usuario por medio de su identificador, y un usuario
+puede tener varios registros de calibración pero un solo modelo, que se reemplaza cuando se repite
+la calibración. Las señales y el modelo no se guardan dentro de la base de datos por su tamaño, ahí
+solo queda la ruta donde se encuentran.
 
 \begin{figure}[H]
 \centering
@@ -969,21 +967,28 @@ los registros de calibración y el modelo.
 %% =====================================================================
 \section[DIAGRAMAS DE FLUJO]{Diagramas de flujo}
 
-Los diagramas de flujo describen la secuencia de pasos de los procesos más importantes del sistema,
-y se presentan aquí los tres que concentran la lógica del procesamiento de las señales y del
-modelo: el preprocesamiento, el entrenamiento del modelo de detección y la decodificación del
-carácter seleccionado.
+Los diagramas de flujo describen los pasos de los procesos más importantes del sistema. Se
+presentan tres, que son los que concentran la lógica de las señales y del modelo: el
+preprocesamiento, el entrenamiento del modelo de detección y la decodificación del carácter
+seleccionado.
 
 \subsection{Preprocesamiento de las señales EEG}
 
-El preprocesamiento aplica a las señales las técnicas descritas en la Sección~\ref{sec:pds}, entre
-ellas el filtrado pasa banda, el remuestreo, la segmentación en épocas posteriores a cada estímulo
-y la normalización de cada canal, y es común tanto al flujo de entrenamiento como al de uso del
-sistema, de modo que el modelo recibe en ambos casos datos con el mismo formato, ya provengan de las bases de datos públicas o
-del casco EEG. Los valores
-específicos de cada parámetro se definirán durante el diseño experimental.
+El preprocesamiento aplica las técnicas de la Sección~\ref{sec:pds}, entre ellas el filtrado pasa
+banda, el remuestreo, la segmentación en épocas posteriores a cada estímulo y la normalización de
+cada canal. Es el mismo para el entrenamiento y para el uso del sistema, y el modelo recibe los datos
+con el mismo formato sin importar si vienen de la base de datos pública o del casco EEG. Para que
+esto se cumpla, cuando el registro viene de la base de datos pública se conservan primero solo los
+14 canales que coinciden con los del casco, y el remuestreo lleva las dos fuentes a la misma
+frecuencia de muestreo. Los valores de cada parámetro se definirán en el diseño experimental.
 
-El flujo, que se muestra en la Figura~\ref{fig:flujo-preprocesamiento}, comienza con la recepción del registro, que puede provenir de una base de datos pública o del casco, y aplica en orden el filtro pasa banda, el remuestreo, la segmentación en épocas y la normalización de cada canal. Cuando los datos se emplean para entrenar, a cada época se le asigna además la etiqueta de objetivo o no objetivo según la fila o columna que se intensificó, mientras que durante el deletreo las épocas se entregan directamente al modelo, ya que se desconoce cuál es el carácter que el usuario desea seleccionar.
+El flujo de la Figura~\ref{fig:flujo-preprocesamiento} empieza con la recepción del registro, ya
+sea de la base de datos pública o del casco. Si viene de la base pública se seleccionan primero los
+canales equivalentes a los del casco, y luego se aplican en orden el filtro pasa banda, el
+remuestreo, la segmentación en épocas y la normalización de cada canal. Cuando los datos son para
+entrenar, a cada época se le asigna además la etiqueta de objetivo o no objetivo según la fila o
+columna que se intensificó. Durante el deletreo las épocas pasan directo al modelo sin etiqueta,
+porque no se sabe qué carácter quiere seleccionar el usuario.
 
 \begin{figure}[H]
 \centering
@@ -995,9 +1000,18 @@ El flujo, que se muestra en la Figura~\ref{fig:flujo-preprocesamiento}, comienza
 \subsection{Entrenamiento y evaluación del modelo de detección}
 \label{sec:flujo-entrenamiento}
 
-El entrenamiento y la evaluación del modelo de detección de la componente P300 que se representan en esta sección son los que realiza la aplicación para cada usuario al concluir su calibración. La arquitectura y la configuración del modelo se definen antes, durante su desarrollo con las bases de datos públicas y siguiendo las fases de la metodología CRISP-ML descritas en el Capítulo~\ref{cap:propuesta}, por lo que aquí se toman como un dato de entrada. Los registros de calibración del usuario se preprocesan con el mismo flujo de la sección anterior, se separa una parte de ellos para la validación y con el resto se entrena la arquitectura seleccionada. Si la exactitud por carácter obtenida en la validación alcanza el valor mínimo establecido, el modelo se guarda en la cuenta del usuario y se habilita el deletreo, y en caso contrario se propone repetir la calibración.
+El entrenamiento y la evaluación que se representan en esta sección son los que hace la aplicación
+para cada usuario al terminar su calibración. La arquitectura y la configuración del modelo se
+definen antes, durante su desarrollo con las bases de datos públicas y con las fases de CRISP-ML
+descritas en el Capítulo~\ref{cap:propuesta}, y aquí se toman como dato de entrada. Los registros
+de calibración del usuario pasan por el mismo preprocesamiento de la sección anterior, una parte se
+separa para la validación y con el resto se entrena la arquitectura seleccionada. Si la exactitud
+por carácter en la validación llega al 70\%, el modelo se guarda en la cuenta y se habilita el
+deletreo. Si no, se propone repetir la calibración.
 
-El flujo se muestra en la Figura~\ref{fig:flujo-entrenamiento-fig}. El resultado de la validación decide el camino a seguir, pues si la exactitud por carácter no alcanza el valor mínimo no se guarda ningún modelo en la cuenta y la calibración debe repetirse antes de iniciar el deletreo.
+El flujo se muestra en la Figura~\ref{fig:flujo-entrenamiento-fig}. Cuando la exactitud por
+carácter queda por debajo del 70\% no se guarda ningún modelo en la cuenta, y el usuario tiene que
+volver a calibrar antes de poder deletrear.
 
 \begin{figure}[H]
 \centering
@@ -1008,19 +1022,18 @@ El flujo se muestra en la Figura~\ref{fig:flujo-entrenamiento-fig}. El resultado
 
 \subsection{Decodificación del carácter seleccionado}
 
-La decodificación recorre las repeticiones de una selección: en cada una se intensifican las filas
-y columnas de la matriz, se clasifican las épocas resultantes y se acumulan los puntajes por fila y
-por columna, de acuerdo con la Ecuación~\eqref{eq:decodificacion}, hasta que se completa el número
-de repeticiones y se elige el elemento ubicado en la intersección de la fila y la columna con el
-puntaje más alto.
+La decodificación recorre las repeticiones de una selección. En cada una se intensifican las filas
+y columnas de la matriz, se clasifican las épocas que resultan y se acumulan los puntajes por fila y
+por columna según la Ecuación~\eqref{eq:decodificacion}. Al completar el número de repeticiones se
+elige el elemento que está en la intersección de la fila y la columna con más puntaje.
 
-El flujo de la Figura~\ref{fig:flujo-decodificacion} parte del número de repeticiones $J$
-asociado al modelo del usuario. Antes de cada selección se reinician los puntajes de las seis filas
-y las seis columnas, y en cada repetición se intensifican todas en orden aleatorio, se obtienen y
-clasifican las épocas y cada puntaje se suma al de la fila o columna que se intensificó. Al
-completar las $J$ repeticiones se eligen la fila y la columna con el mayor puntaje acumulado, y el
-elemento de su intersección, que puede ser un carácter, el espacio, el comando de borrado o una
-sugerencia, se entrega a la actualización del texto.
+El flujo de la Figura~\ref{fig:flujo-decodificacion} parte del número de repeticiones $J$, que es
+el mismo para todos los usuarios. Antes de cada selección se reinician los puntajes de las seis filas
+y las seis columnas. En cada repetición se intensifican todas en orden aleatorio, se obtienen y
+clasifican las épocas y cada puntaje se suma al de la fila o columna que se intensificó. Al terminar
+las $J$ repeticiones se eligen la fila y la columna con mayor puntaje acumulado, y el elemento de su
+intersección, que puede ser un carácter, el espacio, el comando de borrado o una sugerencia, pasa a
+la actualización del texto.
 
 \begin{figure}[H]
 \centering
@@ -1035,13 +1048,18 @@ sugerencia, se entrega a la actualización del texto.
 %% =====================================================================
 \section[DIAGRAMA DE ESTADOS]{Diagrama de estados}
 
-La interfaz del P300 Speller cambia de comportamiento a lo largo de una sesión de deletreo, pues
-alterna entre la presentación de las secuencias de estimulación, la clasificación de las épocas
-registradas y la actualización del texto, a lo que se suman la conexión con el casco y la
-calibración, y el diagrama de estados permite describir cada una de
-estas situaciones junto con los eventos que provocan la transición de una a otra.
+Durante una sesión de deletreo la interfaz del P300 Speller cambia de comportamiento, porque
+alterna entre presentar las secuencias de estimulación, clasificar las épocas registradas y
+actualizar el texto. A esto se suman la conexión con el casco y la calibración. El diagrama de
+estados describe cada una de estas situaciones y los eventos que hacen pasar de una a otra.
 
-En la Figura~\ref{fig:estados} se identifican ocho estados principales. La sesión inicia sin usuario autenticado y, al iniciar sesión, pasa a una sesión activa desde la cual se llega directamente al estado de modelo listo si la cuenta ya tiene uno, o bien al de casco conectado cuando es necesario calibrar. A partir de este último se verifica la señal y se calibra, y al concluir la calibración se entrena el modelo, de modo que una validación aprobada conduce al estado de modelo listo y una no aprobada regresa al de casco conectado para repetir el proceso. El estado de deletreo contiene a su vez un ciclo de estimulación, clasificación y actualización del texto que se repite por cada selección hasta que el operador detiene el deletreo o cierra la sesión.
+En la Figura~\ref{fig:estados} se identifican ocho estados principales. El sistema inicia sin
+usuario autenticado y, al iniciar sesión, pasa a sesión activa. Desde ahí va directo a modelo listo
+si la cuenta ya tiene uno, o a casco conectado si hace falta calibrar. Con el casco conectado se
+verifica la señal, se calibra y después se entrena el modelo. Si la validación se aprueba el
+sistema pasa a modelo listo, y si no, regresa a casco conectado para repetir el proceso. Dentro del
+estado de deletreo hay un ciclo de estimulación, clasificación y actualización del texto que se
+repite en cada selección hasta que el operador detiene el deletreo o cierra la sesión.
 
 \begin{figure}[H]
 \centering
@@ -1056,13 +1074,17 @@ En la Figura~\ref{fig:estados} se identifican ocho estados principales. La sesi�
 \section[DIAGRAMAS DE SECUENCIA]{Diagramas de secuencia}
 
 Los diagramas de secuencia muestran el orden en que los actores y los componentes del sistema se
-intercambian mensajes a lo largo del tiempo para llevar a cabo una tarea específica. Se elaborará
-uno por cada caso de uso principal descrito en la sección anterior, de modo que cada funcionalidad
-quede asociada con los componentes de la arquitectura que participan en ella.
+intercambian mensajes para realizar una tarea. Se presentan los de los cuatro procesos principales:
+el inicio de sesión, la calibración, la selección de un carácter y la selección de una sugerencia,
+cada uno con los componentes de la arquitectura que participan en él.
 
 \subsection{Inicio de sesión}
 
-El diagrama de la Figura~\ref{fig:sec-login} parte de que el operador ingresa el identificador y la contraseña en la interfaz, la cual los envía al control de sesión para que consulte la cuenta en la capa de datos. Si las credenciales son válidas se busca además el modelo del usuario, de modo que la sesión se inicia con el modelo cargado cuando existe y sin él cuando la cuenta aún no se ha calibrado, mientras que si son incorrectas la interfaz muestra un mensaje de error.
+El diagrama de la Figura~\ref{fig:sec-login} empieza cuando el operador escribe el identificador y
+la contraseña en la interfaz, que los manda al control de sesión para que consulte la cuenta en la
+capa de datos. Si las credenciales son válidas también se busca el modelo del usuario, y la sesión
+se abre con el modelo cargado o sin él si la cuenta todavía no se ha calibrado. Si son incorrectas,
+la interfaz muestra un mensaje de error.
 
 \begin{figure}[H]
 \centering
@@ -1073,7 +1095,12 @@ El diagrama de la Figura~\ref{fig:sec-login} parte de que el operador ingresa el
 
 \subsection{Calibración}
 
-En la calibración, representada en la Figura~\ref{fig:sec-calibracion}, el control de sesión pide al módulo de estimulación que presente las secuencias de los caracteres de entrenamiento y, mientras tanto, el módulo de adquisición registra las señales del casco junto con la marca de cada estímulo. El registro se guarda en la cuenta del usuario y se preprocesa, con lo cual se entrena y valida el modelo, y finalmente se guarda en la cuenta si la validación fue aprobada y se habilita el deletreo, o se propone repetir la calibración en caso contrario.
+En la calibración (Figura~\ref{fig:sec-calibracion}) el control de sesión le pide al módulo de
+estimulación que presente las secuencias de los caracteres de entrenamiento, y mientras tanto el
+módulo de adquisición registra las señales del casco con la marca de cada estímulo. El registro se
+guarda en la cuenta del usuario y se preprocesa, y con él se entrena y valida el modelo. Si la
+validación se aprueba, el modelo se guarda en la cuenta y se habilita el deletreo, si no, se propone
+repetir la calibración.
 
 \begin{figure}[H]
 \centering
@@ -1085,13 +1112,12 @@ En la calibración, representada en la Figura~\ref{fig:sec-calibracion}, el cont
 \subsection{Selección de un carácter}
 
 La Figura~\ref{fig:sec-caracter} muestra la selección de un carácter. Mientras el usuario fija su
-atención en el carácter, el control de sesión reinicia los puntajes del decodificador y, por cada
-repetición, pide al módulo de estimulación que intensifique las filas y columnas, cuyas marcas
-registra el módulo de adquisición junto con la señal. Al terminar cada repetición, las épocas se
+atención en el carácter, el control de sesión reinicia los puntajes del decodificador y, en cada
+repetición, le pide al módulo de estimulación que intensifique las filas y columnas, cuyas marcas
+registra el módulo de adquisición junto con la señal. Al terminar cada repetición las épocas se
 preprocesan, el módulo de detección les asigna un puntaje y el decodificador lo acumula. Después de
-la última repetición, el decodificador devuelve el carácter de la intersección. La actualización
-del texto y la generación de sugerencias que siguen se indican mediante una referencia, ya que se
-detallan en el diagrama de la selección de una sugerencia.
+la última repetición el decodificador devuelve el carácter de la intersección. La actualización del
+texto y la generación de sugerencias que vienen después se indican con una referencia.
 
 \begin{figure}[H]
 \centering
@@ -1122,16 +1148,17 @@ elemento está vacío, la selección se ignora y el texto no cambia.
 \section[DISEÑO DEL MÓDULO DE PREDICCIÓN DE PALABRAS]{Diseño del módulo de predicción de palabras}
 
 El módulo de predicción de palabras recibe los caracteres escritos hasta el momento y devuelve una
-lista breve de palabras probables, que la interfaz presenta como opciones adicionales y que el
-usuario puede elegir con el mismo mecanismo de atención que emplea para los caracteres. En esta
-sección se define la información que intercambia el módulo con el resto del sistema y la forma en
-que se presentan y seleccionan las sugerencias, dejando para el Capítulo~5 la elección del modelo
-de lenguaje concreto entre los enfoques revisados en la Sección~\ref{sec:lenguaje}.
+lista corta de palabras probables, que la interfaz muestra como opciones adicionales y que el
+usuario elige con el mismo mecanismo de atención que usa para los caracteres. En esta sección se
+define qué información intercambia el módulo con el resto del sistema y cómo se presentan y
+seleccionan las sugerencias. La técnica de predicción, entre los enfoques de la
+Sección~\ref{sec:lenguaje}, se elegirá en el diseño detallado del primer incremento
+(Sección~\ref{sec:met-sistema}).
 
-El módulo se implementa en la clase PredictorPalabras, cuya única operación pública recibe el
-texto construido y devuelve las sugerencias, como se resume en la Tabla~\ref{tab:prediccion-es}. De
-esta forma el resto del sistema no depende del modelo de lenguaje que se elija, el cual puede
-sustituirse sin modificar la interfaz, como lo pide el RNF8.
+El módulo se implementa en la clase PredictorPalabras, que tiene una sola operación pública que
+recibe el texto construido y devuelve las sugerencias (Tabla~\ref{tab:prediccion-es}). Así el
+resto del sistema no depende del modelo de lenguaje que se elija, y este se puede cambiar sin
+modificar la interfaz, como pide el RNF8.
 
 \begin{table}[H]
 \centering
@@ -1144,7 +1171,7 @@ sustituirse sin modificar la interfaz, como lo pide el RNF8.
 \hline
 Entrada & Texto construido hasta el momento, del cual se obtienen la palabra en curso, que funciona como prefijo, y las palabras anteriores, que funcionan como contexto. \\
 \hline
-Salida & Lista de hasta siete palabras ordenadas de mayor a menor probabilidad. La lista puede estar vacía si ninguna palabra es compatible con el prefijo. \\
+Salida & Lista de palabras ordenadas de mayor a menor probabilidad, tantas como elementos de sugerencia tenga la matriz. La lista puede estar vacía si ninguna palabra es compatible con el prefijo. \\
 \hline
 Operación & sugerir(texto), de la clase PredictorPalabras. \\
 \hline
@@ -1154,19 +1181,18 @@ Momento de uso & Al iniciar el deletreo y después de cada selección que modifi
 \par\smallskip{\footnotesize Elaboración propia.}
 \end{table}
 
-El número de sugerencias se deriva de la matriz de selección. De sus 36 elementos, 27 corresponden a
-las letras del alfabeto en español, uno al espacio y uno al comando de borrado, por lo que los siete
-restantes se destinan a las sugerencias, conforme al RF12. Estos ocupan el último elemento de la
-quinta fila y la sexta fila completa, y cada sugerencia se intensifica junto con la fila y la
-columna a las que pertenece, de modo que su selección no requiere un mecanismo distinto al de los
-caracteres. Cuando el usuario la elige, la palabra sugerida reemplaza a la palabra en curso y se
-agrega un espacio, lo que permite escribir una palabra completa con una sola selección.
+Las sugerencias ocupan los elementos de la matriz que no se usan para caracteres. De los 36
+elementos, 27 son las letras del alfabeto en español, uno el espacio y uno el comando de borrado, y
+los restantes se destinan a las sugerencias conforme al RF12. El número exacto de sugerencias se
+definirá en el diseño detallado del primer incremento. Cada sugerencia se intensifica junto con la
+fila y la columna en la que está, así que para seleccionarla no hace falta un mecanismo distinto al
+de los caracteres. Cuando el usuario elige una, la palabra sugerida reemplaza a la palabra en curso
+y se agrega un espacio, con lo que se escribe una palabra completa en una sola selección.
 
 La Figura~\ref{fig:flujo-prediccion} muestra el flujo del módulo. Si el texto está vacío o termina
-en espacio, el módulo predice la siguiente palabra a partir del contexto, y en caso contrario busca
-las palabras que completan la palabra en curso. Las candidatas se ordenan por probabilidad y las
-siete más probables se asignan a los elementos de sugerencia, que quedan vacíos cuando no hay
-candidatas.
+en espacio, el módulo predice la siguiente palabra a partir del contexto. Si no, busca palabras que
+completen la palabra en curso. Las candidatas se ordenan por probabilidad y las más probables se
+asignan a los elementos de sugerencia, que se quedan vacíos cuando no hay candidatas.
 
 \begin{figure}[H]
 \centering
@@ -1181,13 +1207,11 @@ candidatas.
 %% =====================================================================
 \section[MOCKUPS]{Mockups}
 
-Un \textit{mockup} es una representación visual estática de la interfaz de usuario que busca
-reflejar su apariencia final antes de iniciar la codificación, lo que permite revisar la
-distribución de los elementos y el cumplimiento de los requerimientos antes de invertir esfuerzo en
-su implementación. Corresponden a la etapa de diseño de la interfaz del modelo incremental y
-comprenden las pantallas de registro e inicio de sesión, la de conexión con el casco,
-calibración y avance del entrenamiento,
-así como la pantalla principal del
+Un \textit{mockup} es una representación visual estática de la interfaz que busca parecerse a su
+apariencia final, y sirve para revisar la distribución de los elementos y si se cumplen los
+requerimientos antes de empezar a programar. Los mockups corresponden a la etapa de diseño de la
+interfaz del modelo incremental y comprenden las pantallas de registro e inicio de sesión, la de
+conexión con el casco, la de calibración y avance del entrenamiento y la pantalla principal del
 deletreo con la matriz, el texto construido y las sugerencias de palabras.
 
 La Figura~\ref{fig:mock-registro} muestra la pantalla de creación de cuenta, en la que el operador captura el identificador y la contraseña, y la Figura~\ref{fig:mock-login} la de inicio de sesión, que además permite ir al registro.
@@ -1205,7 +1229,12 @@ La Figura~\ref{fig:mock-registro} muestra la pantalla de creación de cuenta, en
 \label{fig:mock-login}
 \end{figure}
 
-Una vez iniciada la sesión, la pantalla de la Figura~\ref{fig:mock-conexion} permite conectar el casco y revisar la calidad de la señal de cada canal mediante un código de colores, y mantiene deshabilitado el inicio del deletreo mientras el usuario no cuente con un modelo. La calibración y el entrenamiento se muestran en la Figura~\ref{fig:mock-calibracion}, donde se muestra la palabra de calibración con el carácter objetivo resaltado, una barra con el avance de la calibración y, al concluir, el progreso del entrenamiento del modelo.
+Una vez iniciada la sesión, la pantalla de la Figura~\ref{fig:mock-conexion} permite conectar el
+casco y revisar la calidad de la señal de cada canal con un código de colores, y deja deshabilitado
+el inicio del deletreo mientras el usuario no tenga un modelo. La calibración y el entrenamiento
+aparecen en la Figura~\ref{fig:mock-calibracion}, donde se ve la palabra de calibración con el
+carácter objetivo resaltado, una barra con el avance de la calibración y, al terminar, el progreso
+del entrenamiento del modelo.
 
 \begin{figure}[H]
 \centering
@@ -1220,13 +1249,12 @@ Una vez iniciada la sesión, la pantalla de la Figura~\ref{fig:mock-conexion} pe
 \label{fig:mock-calibracion}
 \end{figure}
 
-Por último, la Figura~\ref{fig:mock-deletreo} muestra la pantalla principal del deletreo. En
-la parte superior se encuentra el texto construido y, debajo, la matriz de selección con las 27
-letras, el espacio, el comando de borrado y las siete palabras sugeridas, que se distinguen con otro
-color. En el instante representado se intensifica la segunda fila, y en la esquina superior derecha
-de la matriz se indica la repetición en curso. Los botones para detener el deletreo y cerrar la
-sesión están destinados al operador, pues el usuario realiza todas sus selecciones mediante la
-atención a la matriz.
+Por último, la Figura~\ref{fig:mock-deletreo} muestra la pantalla principal del deletreo. Arriba
+está el texto construido y debajo la matriz de selección con las 27 letras, el espacio, el comando
+de borrado y las palabras sugeridas, que se distinguen con otro color. En el instante representado
+se intensifica la segunda fila, y en la esquina superior derecha de la matriz se indica la
+repetición en curso. Los botones para detener el deletreo y cerrar la sesión son para el operador,
+el usuario hace todas sus selecciones con la atención a la matriz.
 
 \begin{figure}[H]
 \centering

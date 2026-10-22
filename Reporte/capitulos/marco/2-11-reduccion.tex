@@ -24,6 +24,15 @@ convolución \textit{depthwise} aprende explícitamente un peso por electrodo \c
 el extremo opuesto, Contreras trabajó con solo cuatro electrodos de la línea media y obtuvo valores
 de AUC aceptables en la evaluación intrasujeto \cite{contreras2021}.
 
+En el caso de este trabajo, el casco elegido coloca sus 14 electrodos en las posiciones AF3, F7,
+F3, FC5, T7, P7, O1, O2, P8, T8, FC6, F4, F8 y AF4, con las referencias en P3 y P4
+\cite{emotivepocx}. Esto significa que no cubre la línea media, donde la P300 alcanza su mayor
+amplitud, ni las posiciones PO7 y PO8 del conjunto propuesto por Krusienski et al. La
+selección de canales, entonces, se hará dentro de estos 14 electrodos, entre los cuales O1, O2, P7 y P8 son
+los más cercanos a la región parieto-occipital. Las 14 posiciones forman parte del montaje de 64
+canales de la base de datos II de la competencia BCI III \cite{blankertz2006}, y con ella se pueden hacer los
+experimentos de reducción de canales usando solo los electrodos que tiene el casco.
+
 \subsection{Reducción de repeticiones}
 
 De acuerdo con la Ecuación~\eqref{eq:promediado}, cada repetición adicional mejora la relación

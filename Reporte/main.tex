@@ -100,6 +100,12 @@
 % ---------------------------------------------------------------------
 \usepackage[backend=biber,style=ieee,sorting=none]{biblatex}
 \addbibresource{referencias.bib}
+% Traducciones que faltan en el estilo IEEE en español
+\DefineBibliographyStrings{spanish}{%
+  artno    = {art.~n.º},
+  url      = {Disponible en},
+  mathesis = {Tesis de maestría},
+}
 \setcounter{biburllcpenalty}{7000}
 \setcounter{biburlucpenalty}{8000}
 \setcounter{biburlnumpenalty}{9000}
@@ -127,9 +133,9 @@
 \input{capitulos/02-marco-referencial}
 \input{capitulos/03-propuesta}
 \input{capitulos/04-analisis-diseno}
-\input{capitulos/05-seleccion-modelos}
-\input{capitulos/06-alcance-sistema}
-\input{capitulos/07-estudio-factibilidad}
+%\input{capitulos/05-seleccion-modelos}
+%\input{capitulos/06-alcance-sistema}
+%\input{capitulos/07-estudio-factibilidad}
 
 % ---------- Referencias ----------
 \clearpage

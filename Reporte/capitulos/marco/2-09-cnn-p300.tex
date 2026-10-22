@@ -24,17 +24,17 @@ tamaño $C\times1$, aprenden combinaciones ponderadas de los electrodos equivale
 espacial. Cecotti y Gräser aplicaron esta separación en la primera CNN diseñada específicamente para
 detectar la P300, en la que una primera capa espacial es seguida de una capa temporal, alcanzando
 en la base de datos de la competencia BCI III una exactitud de alrededor del 95\% con 15 repeticiones
-\cite{cecotti2011}. Esta misma arquitectura fue implementada en el trabajo preliminar.
+\cite{cecotti2011}. Esta misma arquitectura se implementó en la fase exploratoria de este trabajo.
 
 \subsection{Convoluciones separables en profundidad}
 
 Una convolución separable en profundidad descompone la convolución estándar en dos pasos: primero
 una convolución \textit{depthwise}, que aplica un filtro independiente a cada canal de entrada, y
 después una convolución \textit{pointwise} de tamaño $1\times1$, que combina los canales
-resultantes \cite{chollet2017}. Esta descomposición reduce drásticamente el número de parámetros respecto a una convolución
-estándar \cite{chollet2017}. Esta idea es la base de dos de las arquitecturas más compactas para EEG,
-EEGNet \cite{lawhern2018} y SepConv1D \cite{alvarado2021}, que resultan especialmente convenientes
-cuando se dispone de pocos datos o cuando el modelo debe ejecutarse en dispositivos con recursos
+resultantes \cite{chollet2017}. Con esta descomposición el número de parámetros baja mucho
+respecto a una convolución estándar \cite{chollet2017}. Sobre esa idea se construyeron dos de las
+arquitecturas más compactas para EEG, EEGNet \cite{lawhern2018} y SepConv1D \cite{alvarado2021},
+pensadas para cuando hay pocos datos o el modelo tiene que correr en dispositivos con recursos
 limitados.
 
 \subsection{EEGNet}
@@ -46,7 +46,7 @@ convolución temporal que funciona como un banco de filtros de frecuencia. Despu
 \textit{depthwise} espacial aprende, para cada filtro temporal, una combinación de electrodos, lo
 que equivale a un filtrado espacial. El segundo bloque aplica una convolución separable que resume
 cada mapa de características en el tiempo y combina los mapas entre sí. Por último, la
-clasificación se realiza con una capa densa con activación softmax \cite{lawhern2018}. En el trabajo preliminar esta arquitectura se implementó con ocho filtros
+clasificación se realiza con una capa densa con activación softmax \cite{lawhern2018}. En la fase exploratoria esta arquitectura se implementó con ocho filtros
 temporales de tamaño $1\times16$ sobre épocas de 64 canales por 78 muestras.
 
 \begin{figure}[htbp]
@@ -75,7 +75,7 @@ distintas, bajo los esquemas intrasujeto y entre sujetos, y encontraron que las 
 entre arquitecturas eran pequeñas, al grado de que SepConv1D, con una sola capa convolucional
 separable de cuatro filtros seguida de una neurona sigmoide, obtuvo un desempeño comparable al de
 redes con muchos más parámetros \cite{alvarado2021}. La Tabla~\ref{tab:arquitecturas} resume algunas de
-las arquitecturas evaluadas y los valores de AUC reportados. Cabe mencionar que Contreras utilizó
+las arquitecturas evaluadas y los valores de AUC reportados. Contreras utilizó
 SepConv1D en su sistema con cuatro canales \cite{contreras2021}.
 
 \begin{table}[htbp]
@@ -84,15 +84,13 @@ SepConv1D en su sistema con cuatro canales \cite{contreras2021}.
 \cite{alvarado2021}}
 \label{tab:arquitecturas}
 \small
-\begin{tabularx}{\textwidth}{L{2.8cm}YL{1.3cm}L{1.3cm}}
-\toprule
-\textbf{Arquitectura} & \textbf{Descripción} & \textbf{AUC intra} & \textbf{AUC inter} \\
-\midrule
-CNN-1 \cite{cecotti2011} & 4 capas: convolución espacial (10 filtros) y temporal con tangente hiperbólica escalada, con salida sigmoide. & 0.82 & 0.78 \\
-DeepConvNet \cite{schirrmeister2017} & Cuatro bloques convolucionales seguidos de softmax. & 0.84 & 0.79 \\
-EEGNet \cite{lawhern2018} & Red compacta con convoluciones \textit{depthwise} y separables. & 0.84 & 0.80 \\
-SepConv1D \cite{alvarado2021} & Una capa convolucional 1D separable (4 filtros) y una neurona sigmoide. & 0.84 & 0.78 \\
-\bottomrule
+\begin{tabularx}{\textwidth}{|L{2.8cm}|Y|L{1.3cm}|L{1.3cm}|}
+\hline
+\textbf{Arquitectura} & \textbf{Descripción} & \textbf{AUC intra} & \textbf{AUC inter} \\ \hline
+CNN-1 \cite{cecotti2011} & 4 capas: convolución espacial (10 filtros) y temporal con tangente hiperbólica escalada, con salida sigmoide. & 0.82 & 0.78 \\ \hline
+DeepConvNet \cite{schirrmeister2017} & Cuatro bloques convolucionales seguidos de softmax. & 0.84 & 0.79 \\ \hline
+EEGNet \cite{lawhern2018} & Red compacta con convoluciones \textit{depthwise} y separables. & 0.84 & 0.80 \\ \hline
+SepConv1D \cite{alvarado2021} & Una capa convolucional 1D separable (4 filtros) y una neurona sigmoide. & 0.84 & 0.78 \\ \hline
 \end{tabularx}
 \par\smallskip{\footnotesize Elaboración propia con información de \cite{alvarado2021,contreras2021}.}
 \end{table}

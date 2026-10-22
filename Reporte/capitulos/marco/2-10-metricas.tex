@@ -43,27 +43,25 @@ Figura~\ref{fig:confusion}. Sus cuatro celdas son las siguientes
 \subsection{Métricas de clasificación}
 
 A partir de estos cuatro valores se calculan las métricas que se presentan en la
-Tabla~\ref{tab:metricas}. La exactitud mide el porcentaje total de aciertos, pero como se discutió
-en la Sección~\ref{sec:speller}, en un conjunto con una proporción de 1 a 5 entre clases puede
-resultar engañosa, por lo que conviene complementarla con la sensibilidad, que indica qué
-proporción de las épocas con P300 fueron detectadas, la precisión, que indica qué proporción de las
-detecciones fueron correctas, y el F1-score, que es la media armónica de ambas
-\cite{fawcett2006}.
+Tabla~\ref{tab:metricas}. La exactitud mide el porcentaje total de aciertos, pero en un conjunto con
+una proporción de 1 a 5 entre clases puede engañar, como se vio en la Sección~\ref{sec:speller}.
+Por eso se complementa con la sensibilidad, que indica qué proporción de las épocas con P300 fueron
+detectadas, con la precisión, que indica qué proporción de las detecciones fueron correctas, y con
+el F1-score, que es la media armónica de ambas \cite{fawcett2006}.
 
 \begin{table}[htbp]
 \centering
 \caption{Métricas de evaluación para la clasificación binaria}
 \label{tab:metricas}
 \small
-\begin{tabularx}{\textwidth}{L{2.8cm}YL{4.4cm}}
-\toprule
-\textbf{Métrica} & \textbf{Descripción} & \textbf{Fórmula} \\
-\midrule
-Exactitud (\textit{accuracy}) & Proporción de predicciones correctas sobre el total. & $\dfrac{TP+TN}{TP+TN+FP+FN}$ \\[10pt]
-Precisión (\textit{precision}) & Proporción de épocas clasificadas como P300 que realmente lo son. & $\dfrac{TP}{TP+FP}$ \\[10pt]
-Sensibilidad (\textit{recall}, TPR) & Proporción de épocas con P300 que fueron detectadas. & $\dfrac{TP}{TP+FN}$ \\[10pt]
-F1-score & Media armónica entre precisión y sensibilidad. & $2\cdot\dfrac{\text{Precisión}\cdot\text{Sensibilidad}}{\text{Precisión}+\text{Sensibilidad}}$ \\
-\bottomrule
+\renewcommand{\arraystretch}{1.8}
+\begin{tabularx}{\textwidth}{|L{2.8cm}|Y|L{4.4cm}|}
+\hline
+\textbf{Métrica} & \textbf{Descripción} & \textbf{Fórmula} \\ \hline
+Exactitud (\textit{accuracy}) & Proporción de predicciones correctas sobre el total. & $\dfrac{TP+TN}{TP+TN+FP+FN}$ \\[10pt] \hline
+Precisión (\textit{precision}) & Proporción de épocas clasificadas como P300 que realmente lo son. & $\dfrac{TP}{TP+FP}$ \\[10pt] \hline
+Sensibilidad (\textit{recall}, TPR) & Proporción de épocas con P300 que fueron detectadas. & $\dfrac{TP}{TP+FN}$ \\[10pt] \hline
+F1-score & Media armónica entre precisión y sensibilidad. & $2\cdot\dfrac{\text{Precisión}\cdot\text{Sensibilidad}}{\text{Precisión}+\text{Sensibilidad}}$ \\ \hline
 \end{tabularx}
 \par\smallskip{\footnotesize Elaboración propia con información de \cite{fawcett2006}.}
 \end{table}
@@ -85,7 +83,7 @@ y de Contreras. Este último la considera aceptable a partir de 0.7 \cite{alvara
 
 Una alta AUC en la clasificación de épocas no garantiza por sí sola una comunicación eficiente,
 pues la velocidad depende también del número de repeticiones necesarias para seleccionar cada
-carácter. Por ello, en los sistemas de deletreo se reporta la exactitud por carácter en función
+carácter. En los sistemas de deletreo se reporta además la exactitud por carácter en función
 del número de repeticiones, los caracteres por minuto y la tasa de transferencia de información
 (ITR), que de acuerdo con Wolpaw et al. se calcula en bits por selección como
 \cite{wolpaw2000,wolpaw2002}
@@ -95,7 +93,7 @@ B = \log_2 N + P\log_2 P + (1-P)\log_2\!\left(\frac{1-P}{N-1}\right),
 \end{equation}
 donde $N$ es el número de opciones posibles, 36 en una matriz de $6\times6$, y $P$ es la exactitud
 por carácter. Al multiplicar $B$ por el número de selecciones por minuto se obtiene la ITR en bits
-por minuto. Por ello, para una misma exactitud, reducir el número de repeticiones incrementa la
-ITR, ya que aumenta el número de selecciones que pueden realizarse por minuto. Sin embargo, en la
-práctica menos repeticiones también reducen la exactitud, por lo que el número óptimo de
-repeticiones es el que mejor equilibra ambos efectos.
+por minuto. Con la misma exactitud, usar menos repeticiones sube la ITR porque caben más
+selecciones en un minuto. En la práctica, sin embargo, menos repeticiones también bajan la
+exactitud, y el número óptimo de repeticiones queda en el punto donde la ganancia en velocidad
+todavía compensa los errores.

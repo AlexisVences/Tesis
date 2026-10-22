@@ -1,19 +1,19 @@
 % ---------------------------------------------------------------------
-% 2.4 Interfaces cerebro-computadora
+% 2.4 Interfaces cerebro computadora
 % ---------------------------------------------------------------------
-\section[INTERFACES CEREBRO-COMPUTADORA]{Interfaces cerebro-computadora}
+\section[INTERFACES CEREBRO COMPUTADORA]{Interfaces cerebro computadora}
 \label{sec:bci}
 
 \subsection{Definición y componentes}
 
-Las interfaces cerebro-computadora (BCI) permiten entablar comunicación directa entre la
-actividad cerebral de un individuo y un dispositivo externo, sin depender de ninguna otra señal o
-movimiento muscular. De acuerdo con Wolpaw et al., una BCI es un sistema de comunicación en el que
-los mensajes o comandos que el usuario envía al mundo exterior no pasan por las vías de salida
-normales del cerebro, es decir, por los nervios periféricos y los músculos \cite{wolpaw2002}, y
-como se menciona en el trabajo de Felton et al., estos sistemas traducen las señales cerebrales
-registradas en acciones en tiempo real, lo cual abre la posibilidad de restaurar funciones
-comunicativas o motoras en personas con discapacidad severa \cite{felton2007}.
+Una interfaz cerebro computadora (BCI) establece un canal de comunicación entre la actividad
+cerebral de una persona y un dispositivo externo sin que intervenga ningún movimiento muscular.
+Wolpaw et al. la definen como un sistema en el que los mensajes o comandos que el usuario dirige al
+exterior no viajan por las vías de salida habituales del cerebro, es decir, por los nervios
+periféricos y los músculos \cite{wolpaw2002}. Así mismo, en el trabajo de Felton et al. se señala
+que estos sistemas convierten en tiempo real las señales cerebrales en acciones, con lo que es
+posible recuperar funciones de comunicación o de movimiento en personas con discapacidad severa
+\cite{felton2007}.
 
 Independientemente de la señal que utilice, una BCI se compone de una serie de etapas que se
 ejecutan de forma cíclica, como se ilustra en la Figura~\ref{fig:bci}. Primero se adquiere y digitaliza la
@@ -45,7 +45,7 @@ retroalimentación para que pueda ajustar su estrategia \cite{wolpaw2012,nicolas
           label={[font=\footnotesize]above:Procesamiento de la señal}] {};
   \end{scope}
 \end{tikzpicture}
-\caption{Diagrama general de una interfaz cerebro-computadora. Elaboración propia con base en
+\caption{Diagrama general de una interfaz cerebro computadora. Elaboración propia con base en
 \cite{wolpaw2002,wolpaw2012}.}
 \label{fig:bci}
 \end{figure}
@@ -58,6 +58,5 @@ potenciales evocados visuales de estado estable (SSVEP) usan la respuesta de la 
 estímulos que parpadean a una frecuencia fija. Las de potenciales corticales lentos requieren que
 el usuario aprenda a modificar voluntariamente la línea base de su EEG. Por último, las basadas en
 la P300 aprovechan la respuesta del paradigma del evento raro descrita en la sección anterior
-\cite{nicolasalonso2012,wolpaw2002}. Una de las principales ventajas de este último enfoque es que
-la P300 es una respuesta natural ante los estímulos relevantes, por lo que prácticamente no
-requiere entrenamiento previo del usuario \cite{farwell1988,contreras2021}.
+\cite{nicolasalonso2012,wolpaw2002}. La ventaja de este último enfoque es que la P300 aparece de
+forma natural ante los estímulos relevantes y el usuario casi no necesita entrenamiento previo \cite{farwell1988,contreras2021}.

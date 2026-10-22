@@ -14,9 +14,9 @@ celdas con las letras del alfabeto, algunos números y comandos simples. Durante
 las filas y columnas se iluminan una por una en orden aleatorio. Mientras tanto, el usuario se
 concentra en la celda que desea seleccionar, por ejemplo, contando mentalmente cuántas veces se
 ilumina \cite{farwell1988}. De los doce eventos posibles, seis
-filas y seis columnas, solamente dos contienen al carácter objetivo, de modo que estas
-intensificaciones funcionan como los estímulos raros del paradigma \textit{oddball} y provocan una
-P300 que no aparece en las diez restantes, tal como se representa en la Figura~\ref{fig:matriz}.
+filas y seis columnas, solo dos contienen al carácter objetivo. Esas dos intensificaciones hacen el
+papel de los estímulos raros del paradigma \textit{oddball} y provocan una P300 que no aparece en
+las otras diez, como se representa en la Figura~\ref{fig:matriz}.
 
 \begin{figure}[htbp]
 \centering
@@ -97,12 +97,12 @@ lo largo de las $J$ repeticiones y eligiendo aquellas con el valor más alto \ci
 \hat{c} = \arg\max_{c\in\{1,\dots,6\}} \sum_{j=1}^{J} g\!\left(x^{c}_{j}\right),
 \label{eq:decodificacion}
 \end{equation}
-de modo que el carácter seleccionado es el que se encuentra en la intersección de la fila
-$\hat{f}$ y la columna $\hat{c}$. Con esta estrategia, el ganador de la competencia BCI III
+y el carácter seleccionado es el que está en la intersección de la fila $\hat{f}$ y la
+columna $\hat{c}$. Con esta estrategia, el ganador de la competencia BCI III
 alcanzó una exactitud del 96.5\% al utilizar las 15 repeticiones disponibles
 \cite{rakotomamonjy2008}.
 
-Cabe destacar que, por la propia estructura del paradigma, el conjunto de épocas está fuertemente
+Por la propia estructura del paradigma, el conjunto de épocas está fuertemente
 desbalanceado: en cada repetición solo dos de las doce intensificaciones son objetivo, lo que
 produce una proporción de una época positiva por cada cinco negativas \cite{cecotti2011}. Si este
 desbalance no se considera durante el entrenamiento, un clasificador puede alcanzar una exactitud
