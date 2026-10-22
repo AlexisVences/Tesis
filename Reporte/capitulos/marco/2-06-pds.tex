@@ -37,9 +37,8 @@ deja pasar, puede ser pasa bajas, pasa altas, pasa banda o rechaza banda \cite{p
 EEG uno de los más utilizados es el filtro de Butterworth, cuya respuesta en magnitud es plana en la
 banda de paso \cite{oppenheim2010}. El
 filtro \textit{notch} es un tipo de filtro rechaza banda que elimina una sola frecuencia, como la
-de la red eléctrica. La Figura~\ref{fig:filtros} muestra la respuesta en frecuencia de un filtro
-pasa banda entre 0.1 y 20~Hz, como el aplicado en la fase exploratoria de este trabajo, y de un filtro
-\textit{notch} en 60~Hz.
+de la red eléctrica. La Figura~\ref{fig:filtros} muestra como ejemplo la respuesta en frecuencia de
+un filtro pasa banda entre 0.1 y 20~Hz y de un filtro \textit{notch} en 60~Hz.
 
 \begin{figure}[htbp]
 \centering
@@ -54,18 +53,17 @@ pasa banda entre 0.1 y 20~Hz, como el aplicado en la fase exploratoria de este t
 El remuestreo permite reducir la frecuencia de muestreo después de filtrar la señal. En la
 decimación por un factor $M$ se conserva una de cada $M$ muestras. Antes de hacerlo, se debe
 aplicar un filtro antialiasing que elimine el contenido por encima de la nueva frecuencia de
-Nyquist \cite{proakis2007}. En la fase exploratoria se redujo la frecuencia de 240~Hz a 120~Hz,
-lo que disminuye a la mitad el tamaño de cada época sin perder información en la banda de 0.1 a
-20~Hz.
+Nyquist \cite{proakis2007}. Como la P300 se concentra por debajo de 20~Hz, bajar la frecuencia de
+muestreo reduce el tamaño de cada época sin perder información útil, y además sirve para llevar a
+una misma frecuencia señales registradas con equipos distintos.
 
 \subsection{Segmentación en épocas}
 
 La segmentación consiste en dividir la señal continua en ventanas sincronizadas con cada estímulo,
 que constituyen las muestras de entrada al clasificador. La longitud de la ventana debe ser
-suficiente para contener la P300 completa. Contreras empleó ventanas de 1005~ms a partir del
-estímulo \cite{contreras2021}, mientras que en la fase exploratoria de este trabajo se utilizaron ventanas de 78
-muestras, equivalentes a unos 650~ms a 120~Hz. Como el intervalo entre inicios de estímulos es
-de solo 175~ms, las épocas de intensificaciones consecutivas se traslapan y una época no objetivo
+suficiente para contener la P300 completa. Contreras, por ejemplo, empleó ventanas de 1005~ms a
+partir del estímulo \cite{contreras2021}. Cuando el intervalo entre inicios de estímulos es corto,
+como los 175~ms de la base de datos de la competencia BCI III, las épocas de intensificaciones consecutivas se traslapan y una época no objetivo
 puede llegar a contener parte de la P300 de una intensificación objetivo cercana.
 
 \subsection{Normalización}
@@ -81,12 +79,6 @@ x'(n) = \frac{x(n)-\min(x)}{\max(x)-\min(x)}.
 \label{eq:normalizacion}
 \end{equation}
 La primera es menos sensible a valores atípicos, algo útil cuando hay artefactos de gran amplitud.
-En la fase exploratoria se aplicó de manera independiente a cada canal, para que los electrodos con
-mayor amplitud no dominaran el aprendizaje de la red.
+Normalmente se aplica de manera independiente a cada canal, para que los electrodos con mayor
+amplitud no dominen el aprendizaje de la red.
 
-\subsection{Remoción de artefactos}
-
-Cuando los artefactos se traslapan en frecuencia con la señal de interés, como ocurre con los
-parpadeos y la banda de la P300, el filtrado no basta para eliminarlos. En estos casos, una
-estrategia común es descartar las épocas cuya amplitud supere un umbral, aunque así se pierden
-datos.

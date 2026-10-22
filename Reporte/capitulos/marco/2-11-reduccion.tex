@@ -41,8 +41,6 @@ señal-ruido de la P300 en un factor proporcional a $\sqrt{N}$, pero también a�
 estrategia para reducir las repeticiones consiste en mejorar la clasificación de ensayo único, es
 decir, la capacidad del modelo de detectar la P300 en una sola época sin promediarla con otras,
 objetivo que persiguen las arquitecturas convolucionales descritas en la Sección~\ref{sec:cnn}
-\cite{cecotti2011,lawhern2018}. Una segunda estrategia es la parada dinámica, en la que el sistema
-deja de presentar repeticiones en cuanto la confianza acumulada sobre algún carácter supera un
-umbral, en lugar de usar siempre un número fijo. Speier et al. mostraron que combinar este tipo de
-clasificación dinámica con información del lenguaje mejora tanto la exactitud como la tasa de
-transferencia del P300 Speller \cite{speier2012}.
+\cite{cecotti2011,lawhern2018}. En este trabajo se buscará el menor número
+de repeticiones que mantenga una exactitud aceptable, y ese número será el mismo para todo el
+sistema.

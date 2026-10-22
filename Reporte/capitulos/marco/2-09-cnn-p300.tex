@@ -46,8 +46,7 @@ convolución temporal que funciona como un banco de filtros de frecuencia. Despu
 \textit{depthwise} espacial aprende, para cada filtro temporal, una combinación de electrodos, lo
 que equivale a un filtrado espacial. El segundo bloque aplica una convolución separable que resume
 cada mapa de características en el tiempo y combina los mapas entre sí. Por último, la
-clasificación se realiza con una capa densa con activación softmax \cite{lawhern2018}. En la fase exploratoria esta arquitectura se implementó con ocho filtros
-temporales de tamaño $1\times16$ sobre épocas de 64 canales por 78 muestras.
+clasificación se realiza con una capa densa con activación softmax \cite{lawhern2018}.
 
 \begin{figure}[htbp]
 \centering
