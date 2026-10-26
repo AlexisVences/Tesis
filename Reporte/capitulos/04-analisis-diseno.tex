@@ -223,6 +223,8 @@ MSJE9 & Se intentó iniciar el deletreo con una cuenta sin modelo (CU\_08). & Es
 \hline
 MSJE10 & El modelo de la cuenta no pudo cargarse o falló durante la clasificación (CU\_08, CU\_10). & No fue posible usar el modelo de detección. Repite la calibración. \\
 \hline
+MSJE11 & No se encontró el casco o falló la conexión con él (CU\_04). & No fue posible conectar el casco. Verifica que esté encendido y vuelve a intentarlo. \\
+\hline
 \end{tabularx}
 \par\smallskip{\footnotesize Elaboración propia.}
 \end{table}
@@ -262,7 +264,7 @@ MSJC4 & El operador solicita detener el deletreo (CU\_09). & ¿Deseas detener el
 \subsection{Mensajes informativos}
 
 Los mensajes informativos notifican que una operación se realizó con éxito, por ejemplo la creación
-de una cuenta, el inicio de una sesión o el guardado del modelo entrenado.
+de una cuenta, el término de la calibración o el guardado del modelo entrenado.
 
 La Tabla~\ref{tab:msji} presenta los mensajes informativos.
 
@@ -277,7 +279,7 @@ La Tabla~\ref{tab:msji} presenta los mensajes informativos.
 \hline
 MSJI1 & La cuenta se creó correctamente (CU\_01). & La cuenta se creó correctamente. \\
 \hline
-MSJI2 & Concluyó la calibración e inició el entrenamiento (CU\_06, CU\_07). & La calibración terminó. Se está entrenando el modelo. \\
+MSJI2 & Concluyó la calibración e inició el entrenamiento (CU\_06). & La calibración terminó. Se está entrenando el modelo. \\
 \hline
 MSJI3 & El modelo aprobó la validación y se guardó en la cuenta (CU\_07). & El modelo se guardó. El deletreo está habilitado. \\
 \hline
@@ -355,9 +357,9 @@ Descripción & El operador registra la cuenta de una persona que utilizará el s
 \hline
 Precondición & El operador cuenta con el consentimiento informado de la persona y ha iniciado la aplicación. \\
 \hline
-Pasos & 1. Mostrar el formulario de registro (identificador de la cuenta y contraseña). \newline 2. Validar que los datos estén completos y que el identificador no exista. \newline 3. Guardar la cuenta con su contraseña. \newline 4. Informar al operador que la cuenta fue creada y mostrar la pantalla de inicio de sesión. \\
+Pasos & 1. Mostrar el formulario de registro (identificador de la cuenta y contraseña). \newline 2. Validar que los datos estén completos y que el identificador no exista. \newline 3. Guardar la cuenta con su contraseña. \newline 4. Informar al operador que la cuenta fue creada con el mensaje MSJI1 y mostrar la pantalla de inicio de sesión. \\
 \hline
-Errores & 1. Datos incompletos o no válidos: se despliega un mensaje que indica el campo que debe corregirse. \newline 2. Cuenta duplicada: ya existe una cuenta con ese identificador y se solicita elegir otro. \newline 3. Fallo al guardar: no fue posible almacenar la cuenta y se informa al operador. \\
+Errores & 1. Datos incompletos o no válidos: se despliega el mensaje MSJE1, que indica el campo que debe corregirse. \newline 2. Cuenta duplicada: ya existe una cuenta con ese identificador y se despliega el mensaje MSJE2 para solicitar otro. \newline 3. Fallo al guardar: no fue posible almacenar la cuenta y se despliega el mensaje MSJE5. \\
 \hline
 \end{tabularx}
 \par\smallskip{\footnotesize Elaboración propia.}
@@ -386,7 +388,7 @@ Precondición & Existe una cuenta creada previamente. \\
 \hline
 Pasos & 1. Mostrar el formulario de inicio de sesión (identificador y contraseña). \newline 2. Validar que las credenciales coincidan con las de una cuenta existente. \newline 3. Abrir la sesión, cargar el modelo de detección de la cuenta, en caso de que lo tenga, y mostrar la pantalla principal. \\
 \hline
-Errores & 1. Datos incorrectos: el identificador o la contraseña no coinciden y se permite un nuevo intento. \newline 2. Cuenta inexistente: no hay una cuenta con ese identificador y se informa al operador. \\
+Errores & 1. Datos incompletos: falta el identificador o la contraseña y se despliega el mensaje MSJE1. \newline 2. Datos incorrectos: el identificador o la contraseña no coinciden, se despliega el mensaje MSJE3 y se permite un nuevo intento. \newline 3. Cuenta inexistente: no hay una cuenta con ese identificador y se despliega el mensaje MSJE4. \\
 \hline
 \end{tabularx}
 \par\smallskip{\footnotesize Elaboración propia.}
@@ -413,7 +415,7 @@ Descripción & El operador cierra la sesión activa para que otra cuenta pueda u
 \hline
 Precondición & Hay una sesión activa. \\
 \hline
-Pasos & 1. Solicitar la confirmación del cierre de sesión. \newline 2. Si el operador confirma, detener la conexión con el casco EEG en caso de que esté activa. \newline 3. Cerrar la sesión y regresar a la pantalla de inicio de sesión. \\
+Pasos & 1. Solicitar la confirmación del cierre de sesión con el mensaje MSJC1. \newline 2. Si el operador confirma, detener la conexión con el casco EEG en caso de que esté activa. \newline 3. Cerrar la sesión y regresar a la pantalla de inicio de sesión. \\
 \hline
 Errores & No se identifican errores propios de este caso de uso. \\
 \hline
@@ -450,9 +452,9 @@ Descripción & El operador establece la conexión entre la aplicación y el casc
 \hline
 Precondición & Hay una sesión activa y el casco está encendido y colocado sobre el usuario. \\
 \hline
-Pasos & 1. Buscar los dispositivos disponibles y mostrarlos al operador. \newline 2. Seleccionar el casco que se utilizará. \newline 3. Establecer la conexión y comenzar a recibir las señales de cada canal. \newline 4. Informar que la conexión fue exitosa y habilitar la verificación de la señal. \\
+Pasos & 1. Buscar los dispositivos disponibles y mostrarlos al operador. \newline 2. Seleccionar el casco que se utilizará. \newline 3. Establecer la conexión y comenzar a recibir las señales de cada canal. \newline 4. Mostrar el estado de la conexión y habilitar la verificación de la señal. \\
 \hline
-Errores & 1. Casco no encontrado o conexión fallida: se despliega un mensaje de error y se permite reintentar. \newline 2. Pérdida de la conexión durante la recepción: el sistema detiene la estimulación, lo notifica y conserva el texto construido hasta ese momento. \\
+Errores & 1. Casco no encontrado o conexión fallida: se despliega el mensaje MSJE11 y se permite reintentar. \newline 2. Pérdida de la conexión durante la recepción: el sistema detiene la estimulación, despliega el mensaje MSJE6 y conserva el texto construido hasta ese momento. \\
 \hline
 \end{tabularx}
 \par\smallskip{\footnotesize Elaboración propia.}
@@ -481,7 +483,7 @@ Precondición & La conexión con el casco está establecida. \\
 \hline
 Pasos & 1. Mostrar en tiempo real el estado de la señal de cada canal. \newline 2. Resaltar los canales cuya calidad sea insuficiente. \newline 3. Permitir al operador ajustar los electrodos y revisar de nuevo el estado. \newline 4. Registrar que la señal fue aceptada y habilitar la calibración o el deletreo. \\
 \hline
-Errores & 1. Canales con señal deficiente: se informa cuáles son y no se da por aceptada la verificación hasta que se corrijan. \\
+Errores & 1. Canales con señal deficiente: se despliega el mensaje MSJE7 indicando cuáles son y no se da por aceptada la verificación hasta que se corrijan. \\
 \hline
 \end{tabularx}
 \par\smallskip{\footnotesize Elaboración propia.}
@@ -508,9 +510,9 @@ Descripción & El operador inicia una sesión de calibración en la que el usuar
 \hline
 Precondición & La conexión con el casco está establecida y la señal fue verificada. \\
 \hline
-Pasos & 1. Iniciar el modo de calibración a solicitud del operador. \newline 2. Mostrar la matriz e indicar al usuario el carácter objetivo. \newline 3. Presentar las secuencias de estimulación, registrando el instante y el tipo de cada intensificación junto con las señales recibidas. \newline 4. Repetir los pasos 2 y 3 con cada uno de los 20 caracteres objetivo de la calibración. \newline 5. Guardar en la cuenta del usuario los registros, los caracteres objetivo y los eventos de estimulación. \\
+Pasos & 1. Iniciar el modo de calibración a solicitud del operador. Si la cuenta ya tiene un modelo, solicitar antes la confirmación con el mensaje MSJC3. \newline 2. Mostrar la matriz e indicar al usuario el carácter objetivo. \newline 3. Presentar las secuencias de estimulación, registrando el instante y el tipo de cada intensificación junto con las señales recibidas. \newline 4. Repetir los pasos 2 y 3 con cada uno de los 20 caracteres objetivo de la calibración. \newline 5. Guardar en la cuenta del usuario los registros, los caracteres objetivo y los eventos de estimulación, y desplegar el mensaje MSJI2. \\
 \hline
-Errores & 1. Pérdida de la conexión con el casco: se detiene la calibración y se informa al operador. \newline 2. Fallo al guardar los registros: se notifica y se propone repetir la calibración. \\
+Errores & 1. Pérdida de la conexión con el casco: se detiene la calibración y se despliega el mensaje MSJE6. \newline 2. Fallo al guardar los registros: se despliega el mensaje MSJE5 y se propone repetir la calibración. \newline 3. Detención por el operador: se solicita la confirmación con el mensaje MSJC2 y, si se confirma, la calibración se descarta. \\
 \hline
 \end{tabularx}
 \par\smallskip{\footnotesize Elaboración propia.}
@@ -537,9 +539,9 @@ Descripción & Al concluir la calibración, el sistema entrena el modelo de dete
 \hline
 Precondición & La calibración concluyó y sus registros están guardados en la cuenta. \\
 \hline
-Pasos & 1. Preprocesar los registros de calibración. \newline 2. Separar una parte de los registros para la validación. \newline 3. Entrenar el modelo con el resto, mostrando su avance al operador. \newline 4. Evaluar la exactitud por carácter y el AUC con la parte reservada. \newline 5. Si la exactitud alcanza al menos el 70\%, guardar el modelo en la cuenta e informar que el deletreo está habilitado. \\
+Pasos & 1. Preprocesar los registros de calibración. \newline 2. Separar una parte de los registros para la validación. \newline 3. Entrenar el modelo con el resto, mostrando su avance al operador. \newline 4. Evaluar la exactitud por carácter y el AUC con la parte reservada. \newline 5. Si la exactitud alcanza al menos el 70\%, guardar el modelo en la cuenta e informar con el mensaje MSJI3 que el deletreo está habilitado. \\
 \hline
-Errores & 1. Exactitud insuficiente: se informa el resultado y se propone repetir la calibración. \newline 2. Fallo al guardar el modelo: se notifica y no se habilita el deletreo. \\
+Errores & 1. Exactitud insuficiente: se despliega el mensaje MSJE8 y se propone repetir la calibración. \newline 2. Fallo al guardar el modelo: se despliega el mensaje MSJE5 y no se habilita el deletreo. \\
 \hline
 \end{tabularx}
 \par\smallskip{\footnotesize Elaboración propia.}
@@ -568,7 +570,7 @@ Precondición & La cuenta tiene un modelo entrenado, la conexión con el casco e
 \hline
 Pasos & 1. Verificar que la cuenta tenga el modelo de detección cargado al iniciar sesión. \newline 2. Mostrar la matriz de selección y comenzar la estimulación. \\
 \hline
-Errores & 1. Cuenta sin modelo: se impide iniciar el deletreo y se propone realizar la calibración. \newline 2. Modelo no válido o dañado: se informa al operador y se propone repetir la calibración. \\
+Errores & 1. Cuenta sin modelo: se impide iniciar el deletreo y se despliega el mensaje MSJE9. \newline 2. Modelo no válido o dañado: se despliega el mensaje MSJE10 y se propone repetir la calibración. \\
 \hline
 \end{tabularx}
 \par\smallskip{\footnotesize Elaboración propia.}
@@ -606,7 +608,7 @@ Precondición & El deletreo se inició (CU\_08) y la conexión con el casco est�
 \hline
 Pasos & 1. Mostrar la matriz de selección con los caracteres, el espacio, el comando de borrado y las sugerencias vigentes. \newline 2. Generar un orden aleatorio en el que cada fila y cada columna se intensifiquen una sola vez. \newline 3. Intensificar cada fila o columna con la duración y el intervalo definidos para el sistema, registrando el instante y el tipo de cada intensificación. \newline 4. Al terminar cada repetición, entregar sus señales y eventos a la decodificación del carácter. \newline 5. Repetir los pasos 2 a 4 hasta completar el número de repeticiones definido para el sistema. \\
 \hline
-Errores & 1. Pérdida de la conexión con el casco: se detiene la estimulación, se despliega el mensaje MSJE6 y se conserva el texto construido. \\
+Errores & 1. Pérdida de la conexión con el casco: se detiene la estimulación, se despliega el mensaje MSJE6 y se conserva el texto construido. \newline 2. Detención por el operador: se solicita la confirmación con el mensaje MSJC4 y, si se confirma, se detiene la estimulación. \\
 \hline
 \end{tabularx}
 \par\smallskip{\footnotesize Elaboración propia.}
@@ -1251,7 +1253,7 @@ del entrenamiento del modelo.
 
 Por último, la Figura~\ref{fig:mock-deletreo} muestra la pantalla principal del deletreo. Arriba
 está el texto construido y debajo la matriz de selección con las 27 letras, el espacio, el comando
-de borrado y las palabras sugeridas, que se distinguen con otro color. En el instante representado
+de borrado y las palabras sugeridas. En el instante representado
 se intensifica la segunda fila, y en la esquina superior derecha de la matriz se indica la
 repetición en curso. Los botones para detener el deletreo y cerrar la sesión son para el operador,
 el usuario hace todas sus selecciones con la atención a la matriz.
