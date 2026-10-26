@@ -17,17 +17,15 @@ una matriz de caracteres dio origen al llamado P300 Speller \cite{farwell1988}. 
 paradigma se han desarrollado sistemas de comunicación asistida tanto en el ámbito nacional
 como internacional, y algunos de ellos han logrado exactitudes altas y velocidades útiles para
 la comunicación. Sin embargo, de estos antecedentes se
-identifican dos limitaciones persistentes en los sistemas P300 basados en EEG: la necesidad de
-múltiples canales para mantener niveles altos de precisión, y la dependencia de múltiples
-repeticiones de estímulos para asegurar la detección confiable de la componente P300, lo que
-reduce la velocidad de comunicación y aumenta la carga cognitiva del usuario.
+identifican dos limitaciones persistentes en los sistemas P300 basados en EEG, la necesidad de
+múltiples canales para mantener niveles altos de exactitud, el alto costo del hardware especializado
+y el basto tiempo necesario para construir palabras.
 
-Bajo este contexto, el presente Trabajo Terminal se orienta al desarrollo de un sistema de
+De esta manera, el presente Trabajo Terminal se orienta al desarrollo de un sistema de
 comunicación asistida basado en el paradigma P300 Speller utilizando EEG, integrando modelos
 de aprendizaje profundo para la detección automática de la componente P300 e incorporando
-estrategias para reducir el número de canales y el número de repeticiones requeridas por
-selección de carácter, con el objetivo de incrementar la velocidad de comunicación sin
-comprometer la precisión del sistema.
+estrategias para reducir el número de canales, y optimizar el tiempo de construcción de palabras con 
+un modelo de predicción.
 
 \section[OBJETIVOS]{Objetivos}
 
@@ -81,32 +79,31 @@ directamente en la calidad de vida del paciente.
 
 Dentro de este contexto, el paradigma P300 Speller puede resultar útil para permitir la
 comunicación a las personas con problemas motrices severos, mejorando así su calidad de vida.
-Sin embargo, la mayoría de los estudios se enfocan en maximizar la precisión de clasificación
+Sin embargo, la mayoría de los estudios se enfocan en maximizar la exactitud de clasificación
 mediante entornos controlados difíciles de llevar a la práctica, de modo que este trabajo
 interviene en la integración estructural del sistema, priorizando no solo el desempeño del
 modelo, sino también su incorporación en un sistema funcional que le permita a los usuarios
 objetivo la construcción efectiva de mensajes.
 
-La reducción del número de canales o ensayos, así como la incorporación de estrategias que
+La reducción del número de canales (electrodos), así como la incorporación de estrategias que
 faciliten la selección de caracteres, puede contribuir al desarrollo de sistemas BCI más
 accesibles, portables y de implementación simplificada, ampliando su viabilidad en distintos
-contextos tecnológicos y acercando su uso a escenarios reales de asistencia comunicativa. De
-esta manera, el proyecto no se centra solamente en la optimización bajo escenarios aislados,
+contextos tecnológicos. De esta manera, el proyecto no se centra solamente en la optimización bajo escenarios aislados,
 sino que propone un sistema orientado a la aplicación práctica.
 
 En cuanto a la aportación del trabajo, su valor radica en la integración de un modelo de
 aprendizaje profundo para la detección de la componente P300 con un modelo de predicción de
 palabras, combinación que permite no solo identificar la selección de caracteres mediante las
-señales obtenidas por electroencefalografía, sino también optimizar el proceso de construcción
+señales obtenidas por lectura electroencefalografica, sino también optimizar el proceso de construcción
 de mensajes mediante la asistencia de este otro módulo.
 
 Por lo tanto, la complejidad del trabajo implica el procesamiento y análisis de señales EEG, la
 implementación y entrenamiento de modelos de aprendizaje profundo, la integración de estos
 modelos en una aplicación y la evaluación de los resultados, lo cual requiere la aplicación
 avanzada de conocimientos en procesamiento de señales, aprendizaje profundo y desarrollo de
-sistemas, competencias propias del área de ingeniería en inteligencia artificial. Finalmente, el
+sistemas, competencias del área de ingeniería en inteligencia artificial. Finalmente, el
 proyecto resulta viable en términos de tiempo y recursos, ya que la exploración de
 arquitecturas y del preprocesamiento puede apoyarse en bases de datos públicas de paradigmas P300,
 mientras que la adquisición de señales propias, necesaria para adaptar el modelo a cada usuario, se
-realizará con un casco comercial de 14 canales, lo que evita el costo del hardware especializado
+realizará con un casco comercial de 14 canales, lo que evita el alto costo del hardware especializado
 con 64 canales de detección de señales EEG.
