@@ -23,14 +23,6 @@ incremental para el sistema. Ambas empatan en el último incremento, cuando la a
 seleccionada se incorpora a la aplicación para entrenar el modelo de cada usuario al terminar su
 calibración.
 
-Como parte de la fase exploratoria se hicieron pruebas con la base de datos de la competencia BCI
-III. En ellas se compararon una red convolucional clásica para la P300 \cite{cecotti2011}, EEGNet
-\cite{lawhern2018} y una arquitectura híbrida CNN-LSTM. Con los 64 canales, la red convolucional
-clásica obtuvo una exactitud por carácter de 96\% en el sujeto A y de 95\% en el sujeto B, y EEGNet
-llegó a 98\% en el sujeto B. Con el registro reducido a 14 canales el desempeño bajó, pero EEGNet
-mantuvo una exactitud por carácter de 72\% y 76\% en los sujetos A y B, por encima del 70\% fijado
-como mínimo para aceptar el modelo de un usuario.
-
 En el Trabajo Terminal II quedan por construir los tres incrementos del sistema. El primero es el
 módulo de predicción de palabras, cuya técnica aún está por definirse. Le siguen la interfaz con la
 matriz del P300 Speller y, al final, la calibración junto con la integración del modelo de
