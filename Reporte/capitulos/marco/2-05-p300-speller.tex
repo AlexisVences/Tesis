@@ -20,44 +20,10 @@ las otras diez, como se representa en la Figura~\ref{fig:matriz}.
 
 \begin{figure}[htbp]
 \centering
-\begin{tikzpicture}[scale=0.62, every node/.style={font=\sffamily\small}]
-  \def\letras{{"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R",
-               "S","T","U","V","W","X","Y","Z","1","2","3","4","5","6","7","8","9","\_"}}
-  % matriz izquierda: fila 3 intensificada
-  \begin{scope}
-    \fill[black] (-0.2,-0.2) rectangle (6.2,6.2);
-    \fill[gray!55] (0,3) rectangle (6,4);
-    \foreach \i in {0,...,35}{
-      \pgfmathtruncatemacro{\f}{int(\i/6)}
-      \pgfmathtruncatemacro{\c}{mod(\i,6)}
-      \pgfmathsetmacro{\l}{\letras[\i]}
-      \ifthenelse{\f=2}
-        {\node[text=white, font=\sffamily\bfseries] at (\c+0.5,5.5-\f) {\l};}
-        {\node[text=gray!70] at (\c+0.5,5.5-\f) {\l};}
-    }
-    \draw[black, very thick] (1,3) rectangle (2,4);
-    \node[below, align=center] at (3,-0.4) {(a) Intensificación de la fila 3};
-  \end{scope}
-  % matriz derecha: columna 2 intensificada
-  \begin{scope}[xshift=8.5cm]
-    \fill[black] (-0.2,-0.2) rectangle (6.2,6.2);
-    \fill[gray!55] (1,0) rectangle (2,6);
-    \foreach \i in {0,...,35}{
-      \pgfmathtruncatemacro{\f}{int(\i/6)}
-      \pgfmathtruncatemacro{\c}{mod(\i,6)}
-      \pgfmathsetmacro{\l}{\letras[\i]}
-      \ifthenelse{\c=1}
-        {\node[text=white, font=\sffamily\bfseries] at (\c+0.5,5.5-\f) {\l};}
-        {\node[text=gray!70] at (\c+0.5,5.5-\f) {\l};}
-    }
-    \draw[black, very thick] (1,3) rectangle (2,4);
-    \node[below, align=center] at (3,-0.4) {(b) Intensificación de la columna 2};
-  \end{scope}
-\end{tikzpicture}
-\caption{Matriz de $6\times6$ caracteres del P300 Speller. Si el usuario atiende a la letra N
-(recuadro), tanto la intensificación de la fila 3 como la de la columna 2 son eventos objetivo que
-provocan una P300. Las diez intensificaciones restantes son eventos no objetivo. Elaboración propia
-con base en \cite{farwell1988}.}
+\includegraphics[width=0.45\textwidth]{02-marco-referencial/matriz_bci2000_krusienski2008.png}
+\caption{Matriz de $6\times6$ caracteres del P300 Speller en BCI2000 durante la intensificación de
+la cuarta columna. El carácter objetivo es la D, indicada entre paréntesis en la parte superior, por
+lo que esta intensificación y la de la primera fila son eventos objetivo. \cite{krusienski2008}.}
 \label{fig:matriz}
 \end{figure}
 

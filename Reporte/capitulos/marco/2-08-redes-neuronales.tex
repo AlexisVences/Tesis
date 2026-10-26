@@ -30,8 +30,6 @@ utilizadas y su uso en las arquitecturas para la detección de la P300.
 
 \begin{table}[htbp]
 \centering
-\caption{Funciones de activación más utilizadas}
-\label{tab:activaciones}
 \small
 \renewcommand{\arraystretch}{1.8}
 \begin{tabularx}{\textwidth}{|L{2.6cm}|L{4.3cm}|L{1.6cm}|Y|}
@@ -43,7 +41,8 @@ ReLU & $\max(0,z)$ & $[0,\infty)$ & Capas ocultas de redes profundas. \\[4pt] \h
 ELU & $z$ si $z>0$, y $\alpha(e^{z}-1)$ si $z\le0$ & $(-\alpha,\infty)$ & Capas ocultas de EEGNet \cite{lawhern2018}. \\[4pt] \hline
 Softmax & $\dfrac{e^{z_k}}{\sum_{j} e^{z_j}}$ & $(0,1)$, suma 1 & Salida de clasificación multiclase. \\ \hline
 \end{tabularx}
-\par\smallskip{\footnotesize Elaboración propia con información de \cite{goodfellow2016,aggarwal2018}.}
+\caption{Funciones de activación más utilizadas. Elaboración propia con información de \cite{goodfellow2016,aggarwal2018}.}
+\label{tab:activaciones}
 \end{table}
 
 \subsection{Función de pérdida}

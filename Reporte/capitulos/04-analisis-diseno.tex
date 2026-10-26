@@ -34,8 +34,6 @@ propios registros. La Tabla~\ref{tab:reglas} las resume.
 %% NOTA: reglas PROPUESTAS a partir de lo ya descrito en el Capítulo 3. Revisar, quitar o agregar.
 \begin{table}[H]
 \centering
-\caption{Reglas de negocio del sistema}
-\label{tab:reglas}
 \small
 \begin{tabularx}{\textwidth}{|L{1.4cm}|L{3.6cm}|Y|}
 \hline
@@ -58,7 +56,8 @@ RN-7 & Modelo por usuario & Cada usuario contará con un modelo de detección qu
 RN-8 & Calibración previa & Un usuario solo podrá iniciar el deletreo cuando su cuenta cuente con un modelo de detección entrenado. \\
 \hline
 \end{tabularx}
-\par\smallskip{\footnotesize Elaboración propia.}
+\caption{Reglas de negocio del sistema. Elaboración propia.}
+\label{tab:reglas}
 \end{table}
 
 %% =====================================================================
@@ -196,8 +195,6 @@ La Tabla~\ref{tab:msje} reúne los mensajes de error del sistema.
 
 \begin{table}[H]
 \centering
-\caption{Mensajes de error}
-\label{tab:msje}
 \small
 \begin{tabularx}{\textwidth}{|L{1.5cm}|L{5.4cm}|Y|}
 \hline
@@ -226,7 +223,8 @@ MSJE10 & El modelo de la cuenta no pudo cargarse o falló durante la clasificaci
 MSJE11 & No se encontró el casco o falló la conexión con él (CU\_04). & No fue posible conectar el casco. Verifica que esté encendido y vuelve a intentarlo. \\
 \hline
 \end{tabularx}
-\par\smallskip{\footnotesize Elaboración propia.}
+\caption{Mensajes de error. Elaboración propia.}
+\label{tab:msje}
 \end{table}
 
 
@@ -241,8 +239,6 @@ Tabla~\ref{tab:msjc} presenta estos mensajes.
 
 \begin{table}[H]
 \centering
-\caption{Mensajes de confirmación}
-\label{tab:msjc}
 \small
 \begin{tabularx}{\textwidth}{|L{1.5cm}|L{5.4cm}|Y|}
 \hline
@@ -257,7 +253,8 @@ MSJC3 & El operador inicia la calibración de una cuenta que ya tiene un modelo 
 MSJC4 & El operador solicita detener el deletreo (CU\_09). & ¿Deseas detener el deletreo? \\
 \hline
 \end{tabularx}
-\par\smallskip{\footnotesize Elaboración propia.}
+\caption{Mensajes de confirmación. Elaboración propia.}
+\label{tab:msjc}
 \end{table}
 
 
@@ -270,8 +267,6 @@ La Tabla~\ref{tab:msji} presenta los mensajes informativos.
 
 \begin{table}[H]
 \centering
-\caption{Mensajes informativos}
-\label{tab:msji}
 \small
 \begin{tabularx}{\textwidth}{|L{1.5cm}|L{5.4cm}|Y|}
 \hline
@@ -286,7 +281,8 @@ MSJI3 & El modelo aprobó la validación y se guardó en la cuenta (CU\_07). & E
 MSJI4 & Se seleccionó el comando de borrado con el texto vacío (CU\_12). & No hay elementos para borrar. \\
 \hline
 \end{tabularx}
-\par\smallskip{\footnotesize Elaboración propia.}
+\caption{Mensajes informativos. Elaboración propia.}
+\label{tab:msji}
 \end{table}
 
 
@@ -307,8 +303,6 @@ sesiones y el casco EEG que entrega las señales (Tabla~\ref{tab:actores}).
 
 \begin{table}[H]
 \centering
-\caption{Actores del sistema}
-\label{tab:actores}
 \small
 \begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
 \hline
@@ -321,7 +315,8 @@ Operador & Persona encargada de preparar y supervisar el uso del sistema, que en
 Casco EEG & Actor externo que corresponde al casco Emotiv EPOC X de 14 canales, el cual entrega al sistema, en tiempo real, las señales electroencefalográficas del usuario, que se sincronizan con los estímulos presentados. \\
 \hline
 \end{tabularx}
-\par\smallskip{\footnotesize Elaboración propia.}
+\caption{Actores del sistema. Elaboración propia.}
+\label{tab:actores}
 \end{table}
 
 Aparte de lo anterior, el operador explora arquitecturas y preprocesamiento con bases de datos
@@ -338,8 +333,6 @@ herramienta conservando cada una su propio espacio: crear una cuenta, iniciar se
 
 \begin{table}[H]
 \centering
-\caption{Caso de uso crear cuenta de usuario}
-\label{tab:cu01}
 \small
 \begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
 \hline
@@ -362,13 +355,12 @@ Pasos & 1. Mostrar el formulario de registro (identificador de la cuenta y contr
 Errores & 1. Datos incompletos o no válidos: se despliega el mensaje MSJE1, que indica el campo que debe corregirse. \newline 2. Cuenta duplicada: ya existe una cuenta con ese identificador y se despliega el mensaje MSJE2 para solicitar otro. \newline 3. Fallo al guardar: no fue posible almacenar la cuenta y se despliega el mensaje MSJE5. \\
 \hline
 \end{tabularx}
-\par\smallskip{\footnotesize Elaboración propia.}
+\caption{Caso de uso crear cuenta de usuario. Elaboración propia.}
+\label{tab:cu01}
 \end{table}
 
 \begin{table}[H]
 \centering
-\caption{Caso de uso iniciar sesión}
-\label{tab:cu02}
 \small
 \begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
 \hline
@@ -391,13 +383,12 @@ Pasos & 1. Mostrar el formulario de inicio de sesión (identificador y contrase�
 Errores & 1. Datos incompletos: falta el identificador o la contraseña y se despliega el mensaje MSJE1. \newline 2. Datos incorrectos: el identificador o la contraseña no coinciden, se despliega el mensaje MSJE3 y se permite un nuevo intento. \newline 3. Cuenta inexistente: no hay una cuenta con ese identificador y se despliega el mensaje MSJE4. \\
 \hline
 \end{tabularx}
-\par\smallskip{\footnotesize Elaboración propia.}
+\caption{Caso de uso iniciar sesión. Elaboración propia.}
+\label{tab:cu02}
 \end{table}
 
 \begin{table}[H]
 \centering
-\caption{Caso de uso cerrar sesión}
-\label{tab:cu03}
 \small
 \begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
 \hline
@@ -420,7 +411,8 @@ Pasos & 1. Solicitar la confirmación del cierre de sesión con el mensaje MSJC1
 Errores & No se identifican errores propios de este caso de uso. \\
 \hline
 \end{tabularx}
-\par\smallskip{\footnotesize Elaboración propia.}
+\caption{Caso de uso cerrar sesión. Elaboración propia.}
+\label{tab:cu03}
 \end{table}
 
 
@@ -433,8 +425,6 @@ registran sus señales, así como el entrenamiento y la validación automáticos
 
 \begin{table}[H]
 \centering
-\caption{Caso de uso conectar el casco EEG}
-\label{tab:cu04}
 \small
 \begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
 \hline
@@ -457,13 +447,12 @@ Pasos & 1. Buscar los dispositivos disponibles y mostrarlos al operador. \newlin
 Errores & 1. Casco no encontrado o conexión fallida: se despliega el mensaje MSJE11 y se permite reintentar. \newline 2. Pérdida de la conexión durante la recepción: el sistema detiene la estimulación, despliega el mensaje MSJE6 y conserva el texto construido hasta ese momento. \\
 \hline
 \end{tabularx}
-\par\smallskip{\footnotesize Elaboración propia.}
+\caption{Caso de uso conectar el casco EEG. Elaboración propia.}
+\label{tab:cu04}
 \end{table}
 
 \begin{table}[H]
 \centering
-\caption{Caso de uso verificar la calidad de la señal}
-\label{tab:cu05}
 \small
 \begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
 \hline
@@ -486,13 +475,12 @@ Pasos & 1. Mostrar en tiempo real el estado de la señal de cada canal. \newline
 Errores & 1. Canales con señal deficiente: se despliega el mensaje MSJE7 indicando cuáles son y no se da por aceptada la verificación hasta que se corrijan. \\
 \hline
 \end{tabularx}
-\par\smallskip{\footnotesize Elaboración propia.}
+\caption{Caso de uso verificar la calidad de la señal. Elaboración propia.}
+\label{tab:cu05}
 \end{table}
 
 \begin{table}[H]
 \centering
-\caption{Caso de uso realizar la calibración}
-\label{tab:cu06}
 \small
 \begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
 \hline
@@ -515,13 +503,12 @@ Pasos & 1. Iniciar el modo de calibración a solicitud del operador. Si la cuent
 Errores & 1. Pérdida de la conexión con el casco: se detiene la calibración y se despliega el mensaje MSJE6. \newline 2. Fallo al guardar los registros: se despliega el mensaje MSJE5 y se propone repetir la calibración. \newline 3. Detención por el operador: se solicita la confirmación con el mensaje MSJC2 y, si se confirma, la calibración se descarta. \\
 \hline
 \end{tabularx}
-\par\smallskip{\footnotesize Elaboración propia.}
+\caption{Caso de uso realizar la calibración. Elaboración propia.}
+\label{tab:cu06}
 \end{table}
 
 \begin{table}[H]
 \centering
-\caption{Caso de uso entrenar y validar el modelo}
-\label{tab:cu07}
 \small
 \begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
 \hline
@@ -544,13 +531,12 @@ Pasos & 1. Preprocesar los registros de calibración. \newline 2. Separar una pa
 Errores & 1. Exactitud insuficiente: se despliega el mensaje MSJE8 y se propone repetir la calibración. \newline 2. Fallo al guardar el modelo: se despliega el mensaje MSJE5 y no se habilita el deletreo. \\
 \hline
 \end{tabularx}
-\par\smallskip{\footnotesize Elaboración propia.}
+\caption{Caso de uso entrenar y validar el modelo. Elaboración propia.}
+\label{tab:cu07}
 \end{table}
 
 \begin{table}[H]
 \centering
-\caption{Caso de uso iniciar el deletreo}
-\label{tab:cu08}
 \small
 \begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
 \hline
@@ -573,7 +559,8 @@ Pasos & 1. Verificar que la cuenta tenga el modelo de detección cargado al inic
 Errores & 1. Cuenta sin modelo: se impide iniciar el deletreo y se despliega el mensaje MSJE9. \newline 2. Modelo no válido o dañado: se despliega el mensaje MSJE10 y se propone repetir la calibración. \\
 \hline
 \end{tabularx}
-\par\smallskip{\footnotesize Elaboración propia.}
+\caption{Caso de uso iniciar el deletreo. Elaboración propia.}
+\label{tab:cu08}
 \end{table}
 
 
@@ -587,8 +574,6 @@ Las Tablas~\ref{tab:cu09} a \ref{tab:cu12} describen estos casos de uso, que se 
 
 \begin{table}[H]
 \centering
-\caption{Caso de uso presentar los estímulos}
-\label{tab:cu09}
 \small
 \begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
 \hline
@@ -611,13 +596,12 @@ Pasos & 1. Mostrar la matriz de selección con los caracteres, el espacio, el co
 Errores & 1. Pérdida de la conexión con el casco: se detiene la estimulación, se despliega el mensaje MSJE6 y se conserva el texto construido. \newline 2. Detención por el operador: se solicita la confirmación con el mensaje MSJC4 y, si se confirma, se detiene la estimulación. \\
 \hline
 \end{tabularx}
-\par\smallskip{\footnotesize Elaboración propia.}
+\caption{Caso de uso presentar los estímulos. Elaboración propia.}
+\label{tab:cu09}
 \end{table}
 
 \begin{table}[H]
 \centering
-\caption{Caso de uso decodificar el carácter}
-\label{tab:cu10}
 \small
 \begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
 \hline
@@ -640,13 +624,12 @@ Pasos & 1. Segmentar las señales en épocas a partir de cada intensificación y
 Errores & 1. Épocas incompletas por una interrupción de la señal: se descarta la selección y se repite la presentación de los estímulos. \newline 2. Fallo del modelo de detección: se detiene el deletreo y se despliega el mensaje MSJE10. \\
 \hline
 \end{tabularx}
-\par\smallskip{\footnotesize Elaboración propia.}
+\caption{Caso de uso decodificar el carácter. Elaboración propia.}
+\label{tab:cu10}
 \end{table}
 
 \begin{table}[H]
 \centering
-\caption{Caso de uso actualizar el texto}
-\label{tab:cu11}
 \small
 \begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
 \hline
@@ -669,13 +652,12 @@ Pasos & 1. Identificar el tipo del elemento seleccionado. \newline 2. Si es un c
 Errores & No se identifican errores propios de este caso de uso. \\
 \hline
 \end{tabularx}
-\par\smallskip{\footnotesize Elaboración propia.}
+\caption{Caso de uso actualizar el texto. Elaboración propia.}
+\label{tab:cu11}
 \end{table}
 
 \begin{table}[H]
 \centering
-\caption{Caso de uso borrar el último elemento}
-\label{tab:cu12}
 \small
 \begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
 \hline
@@ -698,7 +680,8 @@ Pasos & 1. Consultar el último elemento incorporado al texto. \newline 2. Si fu
 Errores & 1. Texto vacío: no hay elementos que borrar, el texto no se modifica y se despliega el mensaje MSJI4. \\
 \hline
 \end{tabularx}
-\par\smallskip{\footnotesize Elaboración propia.}
+\caption{Caso de uso borrar el último elemento. Elaboración propia.}
+\label{tab:cu12}
 \end{table}
 
 
@@ -712,8 +695,6 @@ Las Tablas~\ref{tab:cu13} y \ref{tab:cu14} describen estos casos de uso.
 
 \begin{table}[H]
 \centering
-\caption{Caso de uso generar sugerencias}
-\label{tab:cu13}
 \small
 \begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
 \hline
@@ -736,13 +717,12 @@ Pasos & 1. Obtener el texto construido hasta el momento. \newline 2. Si el texto
 Errores & 1. Sin palabras candidatas: los elementos de sugerencia se muestran vacíos y el deletreo continúa por caracteres. \\
 \hline
 \end{tabularx}
-\par\smallskip{\footnotesize Elaboración propia.}
+\caption{Caso de uso generar sugerencias. Elaboración propia.}
+\label{tab:cu13}
 \end{table}
 
 \begin{table}[H]
 \centering
-\caption{Caso de uso seleccionar una sugerencia}
-\label{tab:cu14}
 \small
 \begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
 \hline
@@ -765,7 +745,8 @@ Pasos & 1. Identificar la palabra contenida en el elemento seleccionado. \newlin
 Errores & 1. Elemento de sugerencia vacío: la selección se ignora y el texto no se modifica. \\
 \hline
 \end{tabularx}
-\par\smallskip{\footnotesize Elaboración propia.}
+\caption{Caso de uso seleccionar una sugerencia. Elaboración propia.}
+\label{tab:cu14}
 \end{table}
 
 
@@ -1164,8 +1145,6 @@ modificar la interfaz, como pide el RNF8.
 
 \begin{table}[H]
 \centering
-\caption{Entradas y salidas del módulo de predicción de palabras}
-\label{tab:prediccion-es}
 \small
 \begin{tabularx}{\textwidth}{|L{3.0cm}|Y|}
 \hline
@@ -1180,7 +1159,8 @@ Operación & sugerir(texto), de la clase PredictorPalabras. \\
 Momento de uso & Al iniciar el deletreo y después de cada selección que modifique el texto. \\
 \hline
 \end{tabularx}
-\par\smallskip{\footnotesize Elaboración propia.}
+\caption{Entradas y salidas del módulo de predicción de palabras. Elaboración propia.}
+\label{tab:prediccion-es}
 \end{table}
 
 Las sugerencias ocupan los elementos de la matriz que no se usan para caracteres. De los 36

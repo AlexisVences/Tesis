@@ -38,19 +38,21 @@ preauriculares) en segmentos del 10\% y del 20\% de su longitud total. Cada elec
 una o dos letras según la región que cubre: Fp (frontopolar), F (frontal), C (central), T
 (temporal), P (parietal) y O (occipital). Después se agrega un número impar si el electrodo está en
 el hemisferio izquierdo, un número par si está en el derecho, o la letra \textit{z} si está sobre
-la línea media \cite{seeck2017}. La Figura~\ref{fig:1020} muestra la
-distribución de los 21 electrodos del sistema, resaltando los de la línea media (Fz, Cz, Pz y Oz),
-que fueron los utilizados en el trabajo de Contreras \cite{contreras2021}. Las bases de datos del
+la línea media \cite{seeck2017}. Las bases de datos del
 paradigma P300 suelen utilizar la extensión 10-10, que agrega posiciones intermedias hasta
-completar 64 o más canales \cite{blankertz2006}. Los electrodos del casco Emotiv EPOC X, como
-AF3, FC5 o P7, también corresponden a posiciones de esta extensión \cite{emotivepocx}.
+completar 64 o más canales \cite{blankertz2006}. La Figura~\ref{fig:1020} muestra un montaje de
+64 canales de esta extensión, registrado con BCI2000, junto con los conjuntos de electrodos que
+evaluaron Krusienski et al. \cite{krusienski2008}. En ella aparecen los electrodos de la línea media
+(Fz, Cz, Pz y Oz), que fueron los utilizados en el trabajo de Contreras \cite{contreras2021}, y
+también posiciones como AF3, FC5 o P7, que corresponden a electrodos del casco Emotiv EPOC X
+\cite{emotivepocx}.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.52\textwidth]{02-marco-referencial/sistema_10_20.pdf}
-\caption{Posiciones de los electrodos del sistema internacional 10-20 (vista superior). Se
-resaltan los electrodos de la línea media Fz, Cz, Pz y Oz. Elaboración propia con base en
-\cite{seeck2017}.}
+\includegraphics[width=0.6\textwidth]{02-marco-referencial/montaje_64_krusienski2008.png}
+\caption{Montaje de 64 canales de la extensión 10-10 y conjuntos de electrodos evaluados por
+Krusienski et al. El conjunto 1 corresponde a Fz, Cz y Pz, el conjunto 2 a PO7, Oz y PO8, y el
+conjunto 3 es la unión de ambos. \cite{krusienski2008}.}
 \label{fig:1020}
 \end{figure}
 
@@ -67,8 +69,6 @@ para mitigarlos, algunas de las cuales se retoman en la Sección~\ref{sec:pds}.
 
 \begin{table}[htbp]
 \centering
-\caption{Artefactos comunes en el registro de EEG}
-\label{tab:artefactos}
 \small
 \begin{tabularx}{\textwidth}{|L{2.8cm}|L{2.3cm}|L{2.4cm}|Y|}
 \hline
@@ -80,5 +80,6 @@ Sudoración y deriva de línea base & Fisiológico / electrodo & $<$0.5 Hz & Fil
 Interferencia de la red eléctrica & Técnico & 60 Hz (México) & Filtro notch, blindaje, buena impedancia. \\ \hline
 Movimiento o mal contacto del electrodo & Técnico & Banda ancha & Rechazo de épocas por umbral de amplitud. \\ \hline
 \end{tabularx}
-\par\smallskip{\footnotesize Elaboración propia con información de \cite{sanei2007,niedermeyer2005}.}
+\caption{Artefactos comunes en el registro de EEG. Elaboración propia con información de \cite{sanei2007,niedermeyer2005}.}
+\label{tab:artefactos}
 \end{table}

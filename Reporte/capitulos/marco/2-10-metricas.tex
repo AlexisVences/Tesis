@@ -51,8 +51,6 @@ el F1-score, que es la media armónica de ambas \cite{fawcett2006}.
 
 \begin{table}[htbp]
 \centering
-\caption{Métricas de evaluación para la clasificación binaria}
-\label{tab:metricas}
 \small
 \renewcommand{\arraystretch}{1.8}
 \begin{tabularx}{\textwidth}{|L{2.8cm}|Y|L{4.4cm}|}
@@ -63,7 +61,8 @@ Precisión (\textit{precision}) & Proporción de épocas clasificadas como P300 
 Sensibilidad (\textit{recall}, TPR) & Proporción de épocas con P300 que fueron detectadas. & $\dfrac{TP}{TP+FN}$ \\[10pt] \hline
 F1-score & Media armónica entre precisión y sensibilidad. & $2\cdot\dfrac{\text{Precisión}\cdot\text{Sensibilidad}}{\text{Precisión}+\text{Sensibilidad}}$ \\ \hline
 \end{tabularx}
-\par\smallskip{\footnotesize Elaboración propia con información de \cite{fawcett2006}.}
+\caption{Métricas de evaluación para la clasificación binaria. Elaboración propia con información de \cite{fawcett2006}.}
+\label{tab:metricas}
 \end{table}
 
 \subsection{Curva ROC y área bajo la curva}
